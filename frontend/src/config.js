@@ -1,0 +1,1 @@
+export const serviceTitle = '🗓 Life Management';
