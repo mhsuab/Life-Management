@@ -1,37 +1,43 @@
 import React from 'react';
 import { Grid, Form, Button, Message, Icon, Header, Segment } from 'semantic-ui-react';
 
-const LoginForm = () => {
-    return (
-        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-            <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as='h2' icon textAlign='center'>
-                    <Icon name='user plus' />
-                    <Header.Content>Register&ensp;a&ensp;New&ensp;Account</Header.Content>
-                </Header>
-                <Form size='large'>
-                    <Segment stacked>
-                        <Form.Input fluid icon='user' iconPosition='left' placeholder='username' />
-                        <Form.Input
-                            fluid
-                            icon='lock'
-                            iconPosition='left'
-                            placeholder='Password'
-                            type='password'
-                        />
+const divStyle = {
+    borderRadius: '25px',
+    padding: '1.5rem',
+    boxShadow: '8px 8px 15px #D9DDE6, -8px - 8px 15px #EFF5FE',
+    background: "#E4E9F2",
+};
 
-                        <Button color='violet' fluid size='large'>
-                            Register
-                        </Button>
-                    </Segment>
+const titleStyle = {
+    justifyContent: 'center'
+};
+
+const RegisterForm = () => {
+    return (
+        <Grid textAlign='center' style={divStyle} verticalAlign='middle'>
+            <Grid.Column style={{ maxWidth: 450 }}>
+                <Header as='h2' style={titleStyle} icon>
+                    <Icon name='user plus' />
+                    <Header.Content>
+                        Register
+                    </Header.Content>
+                </Header>
+                <Form icon>
+                    <Form.Input icon='user' iconPosition='left' placeholder='username' />
+                    <Form.Input
+                        fluid
+                        icon='lock'
+                        iconPosition='left'
+                        placeholder='Password'
+                        type='password'
+                    />
+                    <Button color='teal' fluid>
+                        Register
+                    </Button>
                 </Form>
-                <Message>
-                    <Icon name='paper plane outline' />
-                    Support&ensp;us!!&ensp;Please&ensp;Contact&ensp;<a href='#'>here</a>.
-                </Message>
             </Grid.Column>
         </Grid>
     )
 }
 
-export default LoginForm;
+export default RegisterForm;

@@ -1,36 +1,40 @@
 import React from 'react';
 import { Grid, Form, Button, Message, Icon, Header, Segment } from 'semantic-ui-react';
 
+const divStyle = {
+    borderRadius: '25px',
+    padding: '1.5rem',
+    boxShadow: '8px 8px 15px #D9DDE6, -8px - 8px 15px #EFF5FE',
+    background: "#E4E9F2",
+};
+
+const titleStyle = {
+    justifyContent: 'center'
+};
+
 const LoginForm = () => {
     return (
-        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+        <Grid textAlign='center' style={divStyle} verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as='h2' icon textAlign='center'>
+                <Header as='h2' style={titleStyle} icon>
                     <Icon name='user' />
-                    <Header.Content>Log-in&ensp;to&ensp;Your&ensp;Account</Header.Content>
+                    <Header.Content>
+                        login
+                    </Header.Content>
                 </Header>
-                <Form size='large'>
-                    <Segment stacked>
-                        <Form.Input fluid icon='user' iconPosition='left' placeholder='username' />
-                        <Form.Input
-                            fluid
-                            icon='lock'
-                            iconPosition='left'
-                            placeholder='Password'
-                            type='password'
-                        />
-
-                        <Button color='teal' fluid size='large'>
-                            Login
-                        </Button>
-                    </Segment>
+                <Form icon>
+                    <Form.Input icon='user' iconPosition='left' placeholder='username' />
+                    <Form.Input
+                        fluid
+                        icon='lock'
+                        iconPosition='left'
+                        placeholder='Password'
+                        type='password'
+                    />
+                    <Button color='teal' fluid>
+                        Login
+                    </Button>
                 </Form>
-                <Message attached='bottom'>
-                    <Icon name='user plus' />
-                    New to us? Please <a href='#'>register</a> first.<br />
-                    <Icon name='paper plane outline' />
-                    Support&ensp;us!!&ensp;Please&ensp;contact&ensp;<a href='#'>here</a>.
-                </Message>
             </Grid.Column>
         </Grid>
     )

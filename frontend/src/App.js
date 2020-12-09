@@ -4,6 +4,7 @@ import HomePage from './components/Home';
 import LoginForm from './components/Login';
 import RegisterForm from './components/Register';
 import 'semantic-ui-css/semantic.min.css';
+import './css/login.css';
 
 const App = () => {
   return (
