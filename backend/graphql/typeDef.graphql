@@ -1,34 +1,110 @@
-# const { gql } = require('apollo-server-express');
-
-# module.exports = gql`
 type Query {
-    allMessages: [Message!]!,
-    getUserMessage(username: String!): [Message!]!
-},
+    getNote(userID: ID!): String!,
+    getCalendar(userID: ID!, date: String!): Boolean!,
+    getOneDay(userID: ID!, date: String!): [Block!]!,
+    getTodo(userID: ID!): [Todo!]!,
+    getEmptyBlock(userID: ID!): [EmptyBlock!]!
+}
+
 type Mutation {
-    sendMessage(message: MessageInput!): [Message!]!,
-    deleteMessage(username: String!): String!
-},
+    register(registerInput: registerInput): User!
+    login(username: String!, password: String!): User!
+    updateNote(msg: String!, userID: ID!): String!,
+    addBlock(block: blockInput!): [Block!]!, # Date
+    deleteBlock(blockID: ID!): [Block!]!,    # Date
+    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Date prev, curr
+    addTodo(todo: todoInput!): [Todo!]!,
+    deleteTodo(todoID: ID!): [Todo!]!,
+    updateTodo(todoID: ID!, todo: todoInput!): [Todo!]!,
+    addEmptyBlock(emptyBlockInput: emptyBlockInput): [EmptyBlock!]!,
+    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!
+}
+
 type Subscription {
-    updateMessage: SubscriptionPayload!
-},
-type Message {
+    updateCalendar: SubscriptionPayload!
+}
+
+type User {
     id: ID!
-    sender: String!
-    receiver: String!
-    body: String!
-},
-input MessageInput {
-    sender: String!
-    receiver: String!
-    body: String!
-},
+    username: String!
+    password: String!
+}
+
+type Block {
+    id: ID!
+    userID: ID!
+    name: String!
+    subject: String!
+    color: String!
+    onCalendar: Boolean!
+    startTime: Int!
+    endTime: Int!
+    Day: String!
+    isReview: Boolean!
+    repeated: Int!
+    expiredAfter: String!
+}
+
+type Todo {
+    id: ID!
+    userID: ID!
+    name: String!
+    category: String!
+    expiredAfter: String!
+    subject: String!
+    color: String!
+}
+
+type EmptyBlock {
+    id: ID!
+    userID: ID!
+    subject: String!
+    color: String!
+}
+
+input blockInput {
+    userID: ID!
+    name: String!
+    subject: String!
+    color: String!
+    onCalendar: Boolean!
+    startTime: Int!
+    endTime: Int!
+    Day: String!
+    isReview: Boolean!
+    repeated: Int!
+}
+
+input todoInput {
+    userID: ID!
+    name: String!
+    category: String!
+    subject: String!
+    color: String!
+}
+
+input EmptyBlock {
+    userID: ID!
+    subject: String!
+    color: String!
+}
+
+input RegisterInput {
+    username: String!
+    password: String!
+    confirmPassword: String!
+    todoExpiresDay: Int!
+    calendarExpiresDay: Int!
+    notificationTime: Int!
+}
+
 enum MutationType {
-    UPDATED
+    ADDED
     DELETED
-},
+    UPDATED
+}
+
 type SubscriptionPayload {
     type: MutationType!
-    info: [Message!]
+    info: [String!]!
 }
-# `;
