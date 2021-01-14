@@ -1,15 +1,15 @@
 type Query {
-    getNote(userID: ID!): String!,
-    getCalendar(userID: ID!, date: String!): Boolean!,
-    getOneDay(userID: ID!, date: String!): [Block!]!,
-    getTodo(userID: ID!): [Todo!]!,
-    getEmptyBlock(userID: ID!): [EmptyBlock!]!
+    getNote: String!,
+    getCalendar(date: String!): Boolean!,
+    getOneDay(date: String!): [Block!]!,
+    getTodo: [Todo!]!,
+    getEmptyBlock: [EmptyBlock!]!
 }
 
 type Mutation {
     register(registerInput: registerInput): User!
     login(username: String!, password: String!): User!
-    updateNote(msg: String!, userID: ID!): String!,
+    updateNote(msg: String!): String!,
     addBlock(block: blockInput!): [Block!]!, # Date
     deleteBlock(blockID: ID!): [Block!]!,    # Date
     updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Date prev, curr
@@ -63,7 +63,6 @@ type EmptyBlock {
 }
 
 input blockInput {
-    userID: ID!
     name: String!
     subject: String!
     color: String!
@@ -76,7 +75,6 @@ input blockInput {
 }
 
 input todoInput {
-    userID: ID!
     name: String!
     category: String!
     subject: String!
@@ -84,7 +82,6 @@ input todoInput {
 }
 
 input EmptyBlock {
-    userID: ID!
     subject: String!
     color: String!
 }
