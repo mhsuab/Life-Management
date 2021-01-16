@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 require('dotenv-defaults').config();
 
-module.exports = (context) => {
-    const authHeader = context.req.headers.authorization;
+module.exports = (req) => {
+    const authHeader = req.headers.authorization;
     if (authHeader) {
         const token = authHeader.split('Bearer ')[1]
         if (token) {
-            jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            jwt.verify(token, atob(process.env.JWT_CERT), (err, decoded) => {
                 if (err) throw new Error('Invalid/Expired token');
                 return decoded;
             })

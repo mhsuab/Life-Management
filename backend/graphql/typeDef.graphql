@@ -1,5 +1,5 @@
 type Query {
-    getUser: User!,
+    login(username: String!, password: String!): User!,
     getNote: String!, 
     getCalendar(date: String!): Boolean!,
     getOneDay(date: String!): [Block!]!,
@@ -9,7 +9,6 @@ type Query {
 
 type Mutation {
     register(registerInput: registerInput): User!,
-    login(username: String!, password: String!): User!,
     updateNote(msg: String!): String!,
     addBlock(block: blockInput!): [Block!]!, # Date '2021/01/12'  
     deleteBlock(blockID: ID!): [Block!]!,    # Dat
@@ -30,7 +29,11 @@ type Subscription {
 type User {
     id: ID!
     username: String!
-    password: String!
+    pwdHash: String!
+    todoExpiresDay: Int!
+    calendarExpiresDay: Int!
+    notificationTime: Int!
+    token: String!
 }
 
 type Block {
@@ -65,11 +68,6 @@ type EmptyBlock {
     color: String!
 }
 
-input registerInput {
-    username: String!,
-    password: String!
-}
-
 input blockInput {
     name: String!
     subject: String!
@@ -94,7 +92,7 @@ input emptyBlockInput {
     color: String!
 }
 
-input RegisterInput {
+input registerInput {
     username: String!
     password: String!
     confirmPassword: String!
