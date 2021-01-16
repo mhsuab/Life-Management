@@ -6,18 +6,34 @@ services:
     stdin_open: true
     restart: always
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./frontend:/usr/src/app
-#   backend:
-#     container_name: backend
-#   mongo:
-#     container_name: mongodb
-#     image: mongo
-#     volumes:
-#       - ./data:/data/db
-#     networks:
-#       - graphql-mongo
-# networks:
-#   react-graphql:
-#   graphql-mongo:
+      - /usr/src/app/node_modules
+    networks:
+      - react-graphql
+  backend:
+    container_name: backend
+    restart: always
+    build: backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - react-graphql
+      - graphql-mongo
+  mongo:
+    container_name: mongo-life
+    image: "mongo:4.4.3"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - graphql-mongo
+
+networks:
+  react-graphql:
+  graphql-mongo:

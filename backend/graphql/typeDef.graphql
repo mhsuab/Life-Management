@@ -1,5 +1,6 @@
 type Query {
-    getNote: String!,
+    getUser: User!,
+    getNote: String!, 
     getCalendar(date: String!): Boolean!,
     getOneDay(date: String!): [Block!]!,
     getTodo: [Todo!]!,
@@ -7,17 +8,19 @@ type Query {
 }
 
 type Mutation {
-    register(registerInput: registerInput): User!
-    login(username: String!, password: String!): User!
+    register(registerInput: registerInput): User!,
+    login(username: String!, password: String!): User!,
     updateNote(msg: String!): String!,
-    addBlock(block: blockInput!): [Block!]!, # Date
-    deleteBlock(blockID: ID!): [Block!]!,    # Date
-    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Date prev, curr
-    addTodo(todo: todoInput!): [Todo!]!,
-    deleteTodo(todoID: ID!): [Todo!]!,
+    addBlock(block: blockInput!): [Block!]!, # Date '2021/01/12'  
+    deleteBlock(blockID: ID!): [Block!]!,    # Dat
+    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Dat
+    addTodo(todo: todoInput!): [Todo!]!,  
+    deleteTodo(todoID: ID!): [Todo!]!,    
     updateTodo(todoID: ID!, todo: todoInput!): [Todo!]!,
-    addEmptyBlock(emptyBlockInput: emptyBlockInput): [EmptyBlock!]!,
-    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!
+    addEmptyBlock(emptyBlockInput: emptyBlockInput!): [EmptyBlock!]!,
+    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!,
+    updateEmptyBlock(emptyBlockID: ID!, emptyBlockInput: emptyBlockInput!): [EmptyBlock!]!,
+    rmUserDB: String!
 }
 
 type Subscription {
@@ -62,6 +65,11 @@ type EmptyBlock {
     color: String!
 }
 
+input registerInput {
+    username: String!,
+    password: String!
+}
+
 input blockInput {
     name: String!
     subject: String!
@@ -81,7 +89,7 @@ input todoInput {
     color: String!
 }
 
-input EmptyBlock {
+input emptyBlockInput {
     subject: String!
     color: String!
 }
