@@ -26,7 +26,28 @@ module.exports = {
         ...noteResolver.Mutation,
         ...todoResolver.Mutation,
         ...userResolver.Mutation,
-        rmUserDB: async (_, __, context) => {}
+        rmUserDB: async () => {
+            // NOTE: only for me to clear the whole DB
+            if (false) {
+                await Block.deleteMany({}, (err, _) => {
+                    if (err) throw new Error('Unable to delete Block');
+                })
+                await EmptyBlock.deleteMany({}, (err, _) => {
+                    if (err) throw new Error('Unable to delete Empty Block');
+                })
+                await Note.deleteMany({}, (err, _) => {
+                    if (err) throw new Error('Unable to delete Note');
+                })
+                await Todo.deleteMany({}, (err, _) => {
+                    if (err) throw new Error('Unable to delete Todo');
+                })
+                await User.deleteMany({}, (err, _) => {
+                    if (err) throw new Error('Unable to delete User');
+                })
+                return "Remove ALL success";
+            }
+            return "Noooooo, you shouldn't be using this";
+        }
     },
     Subscription: {
         updateCalendar: {
