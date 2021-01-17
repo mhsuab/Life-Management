@@ -101,6 +101,11 @@ input registerInput {
     notificationTime: Int!
 }
 
+type calendarInfo {
+    Day: String!
+    ifExist: Boolean!
+}
+
 enum MutationType {
     ADDED
     DELETED
@@ -109,5 +114,5 @@ enum MutationType {
 
 type SubscriptionPayload {
     type: MutationType!
-    info: [String!]!
+    info: calendarInfo!
 }
