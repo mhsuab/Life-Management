@@ -1,5 +1,5 @@
 const Todo = require('./../../model/Todo');
-const checkAuth = require('./../../utils/check_auth')
+const checkAuth = require('./../../utils/check_auth');
 
 //NOTE: only finish putting function that is needed
 module.exports = {
@@ -41,6 +41,18 @@ module.exports = {
         updateTodo: async (_, { todoID, todo }, { request }) => {
             // NOTE: return the updated Todo
             const { userID } = checkAuth(request);
+            if ( todo.category === 'Completed' ) {
+                const date = new Date();
+                todo = {
+                    ...todo,
+                    completedDay: date.toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'})
+                }
+            } else {
+                todo = {
+                    ...todo,
+                    completedDay: null
+                }
+            }
             const updateTodo = await Todo.findOneAndUpdate(
                 {
                     $and: [{ userID }, { "_id": todoID }]

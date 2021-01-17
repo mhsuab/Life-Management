@@ -59,6 +59,7 @@ type Todo {
     expiredAfter: String!
     subject: String!
     color: String!
+    completedDay: String
 }
 
 type EmptyBlock {

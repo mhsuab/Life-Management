@@ -1,3 +1,5 @@
+require('dotenv-defaults').config();
+
 // resolvers
 const blockResolver = require('./resolvers/block');
 const emptyBlockResolver = require('./resolvers/emptyBlock');
@@ -28,7 +30,7 @@ module.exports = {
         ...userResolver.Mutation,
         rmUserDB: async () => {
             // NOTE: only for me to clear the whole DB
-            if (false) {
+            if (process.env.IS_DEVELOP === 'true') {
                 await Block.deleteMany({}, (err, _) => {
                     if (err) throw new Error('Unable to delete Block');
                 })

@@ -1,6 +1,6 @@
 const EmptyBlock = require('../../model/EmptyBlock');
 const Block = require('./../../model/Block');
-const checkAuth = require('./../../utils/check_auth')
+const checkAuth = require('./../../utils/check_auth');
 
 //NOTE: only finish putting function that is needed
 module.exports = {

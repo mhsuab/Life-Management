@@ -1,7 +1,10 @@
-import { GraphQLServer, PubSub } from 'graphql-yoga'
+import { GraphQLServer, PubSub } from 'graphql-yoga';
 const mongoose = require("mongoose");
-const resolvers = require('./graphql/resolver');
+const cron = require('node-cron');
 require('dotenv-defaults').config();
+
+const resolvers = require('./graphql/resolver');
+const scheduleDB = require('./utils/scheduleDB');
 
 const options = {
     useUnifiedTopology: true,
@@ -9,13 +12,23 @@ const options = {
 }
 
 const startServer = async () => {
-    if (!process.env.MONGO_URL) {
-        console.error('Missing MONGO_URL!!!')
-        process.exit(1)
-    }
+    if (process.env.IS_DEVELOP === 'true') {
+        if (!process.env.MONGO_URL_atlas) {
+            console.error('Missing MONGO_URL!!!')
+            process.exit(1)
+        }
 
-    mongoose.connect(process.env.MONGO_URL_atlas, options);
-    console.log(`Connect to MONGO_URL: ${process.env.MONGO_URL}`);
+        mongoose.connect(process.env.MONGO_URL_atlas, options);
+        console.log(`Connect to MONGO_URL: ${process.env.MONGO_URL_atlas}`);
+    } else {
+        if (!process.env.MONGO_URL) {
+            console.error('Missing MONGO_URL!!!')
+            process.exit(1)
+        }
+
+        mongoose.connect(process.env.MONGO_URL, options);
+        console.log(`Connect to MONGO_URL: ${process.env.MONGO_URL}`);
+    }
 
     const pubsub = new PubSub()
     const server = new GraphQLServer({
@@ -23,8 +36,8 @@ const startServer = async () => {
         resolvers,
         context: ({ request }) => ({ request, pubsub }),
     });
-    
-    const db = mongoose.connection
+
+    const db = mongoose.connection;
     db.on('error', (error) => {
         console.error(error)
     })
@@ -38,3 +51,7 @@ const startServer = async () => {
 };
 
 startServer();
+scheduleDB();
+cron.schedule('* 0 * * *', () => {
+    scheduleDB();
+});
