@@ -8,7 +8,6 @@ const noteSchema = new Schema({
     },
     message: {
         type: String,
-        required: [true, 'Note must have its message.']
     }
 });
 

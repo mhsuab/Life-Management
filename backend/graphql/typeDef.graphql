@@ -3,22 +3,22 @@ type Query {
     getNote: String!, 
     getCalendar(date: String!): Boolean!,
     getOneDay(date: String!): [Block!]!,
-    getTodo: [Todo!]!,
+    getTodo: [Todo]!,
     getEmptyBlock: [EmptyBlock!]!
 }
 
 type Mutation {
     register(registerInput: registerInput): User!,
     updateNote(msg: String!): String!,
-    addBlock(block: blockInput!): [Block!]!, # Date '2021/01/12'  
-    deleteBlock(blockID: ID!): [Block!]!,    # Dat
-    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Dat
-    addTodo(todo: todoInput!): [Todo!]!,  
-    deleteTodo(todoID: ID!): [Todo!]!,    
-    updateTodo(todoID: ID!, todo: todoInput!): [Todo!]!,
-    addEmptyBlock(emptyBlockInput: emptyBlockInput!): [EmptyBlock!]!,
-    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!,
-    updateEmptyBlock(emptyBlockID: ID!, emptyBlockInput: emptyBlockInput!): [EmptyBlock!]!,
+    addBlock(block: blockInput!): Block!, # Date '2021/01/12'  
+    deleteBlock(blockID: ID!): Block!,    # Date
+    updateBlock(blockID: ID!, block: blockInput!): Block!,  # Date
+    addTodo(todo: todoInput!): Todo!,
+    deleteTodo(todoID: ID!): Todo!,
+    updateTodo(todoID: ID!, todo: todoInput!): Todo!,
+    addEmptyBlock(emptyBlockInput: emptyBlockInput!): EmptyBlock!,
+    deleteEmptyBlock(emptyBlockID: ID!): EmptyBlock!,
+    updateEmptyBlock(emptyBlockID: ID!, emptyBlockInput: emptyBlockInput!): EmptyBlock!,
     rmUserDB: String!
 }
 
@@ -101,6 +101,11 @@ input registerInput {
     notificationTime: Int!
 }
 
+type calendarInfo {
+    Day: String!
+    ifExist: Boolean!
+}
+
 enum MutationType {
     ADDED
     DELETED
@@ -109,5 +114,5 @@ enum MutationType {
 
 type SubscriptionPayload {
     type: MutationType!
-    info: [String!]!
+    info: calendarInfo!
 }
