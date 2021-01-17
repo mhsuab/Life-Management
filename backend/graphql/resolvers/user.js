@@ -1,15 +1,26 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const atob = require('atob');
 require('dotenv-defaults').config();
 
 const User = require('./../../model/User');
+const Note = require('./../../model/Note');
+const EmptyBlock = require('./../../model/EmptyBlock');
 const checkAuth = require('./../../utils/check_auth');
 
-const generateToken = ({ id }) => {
+const generateToken = ({
+    id,
+    todoExpiresDay,
+    calendarExpiresDay,
+    notificationTime
+}) => {
     return jwt.sign(
-        { id: id },
-        atob(process.env.JWT_SECRET),
+        {
+            id,
+            todoExpiresDay,
+            calendarExpiresDay,
+            notificationTime
+        },
+        Buffer.from(process.env.JWT_SECRET, 'base64').toString(),
         {
             algorithm: 'RS256',
             expiresIn: '8h'
@@ -31,11 +42,14 @@ module.exports = {
                 .catch(err => {
                     throw new Error(err);
                 });
-            if ( !validatePWD ) throw new Error('Password not correct!');
+            if (!validatePWD) throw new Error('Password not correct!');
             return {
                 ...user._doc,
                 id: user._id,
-                token: generateToken(user._id)
+                token: generateToken({
+                    id: user._id,
+                    ...user._doc
+                })
             }
         },
     },
@@ -68,22 +82,35 @@ module.exports = {
                     throw new Error(err);
                 });
 
-            const user = new User({
+            const res = await User.create({
                 username,
                 pwdHash,
                 todoExpiresDay,
                 calendarExpiresDay,
                 notificationTime
+            }).catch(err => {
+                throw new Error(err);
             });
-            const res = await user.save()
-                .catch(err => {
-                    throw new Error(err);
-                });
-
+            Note.create({
+                userID: res._id,
+                message: ""
+            }, (err, _) => {
+                if (err) throw new Error(err);
+            });
+            EmptyBlock.create({
+                userID: res._id,
+                subject: "empty",
+                color: "grey"
+            }, (err, _) => {
+                if (err) throw new Error(err);
+            });
             return {
                 ...res._doc,
                 id: res._id,
-                token: generateToken(res._id)
+                token: generateToken({
+                    id: res._id,
+                    ...res._doc
+                })
             }
         }
     }

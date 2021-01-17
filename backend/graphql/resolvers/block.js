@@ -7,7 +7,7 @@ module.exports = {
         getOneDay: async (_, { date }, context) => {
             //TODO: maybe not user, userID should be better
             const user = checkAuth(context);
-            const blocks = await Block.find({ "$or": [{"userID": user}, {"Day": date}] })
+            const blocks = await Block.find({ $and : [{"userID": user}, {"Day": date}] })
             return posts;
         },
         getCalendar: async (_, { date }, context) => {}

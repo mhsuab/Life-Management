@@ -21,7 +21,7 @@ const startServer = async () => {
     const server = new GraphQLServer({
         typeDefs: './graphql/typeDef.graphql',
         resolvers,
-        context: ({ req }) => ({ req, pubsub }),
+        context: ({ request }) => ({ request, pubsub }),
     });
     
     const db = mongoose.connection
