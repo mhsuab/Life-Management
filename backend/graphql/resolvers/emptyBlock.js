@@ -35,13 +35,13 @@ module.exports = {
             }).catch(err => {
                 throw new Error(err);
             });
-            if (!delEmptyBlock) throw new Error("Unable to find target empty block to delete.")
+            if (!delEmptyBlock) throw new Error("Unable to find target empty block to delete.");
             return delEmptyBlock;
         },
         updateEmptyBlock: async (_, { emptyBlockID, emptyBlockInput }, { request }) => {
             // NOTE: return the updated Empty Block
             const { userID } = checkAuth(request);
-            const updateEmptyBlock = await EmptyBlock.findOneAndUpdate(
+            const upEmptyBlock = await EmptyBlock.findOneAndUpdate(
                 {
                     $and: [{ userID }, { "_id": emptyBlockID }]
                 },
@@ -53,8 +53,8 @@ module.exports = {
             ).catch(err => {
                 throw new Error(err);
             });
-            if (!updateEmptyBlock) throw new Error('Unable to find empty block');
-            return updateEmptyBlock;
+            if (!upEmptyBlock) throw new Error('Unable to find empty block');
+            return upEmptyBlock;
         }
     }
 }

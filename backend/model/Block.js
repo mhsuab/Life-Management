@@ -18,7 +18,7 @@ const blockSchema = new Schema({
         type: String,
         required: [true, 'Block must give its color.']
     },
-    onCanlendar: {
+    onCalendar: {
         type: Boolean,
         required: [true, 'Block must set whether it should be on the calendar.']
     },
