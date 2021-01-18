@@ -1,24 +1,28 @@
-import React from "react";
-import OneDay from './OneDay';
-import './styles.css'
+import React from "react"
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+//import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from "@fullcalendar/interaction"; // needed
 
 const WeekStyle = {
-    display: 'grid',
-    background: '#FFFFFF',
-    width: '100%',
-    height: '60vh',
-    gridTemplateColumns: '20% 20% 20% 20% 20%'
-
+    background: "#FFFFFF"
 }
 
-const Week = () => (
-    <div style={WeekStyle }>
-        <OneDay currentDate='2020-12-23' schedulerData={[{ startDate: '2020-12-23T18:30', endDate: '2020-12-23T21:00', title: 'Meeting' }]} />
-        <OneDay currentDate='2020-12-24'/>
-        <OneDay currentDate='2020-12-25'/>
-        <OneDay currentDate='2020-12-26'/>
-        <OneDay currentDate='2020-12-27'/>
-    </div>
-)
-
+function Week() {
+    return (
+        <div style={WeekStyle}>
+            <FullCalendar
+                height= "100%"
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridWeek"
+                headerToolbar={false}
+                events={[
+                    { title: 'event 1', start: '2021-01-18T09:00:00', end: '2021-01-18T11:00:00' },
+                    { title: 'event 2', start: '2021-01-18T08:00:00', end: '2021-01-18T11:00:00' }
+                ]}
+            />
+        </div>
+       
+    )
+}
 export default Week

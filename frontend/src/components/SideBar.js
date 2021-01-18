@@ -1,12 +1,17 @@
+import { requirePropFactory } from '@material-ui/core';
 import React from 'react';
-import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react';
-import Calendar from './Calendar';
+import { sideBarColor } from './../config';
+
+const sideBarStyle = {
+    height: '90vh',
+    background: sideBarColor
+}
 
 const SideBar = () => {
-    console.log('sidebar');
+    console.log(sideBarColor);
     return (
-        <div >
-            <Calendar />
+        <div style={ sideBarStyle }>
+            {/* <Calendar /> */}
         </div>
     )
 }

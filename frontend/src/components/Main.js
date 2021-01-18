@@ -6,11 +6,11 @@ import Todo from './Todo';
 import SideBar from './SideBar';
 import { Header, Grid } from 'semantic-ui-react'
 import './styles.css'
+import { mainBackground } from './../config';
 
 const mainStyle = {
     padding: '20px',
     display: 'grid',
-    background: '#555',
     width: '90vw',
     height: '90vh',
     gridTemplateColumns: '20% 80%',
@@ -20,7 +20,7 @@ const mainStyle = {
 
 const tmpStyle = {
     display: 'grid',
-    background: '#555',
+    background: mainBackground,
     width: '100vw',
     height: '90vh',
     gridTemplateColumns: '90% 10%',
@@ -31,7 +31,7 @@ const MainPage = () => {
         <div style={tmpStyle}>
             <div style={mainStyle}>
                 <Calendar />
-                <div></div>
+                <Week />
                 <Note />
                 <Todo />
             </div>

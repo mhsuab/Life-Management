@@ -1,6 +1,8 @@
-import React, { Component }  from 'react';
-import Day from './Day';
-import { Grid, Button } from 'semantic-ui-react'
+import React, { Component } from 'react'
+import '../css/Calendar.css'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from "@fullcalendar/interaction" // needed
 
 
 class Calendar extends Component {
@@ -15,66 +17,25 @@ class Calendar extends Component {
             textAlign: "left"
         };
 
-        return(
+        return (
             <div style={CalendarStyle}>
-                <Grid divided columns='equal' style={CalendarStyle}>
-                    <Grid.Column>
-                        <Grid.Row>
-                            <Day content='Sun' />
-                            <Day content='Mon'/>
-                            <Day content='Tue'/>
-                            <Day content='Wed'/>
-                            <Day content='Thur'/>
-                            <Day content='Fri'/>
-                            <Day content='Sat'/>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Day content='1'/>
-                            <Day content='2'/>
-                            <Day content='3'/>
-                            <Day content='4'/>
-                            <Day content='5'/>
-                            <Day content='6'/>
-                            <Day content='7'/>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                            <Day />
-                        </Grid.Row>
-                    </Grid.Column>
-                </Grid>
+                <FullCalendar
+                    height="100%"
+                    aspectRatio="1"
+                    plugins={[dayGridPlugin, interactionPlugin]}
+                    initialView="dayGridMonth"
+                    dateClick={this.handleDateClick}
+                    editable={true}
+                    headerToolbar={{
+                        left: "",
+                        center: "title",
+                        right: ""
+                    }}
+                    events={[
+                        { title: '', date: '2021-01-18' },
+                        { title: '', date: '2021-01-19' },
+                    ]}
+                />
             </div>
         )
     }
