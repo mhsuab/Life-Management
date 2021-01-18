@@ -1,20 +1,28 @@
-const { AuthenticationError } = require('apollo-server-express');
-
 const jwt = require('jsonwebtoken');
 require('dotenv-defaults').config();
 
-module.exports = (context) => {
-    const authHeader = context.req.headers.authorization;
+module.exports = (request) => {
+    const authHeader = request.headers['authorization'];
     if (authHeader) {
         const token = authHeader.split('Bearer ')[1]
         if (token) {
-            const user = jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-                if (err) throw new AuthenticationError('Invalid/Expired token');
+            const {
+                id,
+                todoExpiresDay,
+                calendarExpiresDay,
+                notificationTime
+            } = jwt.verify(token, Buffer.from(process.env.JWT_CERT, 'base64').toString(), (err, decoded) => {
+                if (err) throw new Error('Invalid/Expired token');
                 return decoded;
             })
-            return user;
+            return {
+                userID: id,
+                todoExpiresDay,
+                calendarExpiresDay,
+                notificationTime
+            };
         }
-        throw new Error('Authentication token must be \'Bearer [token]');
+        throw new Error('Authentication token must be \'Bearer [token]\'');
     }
     throw new Error('authorization header must be provided');
 }

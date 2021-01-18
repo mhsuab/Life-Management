@@ -1,23 +1,25 @@
 type Query {
-    getNote: String!,
+    login(username: String!, password: String!): User!,
+    getNote: String!, 
     getCalendar(date: String!): Boolean!,
     getOneDay(date: String!): [Block!]!,
-    getTodo: [Todo!]!,
+    getTodo: [Todo]!,
     getEmptyBlock: [EmptyBlock!]!
 }
 
 type Mutation {
-    register(registerInput: registerInput): User!
-    login(username: String!, password: String!): User!
+    register(registerInput: registerInput): User!,
     updateNote(msg: String!): String!,
-    addBlock(block: blockInput!): [Block!]!, # Date
-    deleteBlock(blockID: ID!): [Block!]!,    # Date
-    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Date prev, curr
-    addTodo(todo: todoInput!): [Todo!]!,
-    deleteTodo(todoID: ID!): [Todo!]!,
-    updateTodo(todoID: ID!, todo: todoInput!): [Todo!]!,
-    addEmptyBlock(emptyBlockInput: emptyBlockInput): [EmptyBlock!]!,
-    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!
+    addBlock(block: blockInput!): Block!, # Date '2021/01/12'  
+    deleteBlock(blockID: ID!): Block!,    # Date
+    updateBlock(blockID: ID!, block: blockInput!): Block!,  # Date
+    addTodo(todo: todoInput!): Todo!,
+    deleteTodo(todoID: ID!): Todo!,
+    updateTodo(todoID: ID!, todo: todoInput!): Todo!,
+    addEmptyBlock(emptyBlockInput: emptyBlockInput!): EmptyBlock!,
+    deleteEmptyBlock(emptyBlockID: ID!): EmptyBlock!,
+    updateEmptyBlock(emptyBlockID: ID!, emptyBlockInput: emptyBlockInput!): EmptyBlock!,
+    rmUserDB: String!
 }
 
 type Subscription {
@@ -27,7 +29,11 @@ type Subscription {
 type User {
     id: ID!
     username: String!
-    password: String!
+    pwdHash: String!
+    todoExpiresDay: Int!
+    calendarExpiresDay: Int!
+    notificationTime: Int!
+    token: String!
 }
 
 type Block {
@@ -81,18 +87,23 @@ input todoInput {
     color: String!
 }
 
-input EmptyBlock {
+input emptyBlockInput {
     subject: String!
     color: String!
 }
 
-input RegisterInput {
+input registerInput {
     username: String!
     password: String!
     confirmPassword: String!
     todoExpiresDay: Int!
     calendarExpiresDay: Int!
     notificationTime: Int!
+}
+
+type calendarInfo {
+    Day: String!
+    ifExist: Boolean!
 }
 
 enum MutationType {
@@ -103,5 +114,5 @@ enum MutationType {
 
 type SubscriptionPayload {
     type: MutationType!
-    info: [String!]!
+    info: calendarInfo!
 }
