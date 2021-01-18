@@ -51,7 +51,6 @@ const startServer = async () => {
 };
 
 startServer();
-scheduleDB();
 cron.schedule('* 0 * * *', () => {
     scheduleDB();
 });
