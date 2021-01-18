@@ -3,7 +3,7 @@ import Week from './Week';
 import Calendar from './Calendar';
 import Note from './Note';
 import Todo from './Todo';
-import { Header } from 'semantic-ui-react'
+import { Header, Grid } from 'semantic-ui-react'
 import './styles.css'
 
 // const MainPage = () => {
@@ -28,18 +28,16 @@ const mainStyle = {
     display: 'grid',
     background: '#555',
     width: '100vw',
-    height: '100vh',
+    height: '90vh',
     gridTemplateColumns: '15% 70% 10%',
-    gridTemplateRows:'60% 40%',
+    gridTemplateRows:'70% 30%',
     gridGap: '10px'
-
-
 }
 
 const MainPage = () => {
     return (
         <>
-        <Header as='h1' style={{justifyContent: 'center', margin:'20px'}}>Life Management</Header>
+        {/* <Header as='h1' style={{justifyContent: 'center', margin:'20px'}}>Life Management</Header> */}
         <div style={mainStyle}>
             <Calendar />
             <div></div>
