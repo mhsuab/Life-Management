@@ -15,8 +15,8 @@ const mainStyle = {
   background: '#555',
   width: '100vw',
   height: '100vh',
-  // gridTemplateColumns: '15% 70% 10%',
-  gridTemplateRows:'7% 93%',
+  // gridTemplateColumns: '90% 10%',
+  gridTemplateRows:'7% 93%%',
   // gridGap: '10px'
 }
 
