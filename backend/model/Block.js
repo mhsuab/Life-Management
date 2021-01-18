@@ -48,6 +48,10 @@ const blockSchema = new Schema({
     },
     expiredAfter: {
         type: Number,
+        required: [true, 'Todo must have a expired day.(calendar)']
+    },
+    blockExpiresDay: {
+        type: Number,
         required: [true, 'Todo must have a expired day.']
     },
 });

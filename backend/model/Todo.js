@@ -26,6 +26,9 @@ const todoSchema = new Schema({
     color: {
         type: String,
         required: [true, 'Todo must give its color.']
+    },
+    completedDay: {
+        type: String
     }
 });
 

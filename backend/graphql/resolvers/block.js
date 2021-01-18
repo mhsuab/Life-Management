@@ -1,6 +1,6 @@
 const EmptyBlock = require('../../model/EmptyBlock');
 const Block = require('./../../model/Block');
-const checkAuth = require('./../../utils/check_auth')
+const checkAuth = require('./../../utils/check_auth');
 
 //NOTE: only finish putting function that is needed
 module.exports = {
@@ -24,11 +24,12 @@ module.exports = {
     },
     Mutation: {
         addBlock: async (_, { block }, { request, pubsub }) => {
-            const { userID, calendarExpiresDay } = checkAuth(request);
+            const { userID, calendarExpiresDay, blockExpiresDay } = checkAuth(request);
             const addBlock = await Block.create({
                 userID,
                 ...block,
-                expiredAfter: calendarExpiresDay
+                expiredAfter: calendarExpiresDay,
+                blockExpiresDay
             }).catch(err => {
                 throw new Error(err);
             })
