@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  frontend:
+    container_name: frontend
+    build: frontend
+    stdin_open: true
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/app
+#   backend:
+#     container_name: backend
+#   mongo:
+#     container_name: mongodb
+#     image: mongo
+#     volumes:
+#       - ./data:/data/db
+#     networks:
+#       - graphql-mongo
+# networks:
+#   react-graphql:
+#   graphql-mongo:

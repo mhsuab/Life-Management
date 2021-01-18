@@ -1,0 +1,21 @@
+.fc-daygrid-day-number{
+	font-size: 5px;
+}
+.fc-col-header-cell-cushion {
+	font-size: 5px;
+}
+.fc-toolbar {
+	font-size: 10px;
+}
+.fc-toolbar-chunk {
+	height: 10px;
+}
+.fc-daygrid-day-top {
+	height: 10px;
+}
+.fc-daygrid-event.fc-daygrid-block-event {
+	height: 5px;
+	width: 5px;
+	background-color: red;
+	border-color: red;
+}

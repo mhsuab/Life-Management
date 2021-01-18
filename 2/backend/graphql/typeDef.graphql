@@ -1,0 +1,107 @@
+type Query {
+    getNote: String!,
+    getCalendar(date: String!): Boolean!,
+    getOneDay(date: String!): [Block!]!,
+    getTodo: [Todo!]!,
+    getEmptyBlock: [EmptyBlock!]!
+}
+
+type Mutation {
+    register(registerInput: registerInput): User!
+    login(username: String!, password: String!): User!
+    updateNote(msg: String!): String!,
+    addBlock(block: blockInput!): [Block!]!, # Date
+    deleteBlock(blockID: ID!): [Block!]!,    # Date
+    updateBlock(blockID: ID!, block: blockInput!): [Block!]!,  # Date prev, curr
+    addTodo(todo: todoInput!): [Todo!]!,
+    deleteTodo(todoID: ID!): [Todo!]!,
+    updateTodo(todoID: ID!, todo: todoInput!): [Todo!]!,
+    addEmptyBlock(emptyBlockInput: emptyBlockInput): [EmptyBlock!]!,
+    deleteEmptyBlock(emptyBlockID: ID!): [EmptyBlock!]!
+}
+
+type Subscription {
+    updateCalendar: SubscriptionPayload!
+}
+
+type User {
+    id: ID!
+    username: String!
+    password: String!
+}
+
+type Block {
+    id: ID!
+    userID: ID!
+    name: String!
+    subject: String!
+    color: String!
+    onCalendar: Boolean!
+    startTime: Int!
+    endTime: Int!
+    Day: String!
+    isReview: Boolean!
+    repeated: Int!
+    expiredAfter: String!
+}
+
+type Todo {
+    id: ID!
+    userID: ID!
+    name: String!
+    category: String!
+    expiredAfter: String!
+    subject: String!
+    color: String!
+}
+
+type EmptyBlock {
+    id: ID!
+    userID: ID!
+    subject: String!
+    color: String!
+}
+
+input blockInput {
+    name: String!
+    subject: String!
+    color: String!
+    onCalendar: Boolean!
+    startTime: Int!
+    endTime: Int!
+    Day: String!
+    isReview: Boolean!
+    repeated: Int!
+}
+
+input todoInput {
+    name: String!
+    category: String!
+    subject: String!
+    color: String!
+}
+
+input EmptyBlock {
+    subject: String!
+    color: String!
+}
+
+input RegisterInput {
+    username: String!
+    password: String!
+    confirmPassword: String!
+    todoExpiresDay: Int!
+    calendarExpiresDay: Int!
+    notificationTime: Int!
+}
+
+enum MutationType {
+    ADDED
+    DELETED
+    UPDATED
+}
+
+type SubscriptionPayload {
+    type: MutationType!
+    info: [String!]!
+}
