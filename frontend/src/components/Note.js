@@ -31,7 +31,7 @@ function Note() {
         placeholder='Take some notes...'
         onInput={(e) => writeInput(e.target.value)}
         value={contents}
-        style={{height:'100%', borderRadius: '3px'}}
+        style={{height:'100%', borderRadius: '3px', resize: 'none' }}
       />
     </Form>
     </>
