@@ -33,6 +33,7 @@ type User {
     todoExpiresDay: Int!
     calendarExpiresDay: Int!
     notificationTime: Int!
+    blockExpiresDay: Int!
     token: String!
 }
 
@@ -49,6 +50,7 @@ type Block {
     isReview: Boolean!
     repeated: Int!
     expiredAfter: String!
+    blockExpiresDay: String!
 }
 
 type Todo {
@@ -99,6 +101,7 @@ input registerInput {
     confirmPassword: String!
     todoExpiresDay: Int!
     calendarExpiresDay: Int!
+    blockExpiresDay: Int!
     notificationTime: Int!
 }
 

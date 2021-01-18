@@ -11,14 +11,16 @@ const generateToken = ({
     id,
     todoExpiresDay,
     calendarExpiresDay,
-    notificationTime
+    notificationTime,
+    blockExpiresDay
 }) => {
     return jwt.sign(
         {
             id,
             todoExpiresDay,
             calendarExpiresDay,
-            notificationTime
+            notificationTime,
+            blockExpiresDay
         },
         Buffer.from(process.env.JWT_SECRET, 'base64').toString(),
         {
@@ -62,11 +64,12 @@ module.exports = {
                 confirmPassword,
                 todoExpiresDay,
                 calendarExpiresDay,
+                blockExpiresDay,
                 notificationTime
             } }
         ) => {
             // check input validation
-            if (!username || !password || !confirmPassword || !todoExpiresDay || !todoExpiresDay || !calendarExpiresDay || !notificationTime) throw new Error('Missing field!')
+            if (!username || !password || !confirmPassword || !todoExpiresDay || !todoExpiresDay || !calendarExpiresDay || !blockExpiresDay || !notificationTime) throw new Error('Missing field!')
             if (password !== confirmPassword) throw new Error("Passwords didn't match.")
             // check user existence
             if (
@@ -87,6 +90,7 @@ module.exports = {
                 pwdHash,
                 todoExpiresDay,
                 calendarExpiresDay,
+                blockExpiresDay,
                 notificationTime
             }).catch(err => {
                 throw new Error(err);

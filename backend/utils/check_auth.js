@@ -10,7 +10,8 @@ module.exports = (request) => {
                 id,
                 todoExpiresDay,
                 calendarExpiresDay,
-                notificationTime
+                notificationTime,
+                blockExpiresDay
             } = jwt.verify(token, Buffer.from(process.env.JWT_CERT, 'base64').toString(), (err, decoded) => {
                 if (err) throw new Error('Invalid/Expired token');
                 return decoded;
@@ -19,7 +20,8 @@ module.exports = (request) => {
                 userID: id,
                 todoExpiresDay,
                 calendarExpiresDay,
-                notificationTime
+                notificationTime,
+                blockExpiresDay
             };
         }
         throw new Error('Authentication token must be \'Bearer [token]\'');

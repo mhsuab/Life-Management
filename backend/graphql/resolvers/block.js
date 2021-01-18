@@ -24,11 +24,12 @@ module.exports = {
     },
     Mutation: {
         addBlock: async (_, { block }, { request, pubsub }) => {
-            const { userID, calendarExpiresDay } = checkAuth(request);
+            const { userID, calendarExpiresDay, blockExpiresDay } = checkAuth(request);
             const addBlock = await Block.create({
                 userID,
                 ...block,
-                expiredAfter: calendarExpiresDay
+                expiredAfter: calendarExpiresDay,
+                blockExpiresDay
             }).catch(err => {
                 throw new Error(err);
             })
