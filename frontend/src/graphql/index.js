@@ -1,5 +1,4 @@
 export {
-    LOGIN,
     GET_NOTES,
     GET_CALENDAR,
     GET_ONE_DAY,
@@ -7,6 +6,7 @@ export {
     GET_EMPTY_BLOCKS
 } from './queries';
 export {
+    LOGIN,
     REGISTER,
     UPDATE_NOTE,
     ADD_BLOCK,

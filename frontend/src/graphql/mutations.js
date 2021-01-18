@@ -1,23 +1,45 @@
-import { gql } from '@apollo/client';
+import { gql } from 'apollo-boost';
+// import gql from 'graphql-tag';
+
+export const LOGIN = gql`
+    mutation login(
+        $username: String!,
+        $password: String!
+    ) {
+        login(
+            username: $username,
+            password: $password
+        ) {
+            id
+            username
+            pwdHash
+            todoExpiresDay
+            calendarExpiresDay
+            notificationTime
+            blockExpiresDay
+            token
+        }
+    }
+`;
 
 export const REGISTER = gql`
     mutation register(
-        $username: String!
-        $password: String!
-        $confirmPassword: String!
-        $todoExpiresDay: Int!
-        $calendarExpiresDay: Int!
-        $blockExpiresDay: Int!
+        $username: String!,
+        $password: String!,
+        $confirmPassword: String!,
+        $todoExpiresDay: Int!,
+        $calendarExpiresDay: Int!,
+        $blockExpiresDay: Int!,
         $notificationTime: Int!
     ) {
         register(
             registerInput: {
-                username: $username
-                password: $password
-                confirmPassword: $$confirmPassword
-                todoExpiresDay: $todoExpiresDay
-                calendarExpiresDay: $calendarExpiresDay
-                blockExpiresDay: $blockExpiresDay
+                username: $username,
+                password: $password,
+                confirmPassword: $$confirmPassword,
+                todoExpiresDay: $todoExpiresDay,
+                calendarExpiresDay: $calendarExpiresDay,
+                blockExpiresDay: $blockExpiresDay,
                 notificationTime: $notificationTime
             }
         ) {
@@ -41,26 +63,26 @@ export const UPDATE_NOTE = gql`
 
 export const ADD_BLOCK = gql`
     mutation addBlock(
-        $name: String!
-        $subject: String!
-        $color: String!
-        $onCalendar: String!
-        $startTime: Int!
-        $endTime: Int!
-        $Day: String!
-        $isReview: Boolean!
+        $name: String!,
+        $subject: String!,
+        $color: String!,
+        $onCalendar: String!,
+        $startTime: Int!,
+        $endTime: Int!,
+        $Day: String!,
+        $isReview: Boolean!,
         $repeated: Int!
     ) {
         addBlock(
             blockInput: {
-                name: $name
-                subject: $subject
-                color: $color
-                onCalendar: $onCalendar
-                startTime: $startTime
-                endTime: $endTime
-                Day: $Day
-                isReview: $$isReview
+                name: $name,
+                subject: $subject,
+                color: $color,
+                onCalendar: $onCalendar,
+                startTime: $startTime,
+                endTime: $endTime,
+                Day: $Day,
+                isReview: $$isReview,
                 repeated: $repeated
             }
         ) {
@@ -105,29 +127,29 @@ export const DELETE_BLOCK = gql`
 
 export const UPDATE_BLOCK = gql`
     mutation addBlock(
-        $blockID: ID!
-        $name: String!
-        $subject: String!
-        $color: String!
-        $onCalendar: String!
-        $startTime: Int!
-        $endTime: Int!
-        $Day: String!
-        $isReview: Boolean!
+        $blockID: ID!,
+        $name: String!,
+        $subject: String!,
+        $color: String!,
+        $onCalendar: String!,
+        $startTime: Int!,
+        $endTime: Int!,
+        $Day: String!,
+        $isReview: Boolean!,
         $repeated: Int!
     ) {
         addBlock(
             blockInput: {
-                name: $name
-                subject: $subject
-                color: $color
-                onCalendar: $onCalendar
-                startTime: $startTime
-                endTime: $endTime
-                Day: $Day
-                isReview: $$isReview
+                name: $name,
+                subject: $subject,
+                color: $color,
+                onCalendar: $onCalendar,
+                startTime: $startTime,
+                endTime: $endTime,
+                Day: $Day,
+                isReview: $$isReview,
                 repeated: $repeated
-            }
+            },
             blockID: $blockID
         ) {
             id
@@ -149,16 +171,16 @@ export const UPDATE_BLOCK = gql`
 
 export const ADD_TODO = gql`
     mutation addTodo(
-        $name: String!
-        $category: String!
-        $subject: String!
+        $name: String!,
+        $category: String!,
+        $subject: String!,
         $color: String!
     ) {
         addTodo(
             todoInput: {
-                name: $name
-                category: $category
-                subject: $subject
+                name: $name,
+                category: $category,
+                subject: $subject,
                 color: $color
             }
         ) {
@@ -195,19 +217,19 @@ export const DELETE_TODO = gql`
 
 export const UPDATE_TODO = gql`
     mutation updateTodo(
-        $todoID: ID!
-        $name: String!
-        $category: String!
-        $subject: String!
+        $todoID: ID!,
+        $name: String!,
+        $category: String!,
+        $subject: String!,
         $color: String!
     ) {
         updateTodo(
             todoInput: {
-                name: $name
-                category: $category
-                subject: $subject
+                name: $name,
+                category: $category,
+                subject: $subject,
                 color: $color
-            }
+            },
             todoID: $todoID
         ) {
             id
@@ -224,12 +246,12 @@ export const UPDATE_TODO = gql`
 
 export const ADD_EMPTY_BLOCK = gql`
     mutation addEmptyBlock(
-        $subject: String!
+        $subject: String!,
         $color: String!
     ) {
         addEmptyBlock(
             emptyBlockInput: {
-                subject: $subject
+                subject: $subject,
                 color: $color
             }
         ) {
@@ -258,15 +280,15 @@ export const DELETE_EMPTY_BLOCK = gql`
 
 export const UPDATE_EMPTY_BLOCK = gql`
     mutation updateEmptyBlock(
-        $emptyBlockID: ID!
-        $subject: String!
+        $emptyBlockID: ID!,
+        $subject: String!,
         $color: String!
     ) {
         addEmptyBlock(
             emptyBlockInput: {
-                subject: $subject
+                subject: $subject,
                 color: $color
-            }
+            },
             emptyBlockID: $emptyBlockID
         ) {
             id

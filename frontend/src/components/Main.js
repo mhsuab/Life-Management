@@ -4,8 +4,6 @@ import Calendar from './Calendar';
 import Note from './Note';
 import Todo from './Todo';
 import SideBar from './SideBar';
-import { Header, Grid } from 'semantic-ui-react'
-import './styles.css'
 import { mainBackground } from './../config';
 
 const mainStyle = {

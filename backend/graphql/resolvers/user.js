@@ -31,7 +31,9 @@ const generateToken = ({
 }
 
 module.exports = {
-    Query: {
+    // Query: {
+    // },
+    Mutation: {
         login: async (_, { username, password }) => {
             if (!username || !password) throw new Error('Missing field!');
             const user = await User.findOne({ "username": username })
@@ -54,8 +56,6 @@ module.exports = {
                 })
             }
         },
-    },
-    Mutation: {
         register: async (
             _,
             { registerInput: {

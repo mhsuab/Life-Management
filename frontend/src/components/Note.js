@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Form, TextArea } from 'semantic-ui-react'
-import './styles.css'
 
 function Note() {
   const [contents, setContents] = useState('')
