@@ -1,96 +1,82 @@
-import React, { useEffect, useState, useRef, memo } from "react";
-import "./styles.css";
-import { sideBarColor } from './../config';
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
+import React, { useState } from "react";
+import { DndProvider } from "react-dnd";
+import HTML5backend from "react-dnd-html5-backend";
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import Column from "./TodoComponents/Column";
+import CustomDragLayer from "./TodoComponents/CustomDragLayer";
+import './Todo.scss';
 
-const sideBarStyle = {
-    height: '90vh',
-    background: sideBarColor
-}
+import { GET_TODOS } from './../graphql/index';
+import { testTodos } from './../config';
 
-const ExternalEvent = memo(({ event }) => {
-    let elRef = useRef(null);
+const Todo = () => {
+    // const [myTasks, moveMyTask] = useState(tasks);
 
+    // const {loading, error, data} = useQuery(GET_TODOS);
+    const loading = true;
+    const data = { 'getTodo': testTodos }
 
-    useEffect(() => {
-        let draggable = new Draggable(elRef.current, {
-            eventData: function () {
-                return { ...event, create: true };
+    const parseQueryData = (todos) => {
+        return [
+            {
+                title: 'Todo',
+                tasks: todos
             }
-        });
+        ];
+    }
+    const t = parseQueryData(data.getTodo);
 
-        // a cleanup function
-        return () => draggable.destroy();
-    });
+    const [myTasks, moveMyTask] = useState(t);
 
-    return (
-        <div
-            ref={elRef}
-            className="fc-event fc-h-event mb-1 fc-daygrid-event fc-daygrid-block-event p-2"
-            title={event.title}
-            style={{
-                backgroundColor: event.color,
-                borderColor: event.color,
-                cursor: "pointer"
-            }}
-        >
-            <div className="fc-event-main">
-                <div>
-                    <strong>{event.title}</strong>
-                </div>
-            </div>
-        </div>
-    );
-});
+    const handleMoveMyTask = (from, to) => {
+        // TODO: comunicate with backend `updateTodo`, if update successfully then run
+        // TODO: else CRASH(server error?)
+        const { task, columnIndex: fromColumnIndex, index } = from;
+        console.log({ 'columnidx': fromColumnIndex })
+        const { columnIndex: toColumnIndex } = to;
 
-const SideBar = () => {
-    const [state, setState] = useState({
-        weekendsVisible: true,
-        externalEvents: [
-            { title: "Art 1", color: "#0097a7", id: 34432 },
-            { title: "Art 2", color: "#f44336", id: 323232 },
-            { title: "Art 3", color: "#f57f17", id: 1111 },
-            { title: "Art 4", color: "#90a4ae", id: 432432 }
-        ]
-    });
-    // add external events
-    const addEvent = () => {
-        let newEvent = {
-            id: 3433,
-            title: "Timed event",
-            color: "#333333",
-            start: "2020-12-31",
-            end: "2020-12-31",
-            custom: "custom stuff"
-        };
-
-        setState((state) => {
-            return {
-                ...state,
-                externalEvents: state.externalEvents.concat(newEvent)
-            };
-        });
+        const newMyTasks = [...myTasks];
+        // remove task
+        // newMyTasks[fromColumnIndex].tasks.splice(index, 1);
+        // // move task
+        // newMyTasks[toColumnIndex].tasks.push(task);
+        moveMyTask(newMyTasks);
     };
+
+    const delIconClick = (event, { index, id }) => {
+        event.stopPropagation();
+        // TODO: comunicate with backend `deleteTodo`, if delete successfully then run the following
+        console.log('sidebar')
+        const newMyTasks = [...myTasks];
+        newMyTasks[0].tasks.splice(index, 1);
+        moveMyTask(newMyTasks);
+    }
+    const addTodo = (title) => {
+        // TODO: comunicate with backend `addTodo`, if add successfully then run
+        // TODO: trigger input form
+        alert('add ' + title);
+    }
+
+    const editTodo = ({ columnIndex, index, id, name }) => {
+        // TODO: comunicate with backend `updateTodo`, if update successfully then run
+        // TODO: trigger input form
+        alert('edit ' + name);
+    }
+
     return (
-        <div style={{ sideBarStyle }}>
-            <div style={{ margin: "0 0 20px" }}>
-                <input
-                    type="submit"
-                    name="name"
-                    onClick={addEvent}
-                    value="add external event"
+        <DndProvider backend={HTML5backend}>
+            <CustomDragLayer />
+            <div className="task-board" style={{
+                width: '100%'
+            }}>
+                <Column
+                    key={`column-week -1`}
+                    {...{ tasks: myTasks[0], columnIndex: -1, handleMoveMyTask, delIconClick, addTodo, editTodo }}
+                    WEEK
                 />
             </div>
-            <div id="external-events">
-                {state.externalEvents.map((event) => (
-                    <ExternalEvent key={event.id} event={event} />
-                ))}
-            </div>
-        </div>
-    )
+        </DndProvider>
+    );
 }
 
-export default SideBar
+export default Todo

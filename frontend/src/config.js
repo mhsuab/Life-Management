@@ -3,7 +3,8 @@ export const navBarColor = '#434c5e';
 export const sideBarColor = '#686f7e';
 export const mainBackground = '#e5e9f0';
 export const ItemTypes = {
-    CARD: "card"
+    CARD: "card",
+    WEEK: 'week'
 };
 
 export const testTodos = [
