@@ -5,19 +5,19 @@ import { ItemTypes } from "./../../config";
 import Card from "./Card";
 
 const DraggableCard = (props) => {
-  const [, dragRef, preview] = useDrag({
-    item: { type: ItemTypes.CARD, ...props }
-  });
+    const [, dragRef, preview] = useDrag({
+        item: { type: ItemTypes.CARD, ...props }
+    });
 
-  useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
-  }, [preview]);
+    useEffect(() => {
+        preview(getEmptyImage(), { captureDraggingState: true });
+    }, [preview]);
 
-  return (
-    <div ref={dragRef}>
-      <Card task={props.task} />
-    </div>
-  );
+    return (
+        <div ref={dragRef}>
+            <Card {...props} />
+        </div>
+    );
 };
 
 export default DraggableCard;

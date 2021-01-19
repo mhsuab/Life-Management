@@ -7,7 +7,7 @@ import { AuthContext } from '../context/auth';
 
 const divStyle = {
     width: "100%",
-    height: '100%',
+    height: '7vh',
     backgroundColor: navBarColor,
     display: "flex",
     flexDirection: "row"

@@ -14,7 +14,8 @@ export const testTodos = [
         "category": "Doing",
         "subject": "aaa",
         "color": "blue",
-        "completedDay": null
+        "completedDay": null,
+        "deadLine": "2021-1-19"
     },
     {
         "id": "6006bf0a0dade41284ef6fe5",
@@ -23,7 +24,8 @@ export const testTodos = [
         "category": "Doing",
         "subject": "aaa",
         "color": "blue",
-        "completedDay": null
+        "completedDay": null,
+        "deadLine": "2021-1-17"
     },
     {
         "id": "6006bf150dade41284ef6fe6",
@@ -32,7 +34,8 @@ export const testTodos = [
         "category": "Completed",
         "subject": "aaa",
         "color": "black",
-        "completedDay": "2021-1-19"
+        "completedDay": "2021-1-19",
+        "deadLine": "2021-1-17"
     },
     {
         "id": "6006bf770dade41284ef6fe7",
@@ -41,6 +44,7 @@ export const testTodos = [
         "category": "Todo",
         "subject": "aaa",
         "color": "blue",
-        "completedDay": null
+        "completedDay": null,
+        "deadLine": "2021-1-15"
     }
 ]
