@@ -1,0 +1,19 @@
+//color
+$white: #fff;
+
+// properties
+$rounded: 3px;
+
+.card {
+    width: 100%;
+    background: $white;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: $rounded;
+    cursor: pointer;
+
+    &--empty {
+        color: gray;
+        background: gray;
+    }
+}
