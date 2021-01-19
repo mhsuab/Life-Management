@@ -26,6 +26,8 @@ services:
     networks:
       - react-graphql
       - graphql-mongo
+    environment:
+      NODE_ENV: production
   mongo:
     container_name: mongo-final-project
     image: "mongo:4.4.3"
