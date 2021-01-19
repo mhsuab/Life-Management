@@ -1,5 +1,5 @@
-import { gql } from 'apollo-boost';
-// import gql from 'graphql-tag';
+// import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export const LOGIN = gql`
     mutation login(
@@ -36,7 +36,7 @@ export const REGISTER = gql`
             registerInput: {
                 username: $username,
                 password: $password,
-                confirmPassword: $$confirmPassword,
+                confirmPassword: $confirmPassword,
                 todoExpiresDay: $todoExpiresDay,
                 calendarExpiresDay: $calendarExpiresDay,
                 blockExpiresDay: $blockExpiresDay,
@@ -82,7 +82,7 @@ export const ADD_BLOCK = gql`
                 startTime: $startTime,
                 endTime: $endTime,
                 Day: $Day,
-                isReview: $$isReview,
+                isReview: $isReview,
                 repeated: $repeated
             }
         ) {
@@ -147,7 +147,7 @@ export const UPDATE_BLOCK = gql`
                 startTime: $startTime,
                 endTime: $endTime,
                 Day: $Day,
-                isReview: $$isReview,
+                isReview: $isReview,
                 repeated: $repeated
             },
             blockID: $blockID
