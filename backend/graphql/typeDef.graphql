@@ -62,6 +62,7 @@ type Todo {
     subject: String!
     color: String!
     completedDay: String
+    deadLine: String!
 }
 
 type EmptyBlock {
@@ -88,6 +89,7 @@ input todoInput {
     category: String!
     subject: String!
     color: String!
+    deadLine: String!
 }
 
 input emptyBlockInput {

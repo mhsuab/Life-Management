@@ -44,6 +44,7 @@ export const GET_TODOS = gql`
             subject
             color
             completedDay
+            deadLine
         }
     }
 `;

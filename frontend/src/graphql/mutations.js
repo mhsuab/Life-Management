@@ -57,7 +57,9 @@ export const REGISTER = gql`
 
 export const UPDATE_NOTE = gql`
     mutation updateNote($msg: String!) {
-        updateNote(msg: $msg)
+        updateNote(msg: $msg) {
+            msg
+        }
     }
 `;
 
@@ -174,7 +176,8 @@ export const ADD_TODO = gql`
         $name: String!,
         $category: String!,
         $subject: String!,
-        $color: String!
+        $color: String!,
+        $deadLine: String!
     ) {
         addTodo(
             todoInput: {
@@ -182,6 +185,7 @@ export const ADD_TODO = gql`
                 category: $category,
                 subject: $subject,
                 color: $color
+                deadLine: $deadLine
             }
         ) {
             id
@@ -192,6 +196,7 @@ export const ADD_TODO = gql`
             subject
             color
             completedDay
+            deadLine
         }
     }
 `;
@@ -211,6 +216,7 @@ export const DELETE_TODO = gql`
             subject
             color
             completedDay
+            deadLine
         }
     }
 `;
@@ -221,14 +227,16 @@ export const UPDATE_TODO = gql`
         $name: String!,
         $category: String!,
         $subject: String!,
-        $color: String!
+        $color: String!,
+        $deadLine: String!
     ) {
         updateTodo(
             todoInput: {
                 name: $name,
                 category: $category,
                 subject: $subject,
-                color: $color
+                color: $color,
+                deadLine: $deadLine
             },
             todoID: $todoID
         ) {
@@ -240,6 +248,7 @@ export const UPDATE_TODO = gql`
             subject
             color
             completedDay
+            deadLine
         }
     }
 `;

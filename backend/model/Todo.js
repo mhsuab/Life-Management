@@ -29,6 +29,10 @@ const todoSchema = new Schema({
     },
     completedDay: {
         type: String
+    },
+    deadLine: {
+        type: String,
+        required: [true, 'Todo must have a dead line.']
     }
 });
 
