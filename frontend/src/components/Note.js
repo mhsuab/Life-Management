@@ -3,39 +3,39 @@ import { Form, TextArea } from 'semantic-ui-react'
 import './styles.css'
 
 function Note() {
-  const [contents, setContents] = useState('')
-  const [init, setInit] = useState(false)
+    const [contents, setContents] = useState('')
+    const [init, setInit] = useState(false)
 
-  const writeInput = (msg) => {
-    setContents(msg)
-    //saveContents
-    console.log(contents)
-  }
+    const writeInput = (msg) => {
+        setContents(msg)
+        //saveContents
+        console.log(contents)
+    }
 
-  // useEffect(() => {
-  //   if(!init) getContents()
-  // })
+    // useEffect(() => {
+    //   if(!init) getContents()
+    // })
 
-  // const getContents = async () => {
-  //   setInit(true)
-  //   const res = await instance.get('/getContents')
-  //   if (res.data.message === 'success') {
-  //     setContents(res.data.contents)
-  //   }
-  // }
+    // const getContents = async () => {
+    //   setInit(true)
+    //   const res = await instance.get('/getContents')
+    //   if (res.data.message === 'success') {
+    //     setContents(res.data.contents)
+    //   }
+    // }
 
-  return (
-    <>
-    <Form >
-      <TextArea
-        placeholder='Take some notes...'
-        onInput={(e) => writeInput(e.target.value)}
-        value={contents}
-        style={{height:'100%', borderRadius: '3px'}}
-      />
-    </Form>
-    </>
-  )
+    return (
+        <>
+            <Form >
+                <TextArea
+                    placeholder='Take some notes...'
+                    onInput={(e) => writeInput(e.target.value)}
+                    value={contents}
+                    style={{ height: '100%', borderRadius: '3px' }}
+                />
+            </Form>
+        </>
+    )
 }
 
 export default Note

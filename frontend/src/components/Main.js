@@ -4,9 +4,10 @@ import Calendar from './Calendar';
 import Note from './Note';
 import Todo from './Todo';
 import SideBar from './SideBar';
-import { Header, Grid } from 'semantic-ui-react'
 import './styles.css'
+import '../css/Calendar.css'
 import { mainBackground } from './../config';
+
 
 const mainStyle = {
     padding: '20px',
@@ -35,7 +36,7 @@ const MainPage = () => {
                 <Note />
                 <Todo />
             </div>
-            <SideBar />
+            <SideBar/>
         </div>
     )
 }

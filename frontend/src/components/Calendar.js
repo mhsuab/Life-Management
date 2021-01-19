@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import '../css/Calendar.css'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed
@@ -18,7 +17,7 @@ class Calendar extends Component {
         };
 
         return (
-            <div style={CalendarStyle}>
+            <div style={CalendarStyle} className="Calendar">
                 <FullCalendar
                     height="100%"
                     aspectRatio="1"

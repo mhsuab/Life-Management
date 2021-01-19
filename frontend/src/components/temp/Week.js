@@ -8,7 +8,6 @@ import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import PropTypes from 'prop-types'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./DateFormat";
 // import MyModal from './MyModal';
 
 const WeekStyle = {
@@ -28,33 +27,24 @@ const Week = () => {
             }
         ]
     });
-    const [modalOpen, setModalOpen] = useState(false)
-
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
-    const [color, setColor] = useState()
-    const [title, setTitle] = useState()
-    const [id, setId] = useState('0')
-    
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
     const options = [
         { key: 'm', text: 'Male', value: 'male' },
         { key: 'f', text: 'Female', value: 'female' },
         { key: 'o', text: 'Other', value: 'other' },
     ]
-    
+    const [modalOpen, setModalOpen] = useState(false)
     const handleEventReceive = (eventInfo) => {
         console.log(eventInfo);
-        setModalOpen(true);      
-    };
-
-    useEffect(() => {
-        console.log("setModalOpen changes")
+        setModalOpen(true);
         const newEvent = {
-            //id: id,
-            //title: title,
-            //color: color,
-            start: startDate,
-            end: endDate,
+            id: eventInfo.draggedEl.getAttribute("data-id"),
+            title: eventInfo.draggedEl.getAttribute("title"),
+            color: eventInfo.draggedEl.getAttribute("data-color"),
+            start: eventInfo.date,
+            end: eventInfo.date,
+            custom: eventInfo.draggedEl.getAttribute("data-custom")
         };
 
         setState((state) => {
@@ -62,9 +52,8 @@ const Week = () => {
                 ...state,
                 calendarEvents: state.calendarEvents.concat(newEvent)
             };
-        });
-    }, state)
-
+        });        
+    };
     return (
         <div style={WeekStyle} className="Week">
             <FullCalendar
@@ -108,7 +97,7 @@ const Week = () => {
                                     onChange={(date) => { setStartDate(date) }}
                                     showTimeSelect={true}
                                     timeIntervals={15}
-                                    dateFormat="yyyy-MM-dd hh:mm:ss"
+                                    dateFormat="MM/dd/yyyy h:mm aa"
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -121,7 +110,7 @@ const Week = () => {
                                     onChange={(date) => { setEndDate(date) }}
                                     showTimeSelect={true}
                                     timeIntervals={15}
-                                    dateFormat="yyyy-MM-dd hh:mm:ss"
+                                    dateFormat="MM/dd/yyyy h:mm aa"
                                 />
                             </Form.Field>
                             <Form.Select
@@ -163,13 +152,10 @@ const Week = () => {
         </div>
     );
 }
-
-
-/*
 Modal.propTypes = {
     modalOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     valueIntoModal: PropTypes.string.isRequired
-}*/
+}
 
 export default Week
