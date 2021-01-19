@@ -43,6 +43,8 @@ const CustomDragLayer = () => {
         switch (itemType) {
             case ItemTypes.CARD:
                 return <Card task={item.task} />;
+            case ItemTypes.WEEK:
+                return <Card task={item.task} WEEK/>;
             default:
                 return null;
         }

@@ -6,19 +6,19 @@ import { ItemTypes } from "./../../config";
 import { Icon } from "semantic-ui-react";
 import EmptyCard from "./EmptyCard";
 
-const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIconClick, addTodo, editTodo }) => {
+const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIconClick, addTodo, editTodo, WEEK }) => {
   const cards = tasks.map((task, index) => {
-    const propsToDraggbleCard = { task, columnIndex, index, delIconClick, editTodo };
+    const propsToDraggbleCard = { task, columnIndex, index, delIconClick, editTodo, WEEK };
     return (
       <DraggableCard
         key={`${columnIndex} ${index} ${task.id}`}
-        { ...propsToDraggbleCard }
+        {...propsToDraggbleCard}
       />
     );
   });
 
   const [{ isOver, canDrop }, dropRef] = useDrop({
-    accept: ItemTypes.CARD,
+    accept: WEEK? ItemTypes.WEEK : ItemTypes.CARD,
     drop: item => {
       const from = item;
       const to = { columnIndex };
@@ -32,17 +32,19 @@ const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIco
   });
 
   return (
-    <div ref={dropRef} className="column">
+    <div ref={dropRef} className={(WEEK ? "column-week" : "column")} >
       <div className="column__title">
         {title}
-        <Icon
-          link
-          name='edit'
-          size='small'
-          color='grey'
-          style={{ float: 'right' }}
-          onClick={() => addTodo(title)}
-        />
+        {WEEK ? (<></>) : (
+          <Icon
+            link
+            name='edit'
+            size='small'
+            color='grey'
+            style={{ float: 'right' }}
+            onClick={() => addTodo(title)}
+          />
+        )}
       </div>
       <div className="column__cards">
         {cards}

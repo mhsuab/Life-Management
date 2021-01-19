@@ -6,13 +6,12 @@ import Card from "./Card";
 
 const DraggableCard = (props) => {
     const [, dragRef, preview] = useDrag({
-        item: { type: ItemTypes.CARD, ...props }
+        item: { type: (props.WEEK? ItemTypes.WEEK : ItemTypes.CARD), ...props }
     });
 
     useEffect(() => {
         preview(getEmptyImage(), { captureDraggingState: true });
     }, [preview]);
-
     return (
         <div ref={dragRef}>
             <Card {...props} />

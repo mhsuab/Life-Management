@@ -24,27 +24,24 @@ $rounded: 3px;
     font-weight: bold;
     margin: 5px 0 20px;
   }
+}
 
-  textarea {
-    border: none;
-    resize: vertical;
-    display: block;
-    width: 300px;
-    margin-bottom: 10px;
-    padding: 20px;
-    box-shadow: 0 1px 0 rgba(9,30,66,.25);
-    border-radius: $rounded;
-    
-    &:focus {
-      outline: none;
-    }
+.column-week {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: $light;
+  margin-right: 2px;
+  padding: 12px;
+  border-radius: $rounded;
+
+  &:last-of-type {
+    margin-right: 0
   }
-
-  &__add-task-btn {
-    padding: .4em 1em;
-    border: 1px solid #c5c5c5;
-    background: #f6f6f6;
-    border-radius: $rounded;
+  
+  &__title {
+    font-weight: bold;
+    margin: 5px 0 20px;
   }
 }
 

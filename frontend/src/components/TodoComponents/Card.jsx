@@ -15,6 +15,15 @@ const Card = ({ task: {
     const handleOnOver = () => setIsOver(true);
     const handleOnLeave = () => setIsOver(false);
 
+    const cardStyle = {
+        width: '100%',
+        background: color,
+        marginBottom: '10px',
+        padding: '10px 10px',
+        borderRadius: '3px',
+        cursor: 'pointer',
+    };
+
     return (
         <div
             onMouseEnter={handleOnOver}
@@ -22,7 +31,8 @@ const Card = ({ task: {
         >
             <div
                 className={`card`}
-                onClick={() => editTodo({columnIndex, index, id, name})}
+                onClick={() => editTodo({ columnIndex, index, id, name })}
+                style={cardStyle}
             >
                 {name}
                 {isOver ? (
@@ -32,7 +42,7 @@ const Card = ({ task: {
                         size='large'
                         color='red'
                         style={{ float: 'right' }}
-                        onClick={(event) => delIconClick(event, {columnIndex, index, id})}
+                        onClick={(event) => delIconClick(event, { columnIndex, index, id })}
                     />
                 ) : (<></>)}
             </div>
