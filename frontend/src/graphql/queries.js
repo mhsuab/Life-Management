@@ -1,25 +1,5 @@
-import { gql } from '@apollo/client';
-
-export const MESSAGES_QUERY = gql`
-    query login(
-        $username: String!
-        $password: String!
-    ) {
-        login(
-            username: $username
-            password: $password
-        ) {
-            id
-            username
-            pwdHash
-            todoExpiresDay
-            calendarExpiresDay
-            notificationTime
-            blockExpiresDay
-            token
-        }
-    }
-`;
+// import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export const GET_NOTES = gql`
     query getNote {
@@ -64,6 +44,7 @@ export const GET_TODOS = gql`
             subject
             color
             completedDay
+            deadLine
         }
     }
 `;

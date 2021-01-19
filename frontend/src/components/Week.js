@@ -5,7 +5,10 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"; // needed
 
 const WeekStyle = {
-    background: "#FFFFFF"
+    background: "#FFFFFF",
+    borderRadius: '3px',
+    padding: '3px',
+    border: '1px solid rgba(34, 36, 38, 0.15)'
 }
 
 function Week() {
