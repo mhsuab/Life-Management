@@ -13,7 +13,10 @@ class Calendar extends Component {
         const CalendarStyle = {
             margin: "0vw",
             background: "#FFFFFF",
-            textAlign: "left"
+            textAlign: "left",
+            borderRadius: '3px',
+            padding: '3px',
+            border: '1px solid rgba(34, 36, 38, 0.15)'
         };
 
         return (

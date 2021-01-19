@@ -1,5 +1,9 @@
-import React from 'react';
-import { Grid, Form, Button, Message, Icon, Header, Segment } from 'semantic-ui-react';
+import React, { useContext, useState } from 'react';
+import { Grid, Form, Button, Icon, Header } from 'semantic-ui-react';
+import { useMutation } from '@apollo/react-hooks';
+import { AuthContext } from '../context/auth';
+import { useForm } from '../util/hooks';
+import { REGISTER } from '../graphql'
 
 const divStyle = {
     borderRadius: '25px',
@@ -12,7 +16,39 @@ const titleStyle = {
     justifyContent: 'center'
 };
 
-const RegisterForm = () => {
+const RegisterForm = (props) => {
+    const context = useContext(AuthContext);
+
+    const { onChange, onSubmit, values } = useForm(registerUser, {
+        username: '',
+        password: '',
+        confirmPassword: '',
+        todoExpiresDay: 10,
+        calendarExpiresDay: 10,
+        blockExpiresDay: 10,
+        notificationTime: 23
+    });
+
+    const [addUser, { loading }] = useMutation(REGISTER, {
+        update(
+            _,
+            {
+                data: { register: userData }
+            }
+        ) {
+            context.login(userData);
+            props.history.push('/');
+        },
+        onError(err) {
+            alert(err)
+        },
+        variables: values
+    });
+    
+    function registerUser() {
+        addUser();
+    }
+
     return (
         <Grid textAlign='center' style={divStyle} verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>
@@ -22,16 +58,37 @@ const RegisterForm = () => {
                         Register
                     </Header.Content>
                 </Header>
-                <Form icon>
-                    <Form.Input icon='user' iconPosition='left' placeholder='username' />
+                <Form onSubmit={onSubmit}>
+                    <Form.Input 
+                        icon='user' 
+                        iconPosition='left' 
+                        placeholder='Username' 
+                        name='username'
+                        type='text'
+                        value={values.username}
+                        onChange={onChange}
+                    />
                     <Form.Input
                         fluid
                         icon='lock'
                         iconPosition='left'
                         placeholder='Password'
+                        name='password'
                         type='password'
+                        value={values.password}
+                        onChange={onChange}
                     />
-                    <Button color='teal' fluid>
+                    <Form.Input
+                        fluid
+                        icon='lock'
+                        iconPosition='left'
+                        placeholder='Confirm Password'
+                        name='confirmPassword'
+                        type='password'
+                        value={values.confirmPassword}
+                        onChange={onChange}
+                    />
+                    <Button color='teal' type='submit' fluid>
                         Register
                     </Button>
                 </Form>
