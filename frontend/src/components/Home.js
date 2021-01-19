@@ -26,6 +26,7 @@ const HomePage = () => {
                 textAlign="center"
                 color="black"
             />
+            <br/>
             <Segment.Inline>
                 <Button
                     primary
