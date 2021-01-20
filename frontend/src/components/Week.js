@@ -4,7 +4,7 @@ import HTML5backend from "react-dnd-html5-backend";
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
-import { Modal, Header, Form, Input, TextArea, Button, Select, Icon } from 'semantic-ui-react'
+import { Modal, Header, Form, Button, Checkbox } from 'semantic-ui-react'
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -21,23 +21,25 @@ import { GET_TODOS } from './../graphql/index';
 import { testTodos } from './../config';
 
 const Todo = () => {
-
     const loading = true;
     const data = { 'getTodo': testTodos }
 
-    const [_columnIndex, setColumnIndex] = useState()
+    const [_columnIndex, setColumnIndex] = useState(0)
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
     const [_name, setName] = useState()
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [choosedate, setChoosedate] = useState(new Date())
-    const [startDate, setStartDate] = useState(new Date())
-    const [endDate, setEndDate] = useState(new Date())
+    const [choosedate, setChoosedate] = useState(moment(new Date).add(_columnIndex, 'days'))
+    const [startTime, setStartTime] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date())
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
+    const [onCalendar, setOnCalendar] = useState(false)
+    const [isReview, setIsReview] = useState(false)
+    const [repeated, setRepeated] = useState(0)
     const options = [
         { key: 'm', text: 'Male', value: 'male' },
         { key: 'f', text: 'Female', value: 'female' },
@@ -46,11 +48,11 @@ const Todo = () => {
 
     // 
     const [dateChange, setDateChange] = useState(false)
-    const [startChange, setStartChange] = useState(false)
-    const [endChange, setEndChange] = useState(false)
+    const [startTimeChange, setStartTimeChange] = useState(false)
+    const [endTimeChange, setEndTimeChange] = useState(false)
     const [colorChange, setColorChange] = useState(false)
     const [titleChange, setTitleChange] = useState(false)
-
+    const [RepeatedChange, setRepeatedChange] = useState(false)
 
     const Today = moment(new Date).format("MM/DD");
 
@@ -113,6 +115,11 @@ const Todo = () => {
 
 
     const handleMoveMyTask = (from, to) => {
+        console.log("from");
+        console.log(from);
+        console.log("to");
+        console.log(to);
+
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
         const { task, columnIndex: fromColumnIndex, index } = from;
@@ -125,24 +132,30 @@ const Todo = () => {
         const newMyTasks = [...myTasks];
         // remove task
         if (fromColumnIndex !== -1) newMyTasks[fromColumnIndex].tasks.splice(index, 1);
-        
+
         // move task
         const temptask = {
-            category: task.category,
-            color: task.color,
-            completedDay: task.completedDay,
-            deadLine: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
             id: task.id,
+            userID: task.userID,
             name: task.name,
             subject: task.subject,
-            userID: task.userID
+            color: task.color,
+            onCalendar: task.onCalendar,
+            startTime: task.startTime,
+            endTime: task.endTime,
+            Day: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
+            isReview: task.isReview,
+            repeated: task.repeated,
+            expiredAfter: task.expiredAfter,
+            blockExpiresDay: task.blockExpiresDay
         }
         newMyTasks[toColumnIndex].tasks.push(temptask);
         moveMyTask(newMyTasks);
+        if (fromColumnIndex !== -1) alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
 
         const tempid = task.id;
         const tempname = task.name;
-        const tempindex = newMyTasks[toColumnIndex].tasks.length -1;
+        const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
         if (fromColumnIndex === -1) {
             console.log({ toColumnIndex, tempindex, tempid, tempname });
             editTodo({
@@ -193,27 +206,41 @@ const Todo = () => {
             const newMyTasks = [...myTasks];
             console.log(newMyTasks);
             console.log(_columnIndex);
+
+            const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY-MM-DD");
             const editedEvent = {
-                category: newMyTasks[_columnIndex].tasks[_index].category,
-                color: colorChange ? color : newMyTasks[_columnIndex].tasks[_index].color,
-                completedDay: newMyTasks[_columnIndex].tasks[_index].completedDay,
-                deadLine: choosedate,
                 id: newMyTasks[_columnIndex].tasks[_index].id,
+                userID: newMyTasks[_columnIndex].tasks[_index].userID,
                 name: titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name,
                 subject: newMyTasks[_columnIndex].tasks[_index].subject,
-                userID: newMyTasks[_columnIndex].tasks[_index].userID
+                color: colorChange ? color : newMyTasks[_columnIndex].tasks[_index].color,
+                onCalendar: onCalendar,
+                startTime: startTime,
+                endTime: endTime,
+                Day: dateChange ? choosedate : tempDay,
+                isReview: isReview,
+                repeated: repeated,
+                expiredAfter: newMyTasks[_columnIndex].tasks[_index].expiredAfter,
+                blockExpiresDay: newMyTasks[_columnIndex].tasks[_index].blockExpiresDay
             };
+            // I'm Here
+            const ComputedDay = dateChange ? choosedate : tempDay;
             newMyTasks[_columnIndex].tasks.splice(_index, 1);
-            newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
-            console.log(editedEvent);
+            const endcolumnIndex = moment(ComputedDay).format("DD") - moment(new Date).format("DD");
+            console.log(endcolumnIndex);
+            if (endcolumnIndex !== _columnIndex) {
+                newMyTasks[endcolumnIndex].tasks.push(editedEvent);
+            }
+            else newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent);
 
             moveMyTask(newMyTasks);
 
             setDateChange(false);
-            setStartChange(false);
-            setEndChange(false);
+            setStartTimeChange(false);
+            setEndTimeChange(false);
             setColorChange(false);
             setTitleChange(false);
+            setRepeatedChange(false);
         }
     }, [Count])
 
@@ -266,7 +293,7 @@ const Todo = () => {
                                         format="yyyy-MM-dd"
                                         id="date-picker-inline"
                                         label="Date"
-                                        value={choosedate}
+                                        value={moment(new Date).add(_columnIndex, 'days')}
                                         onChange={(date) => {
                                             setChoosedate(date);
                                             setDateChange(true);
@@ -282,10 +309,10 @@ const Todo = () => {
                                     <KeyboardTimePicker
                                         id="time-picker"
                                         label="Start Time"
-                                        value={startDate}
+                                        value={startTime}
                                         onChange={(date) => {
-                                            setStartDate(date);
-                                            setStartChange(true);
+                                            setStartTime(date);
+                                            setStartTimeChange(true);
                                         }}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change time',
@@ -298,11 +325,10 @@ const Todo = () => {
                                     <KeyboardTimePicker
                                         id="time-picker"
                                         label="End Time"
-                                        value={endDate}
-                                        minTime={startDate}
+                                        value={endTime}
                                         onChange={(date) => {
-                                            setEndDate(date);
-                                            setEndChange(true);
+                                            setEndTime(date);
+                                            setEndTimeChange(true);
                                         }}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change time',
@@ -327,6 +353,44 @@ const Todo = () => {
                                 />
                             </Form.Field>
                         </Form.Group>
+                        <Form.Field>
+                            <label> Show on Calendar </label>
+                            <Checkbox
+                                toggle
+                                onChange={() => {
+                                    const temp = onCalendar ? false : true;
+                                    console.log("set onCalendar " + temp);
+                                    setOnCalendar(temp);
+                                }}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label> Review at the end of day </label>
+                            <Checkbox
+                                toggle
+                                onChange={() => {
+                                    const temp = isReview ? false : true;
+                                    console.log("set isReview " + temp);
+                                    setIsReview(temp);
+                                }}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label> Repeated </label>
+                            <Form.Group>
+                                <input
+                                    style={{ width: "5vw" }}
+                                    placeholder="None"
+                                    onChange={event => {
+                                        setRepeated(event.target.value);
+                                        setRepeatedChange(true);
+                                    }}
+                                />
+                                <Form.Field>
+                                    <label> Weeks </label>
+                                </Form.Field>
+                            </Form.Group>
+                        </Form.Field>
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
