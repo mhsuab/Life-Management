@@ -27,7 +27,6 @@ module.exports = {
                     throw new Error(err);
                 });
             if (!note) throw new Error('Unable to find note');
-            // console.log(msg)
             return note.message;
         }
     }

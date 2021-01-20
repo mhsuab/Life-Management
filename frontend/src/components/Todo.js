@@ -5,6 +5,15 @@ import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
 import { Modal, Header, Form, Input, TextArea, Button, Select, Icon } from 'semantic-ui-react'
 import { TwitterPicker, CirclePicker } from 'react-color';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+import "react-datepicker/dist/react-datepicker.css";
+import DateFnsUtils from '@date-io/date-fns';
+import moment from "moment"
+
 import './Todo.scss';
 
 import { GET_TODOS, ADD_TODO, DELETE_TODO, UPDATE_TODO,} from '../graphql';
@@ -32,7 +41,6 @@ const Todo = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const [choosedate, setChoosedate] = useState(new Date())
     const [startDate, setStartDate] = useState(new Date())
-    const [endDate, setEndDate] = useState(new Date())
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
@@ -42,6 +50,11 @@ const Todo = () => {
         { key: 'f', text: 'Female', value: 'female' },
         { key: 'o', text: 'Other', value: 'other' },
     ]
+
+    const [dateChange, setDateChange] = useState(false)
+    const [startChange, setStartChange] = useState(false)
+    const [colorChange, setColorChange] = useState(false)
+    const [titleChange, setTitleChange] = useState(false)
 
     const parseQueryData = (todos) => {
         return [
@@ -83,7 +96,18 @@ const Todo = () => {
         // remove task
         newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
-        newMyTasks[toColumnIndex].tasks.push(task);
+        const temptask = {
+            category: toColumnIndex == 0 ? 'Todo' : (task.category == 1 ? 'Doing' :'Completed'),
+            color: task.color,
+            completedDay: task.completedDay,
+            deadLine: task.deadLine,
+            id: task.id,
+            name: task.name,
+            subject: task.subject,
+            userID: task.userID
+        }
+        newMyTasks[toColumnIndex].tasks.push(temptask);
+        console.log(newMyTasks);
         moveMyTask(newMyTasks);
     };
 
@@ -123,11 +147,11 @@ const Todo = () => {
 
             const editedEvent = {
                 category: newMyTasks[_columnIndex].tasks[_index].category,
-                color: color,
+                color: colorChange ? color : newMyTasks[_columnIndex].tasks[_index].category,
                 completedDay: newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
                 id: newMyTasks[_columnIndex].tasks[_index].id,
-                name: title,
+                name: titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name,
                 subject: newMyTasks[_columnIndex].tasks[_index].subject,
                 userID: newMyTasks[_columnIndex].tasks[_index].userID
             };
@@ -166,16 +190,59 @@ const Todo = () => {
                         <Form.Field>
                             <label> Event Title</label>
                             <input
-                                placeholder='Event Title'
+                                placeholder={_name}
                                 onChange={event => {
                                     setTitle(event.target.value);
+                                    setTitleChange(true);
                                     console.log("changed");
                                 }}
                             />
                         </Form.Field>
+                        <Form.Group widths='equal'>
+                            <Form.Field>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        disableToolbar
+                                        variant="inline"
+                                        format="yyyy-MM-dd"
+                                        id="date-picker-inline"
+                                        label="Deadline (Date)"
+                                        value={choosedate}
+                                        onChange={(date) => {
+                                            setChoosedate(date);
+                                            setDateChange(true);
+                                        }}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Form.Field>
+                            <Form.Field>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardTimePicker
+                                        id="time-picker"
+                                        label="Deadline (Time)"
+                                        value={startDate}
+                                        onChange={(date) => {
+                                            setStartDate(date);
+                                            setStartChange(true);
+                                        }}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change time',
+                                        }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Form.Field>
+                        </Form.Group>
                         <Form.Field>
                             <label> Color </label>
-                            <CirclePicker onChangeComplete={(_color, event) => setColor(_color.hex)} />
+                            <CirclePicker
+                                onChangeComplete={(_color, event) => {
+                                    setColor(_color.hex);
+                                    setColorChange(true);
+                                }}
+                            />
                         </Form.Field>
                     </Form>
                 </Modal.Content>

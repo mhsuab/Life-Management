@@ -128,7 +128,20 @@ const Week = () => {
         if (fromColumnIndex !== -1) newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
         newMyTasks[toColumnIndex].tasks.push(task);
+        // move task
+        const temptask = {
+            category: task.category,
+            color: task.color,
+            completedDay: task.completedDay,
+            deadLine: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
+            id: task.id,
+            name: task.name,
+            subject: task.subject,
+            userID: task.userID
+        }
+        newMyTasks[toColumnIndex].tasks.push(temptask);
         moveMyTask(newMyTasks);
+        
         const tempid = task.id;
         const tempname = task.name;
         const tempindex = newMyTasks[toColumnIndex].tasks.length -1;
