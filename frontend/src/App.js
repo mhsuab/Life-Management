@@ -13,6 +13,7 @@ import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 import UnAuthRoute from './util/UnAuthRoute';
 import { navBarColor } from './config';
+require('dotenv-defaults').config();
 
 const mainStyle = {
     display: 'grid',
@@ -23,7 +24,7 @@ const mainStyle = {
 }
 
 const App = () => {
-    console.log({ 'uri': window.location.hostname})
+    // console.log({ 'uri': window.location.hostname, 'b': process.env.BACKEND_IP, 'e': backend})
     return (
         <AuthProvider>
             <div style={mainStyle}>
