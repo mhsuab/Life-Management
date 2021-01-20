@@ -222,9 +222,9 @@ const Week = () => {
             const editedEvent = {
                 id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
-                name: fromSide? (titleChange ? title : _name):newMyTasks[_columnIndex].tasks[_index].name,
+                name: fromSide ? (titleChange ? title : _name) : (titleChange ? title:newMyTasks[_columnIndex].tasks[_index].name),
                 subject: fromSide ? _subject : newMyTasks[_columnIndex].tasks[_index].subject,
-                color: fromSide ? (colorChange ? color : _color): newMyTasks[_columnIndex].tasks[_index].color,
+                color: fromSide ? (colorChange ? color : _color) : (colorChange ? color :newMyTasks[_columnIndex].tasks[_index].color),
                 onCalendar: onCalendar,
                 startTime: startTime,
                 endTime: endTime,
@@ -256,6 +256,7 @@ const Week = () => {
             setColorChange(false);
             setTitleChange(false);
             setRepeatedChange(false);
+            setFromSide(false);
         }
     }, [Count])
 
