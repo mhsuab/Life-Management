@@ -1,53 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form, TextArea } from 'semantic-ui-react'
 import { UPDATE_NOTE, GET_NOTE } from '../graphql'
-import { useMutation } from '@apollo/react-hooks';
-import { useForm } from '../util/hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+
+import { AuthContext } from '../context/auth';
 
 function Note() {
-  //const [contents, setContents] = useState('')
-  const { values, onChange } = useForm(() => {}, {
-    msg: ''
-  });
-  // const { user } = useContext(AuthContext);
+  const [ msg, setMsg ] = useState('')
+  const { user } = useContext(AuthContext);
 
-  const [updateNotes] = useMutation(UPDATE_NOTE, {
-    update(a, b, c, d, e, f) {
-      console.log(a)
-      console.log(b)
-      console.log(c)
-      console.log(d)
-      console.log(e)
-      console.log(f)
-      //data.getNote = [result.data.updateNote, ...data.getNote];
-      //proxy.writeQuery({ query: GET_NOTE, data });
-    },
-    onError(err) {
-      console.log(err)
-    },
-    variables: values,
-  });
+  // const [ updateNote ] = useMutation(UPDATE_NOTE, { variables: { msg: msg } })
+  const [ updateNote ] = useMutation(UPDATE_NOTE)
+  const { refetch } = useQuery(GET_NOTE)
 
-  // const [updateNotes, { error }] = useMutation(UPDATE_NOTE, {
-  //   update(proxy, result) {
-  //     console.log('ddd')
-  //     const data = proxy.readQuery({
-  //       query: GET_NOTE
-  //     });
-  //     console.log('dee')
-  //     console.log(data)
-  //     //data.getNote = [result.data.updateNote, ...data.getNote];
-  //     //proxy.writeQuery({ query: GET_NOTE, data });
-  //   },
-  //   onError(err) {
-  //     console.log(err)
-  //   },
-  //   variables: values,
-  // });
+  useEffect(async () => {
+    const d = await refetch()
+    console.log(d)
+    setMsg(d.data.getNote)
+  }, [user])
 
   const writeInput = (event) => {
-    onChange(event)
-    updateNotes();
+    setMsg(event.target.value)
+    updateNote({ variables: { msg: event.target.value } })
   }
 
   return (
@@ -56,8 +30,7 @@ function Note() {
       <TextArea
         placeholder='Take some notes...'
         onInput={writeInput}
-        name='msg'
-        value={values.msg}
+        value={msg}
         style={{height:'100%', borderRadius: '3px', resize: 'none' }}
       />
     </Form>
