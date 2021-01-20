@@ -31,11 +31,19 @@ const Todo = () => {
     // const [ updateTodo ] = useMutation(UPDATE_TODO)
     // const [ deleteTodo ] = useMutation(DELETE_TODO)
     // const [ addTodo ] = useMutation(ADD_TODO)
+    const [newEvent, setNewEvent] = useState(false)
 
     const [_columnIndex, setColumnIndex] = useState()
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
+    const [_category, setCategory] = useState()
+    const [_color, setcolor] = useState()
+    const [_completedDay, setCompletedDay] = useState()
+    const [_deadLine, setDeadLine] = useState()
     const [_name, setName] = useState()
+    const [_subject, setSubject] = useState()
+    const [_userid, setUserId] = useState()
+
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -112,10 +120,12 @@ const Todo = () => {
         newMyTasks[columnIndex].tasks.splice(index, 1);
         moveMyTask(newMyTasks);
     }
-    const addTodo = (title) => {
+    const addTodo = ({ columnIndex, index, id, name }) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
-        alert('add ' + title);
+        //alert('add ' + title);
+        setNewEvent(true);
+        editTodo({ columnIndex, index, id, name });
     }
 
     const editTodo = ({ columnIndex, index, id, name }) => {
@@ -140,17 +150,23 @@ const Todo = () => {
             const newMyTasks = [...myTasks];
 
             const editedEvent = {
-                category: newMyTasks[_columnIndex].tasks[_index].category,
-                color: colorChange ? color : newMyTasks[_columnIndex].tasks[_index].category,
-                completedDay: newMyTasks[_columnIndex].tasks[_index].completedDay,
+                category: newEvent?'':newMyTasks[_columnIndex].tasks[_index].category,
+                color: colorChange ? color : (newEvent ? '':newMyTasks[_columnIndex].tasks[_index].category),
+                completedDay: newEvent ? '' :newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
-                id: newMyTasks[_columnIndex].tasks[_index].id,
-                name: titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name,
-                subject: newMyTasks[_columnIndex].tasks[_index].subject,
-                userID: newMyTasks[_columnIndex].tasks[_index].userID
+                id: newEvent ? _id :newMyTasks[_columnIndex].tasks[_index].id,
+                name: titleChange ? title : (newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) :newMyTasks[_columnIndex].tasks[_index].name),
+                subject: newEvent ? '':newMyTasks[_columnIndex].tasks[_index].subject,
+                userID: newEvent ? _userid :newMyTasks[_columnIndex].tasks[_index].userID
             };
-            newMyTasks[_columnIndex].tasks.splice(_index, 1);
-            newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
+            if (newEvent) {
+                newMyTasks[_columnIndex].tasks.push(editedEvent);
+            }
+            else {
+                newMyTasks[_columnIndex].tasks.splice(_index, 1);
+                newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
+            }
+
             console.log(editedEvent);
 
             moveMyTask(newMyTasks);
