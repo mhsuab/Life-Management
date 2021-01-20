@@ -12,10 +12,11 @@ import './css/login.css';
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 import UnAuthRoute from './util/UnAuthRoute';
+import { navBarColor } from './config';
 
 const mainStyle = {
     display: 'grid',
-    background: '#555',
+    background: { navBarColor },
     width: '100vw',
     height: '100vh',
     gridTemplateRows: '7% 93%',

@@ -1,32 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Button, Header, Icon, Segment } from "semantic-ui-react";
-import { serviceTitle } from "./../config";
+import { Grid, Button, Header, Icon, Segment, Modal, Image } from "semantic-ui-react";
+import { serviceTitle, mainBackground } from "./../config";
 
 const divStyle = {
-    borderRadius: '25px',
-    padding: '1.5rem',
-    boxShadow: '8px 8px 15px #D9DDE6, -8px - 8px 15px #EFF5FE',
-    background: "#E4E9F2",
+    backgroundColor: mainBackground,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
 };
 
 const HomePage = () => {
     return (
-        <Grid textAlign='center' style={divStyle} verticalAlign='middle'>
-            <Grid.Column >
-            <Header
-                as='h1'
-                content={ serviceTitle }
-                style={{
-                    fontSize: '4em',
-                    fontWeight: 'normal',
-                    marginBottom: 0,
-                    marginTop: '3em',
-                }}
-                textAlign="center"
-                color="black"
-            />
-            <Segment.Inline>
+        <div style={divStyle}>
+            <Header as='h1' icon textAlign='center' verticalAlign='middle'>
+                {serviceTitle}
+            </Header>
+            <div>
                 <Button
                     primary
                     icon
@@ -38,18 +29,17 @@ const HomePage = () => {
                     <Icon name='user' />
                 </Button>
                 <Button
-                    secondary
                     icon
                     labelPosition='right'
                     as={Link}
                     to='/register'
+                    color='teal'
                 >
                     Register
                     <Icon name='user plus' />
                 </Button>
-            </Segment.Inline>
-            </Grid.Column>
-        </Grid>
+            </div>
+        </div>
     )
 }
 

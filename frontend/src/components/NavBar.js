@@ -7,7 +7,7 @@ import { AuthContext } from '../context/auth';
 
 const divStyle = {
     width: "100%",
-    height: '7vh',
+    // height: '10vh',
     backgroundColor: navBarColor,
     display: "flex",
     flexDirection: "row"
@@ -18,28 +18,23 @@ const NavBar = () => {
     const pathname = window.location.pathname;
 
     const NavBar = user ? (
-        <Menu pointing secondary style={divStyle}>
-            <Menu.Item 
-                name={user.username} 
-                active 
-                style={{ borderColor:'#fff', color:'#fff' }}
+        <Menu pointing secondary style={divStyle} inverted fluid >
+            <Menu.Item
+                name={user.username}
+                active
+                style={{ borderColor: '#fff', color: '#fff' }}
+                position='left'
             >
                 <Icon name='user' />
-                {user.username} 
+                {user.username}
             </Menu.Item>
-            <Header 
-                style={{ flexGrow: 100, margin: '20px', justifyContent: 'center', color: '#fff' }}
-                as='h1' 
-                textAlign='center'
-            >
-                { serviceTitle }
-            </Header>    
+            <Menu.Item name={serviceTitle} />
             <Menu.Menu position="right">
                 <Menu.Item>
-                    <Button 
-                        color='instagram'    
-                        onClick={logout} 
-                        as={Link} 
+                    <Button
+                        color='instagram'
+                        onClick={logout}
+                        as={Link}
                         to='/home'
                     >
                         Logout
@@ -48,12 +43,10 @@ const NavBar = () => {
             </Menu.Menu>
         </Menu>
     ) : (
-        <Menu pointing secondary style={divStyle}>
-            <Header style={{ flexGrow: 100, margin: '20px', justifyContent: 'center', color: '#fff' }} as='h1' textAlign='center'>
-                { serviceTitle }
-            </Header>
-        </Menu>
-    );
+            <Menu pointing secondary style={divStyle}>
+                <Header style={{ flexGrow: 100, margin: '20px', justifyContent: 'center', color: '#fff' }} as='h1' textAlign='center'></Header>
+            </Menu>
+        );
 
     return NavBar
 }
