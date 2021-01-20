@@ -32,7 +32,12 @@ const Week = () => {
     const [_columnIndex, setColumnIndex] = useState(0)
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
+    const [_userid, setUserid] = useState()
     const [_name, setName] = useState()
+    const [_subject, setSubject] = useState()
+    const [_color, setcolor] = useState()
+    const [_expiredAfter, setExpiredAfter] = useState()
+    const [_blockExpiresDay, setBlockExpiresDay] = useState()
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -56,6 +61,8 @@ const Week = () => {
     const [colorChange, setColorChange] = useState(false)
     const [titleChange, setTitleChange] = useState(false)
     const [RepeatedChange, setRepeatedChange] = useState(false)
+
+    const [fromSide, setFromSide] = useState(false)
 
     const Today = moment(new Date).format("MM/DD");
 
@@ -129,32 +136,39 @@ const Week = () => {
 
         const newMyTasks = [...myTasks];
         // remove task
-        if (fromColumnIndex !== -1) newMyTasks[fromColumnIndex].tasks.splice(index, 1);
-
-        // move task
-        const temptask = {
-            id: task.id,
-            userID: task.userID,
-            name: task.name,
-            subject: task.subject,
-            color: task.color,
-            onCalendar: task.onCalendar,
-            startTime: task.startTime,
-            endTime: task.endTime,
-            Day: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
-            isReview: task.isReview,
-            repeated: task.repeated,
-            expiredAfter: task.expiredAfter,
-            blockExpiresDay: task.blockExpiresDay
+        if (fromColumnIndex !== -1) {
+            newMyTasks[fromColumnIndex].tasks.splice(index, 1);
+            // move task
+            const temptask = {
+                id: task.id,
+                userID: task.userID,
+                name: task.name,
+                subject: task.subject,
+                color: task.color,
+                onCalendar: task.onCalendar,
+                startTime: task.startTime,
+                endTime: task.endTime,
+                Day: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
+                isReview: task.isReview,
+                repeated: task.repeated,
+                expiredAfter: task.expiredAfter,
+                blockExpiresDay: task.blockExpiresDay
+            }
+            newMyTasks[toColumnIndex].tasks.push(temptask);
+            moveMyTask(newMyTasks);
+            alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
         }
-        newMyTasks[toColumnIndex].tasks.push(temptask);
-        moveMyTask(newMyTasks);
-        if (fromColumnIndex !== -1) alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
-        
-        const tempid = task.id;
-        const tempname = task.name;
-        const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
-        if (fromColumnIndex === -1) {
+        else if (fromColumnIndex === -1) {
+            setFromSide(true);
+            const tempid = task.id;
+            setUserid(task.userID);
+            setSubject(task.subject);
+            setcolor(task.color);
+            setOnCalendar(task.onCalendar);
+            setExpiredAfter(task.expiredAfter);
+            setBlockExpiresDay(task.blockExpiresDay);
+            const tempname = task.subject;
+            const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
             console.log({ toColumnIndex, tempindex, tempid, tempname });
             editTodo({
                 columnIndex: toColumnIndex,
@@ -193,6 +207,8 @@ const Week = () => {
     }
 
     useEffect(() => {
+        console.log("useEffect Changed");
+
         if (firstUpdate.current) {
             firstUpdate.current = false;
             console.log(Count);
@@ -204,23 +220,27 @@ const Week = () => {
             console.log(_columnIndex);
             const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY-MM-DD");
             const editedEvent = {
-                id: newMyTasks[_columnIndex].tasks[_index].id,
-                userID: newMyTasks[_columnIndex].tasks[_index].userID,
-                name: titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name,
-                subject: newMyTasks[_columnIndex].tasks[_index].subject,
-                color: colorChange ? color : newMyTasks[_columnIndex].tasks[_index].color,
+                id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
+                userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
+                name: fromSide? (titleChange ? title : _name):newMyTasks[_columnIndex].tasks[_index].name,
+                subject: fromSide ? _subject : newMyTasks[_columnIndex].tasks[_index].subject,
+                color: fromSide ? (colorChange ? color : _color): newMyTasks[_columnIndex].tasks[_index].color,
                 onCalendar: onCalendar,
                 startTime: startTime,
                 endTime: endTime,
                 Day: dateChange ? choosedate : tempDay,
                 isReview: isReview,
                 repeated: repeated,
-                expiredAfter: newMyTasks[_columnIndex].tasks[_index].expiredAfter,
-                blockExpiresDay: newMyTasks[_columnIndex].tasks[_index].blockExpiresDay
+                expiredAfter: fromSide ?_expiredAfter:newMyTasks[_columnIndex].tasks[_index].expiredAfter,
+                blockExpiresDay: fromSide ?_blockExpiresDay:newMyTasks[_columnIndex].tasks[_index].blockExpiresDay
             };
             // I'm Here
+            if (!fromSide) {
+                newMyTasks[_columnIndex].tasks.splice(_index, 1);
+            }
+
             const ComputedDay = dateChange ? choosedate : tempDay;
-            newMyTasks[_columnIndex].tasks.splice(_index, 1);
+
             const endcolumnIndex = moment(ComputedDay).format("DD") - moment(new Date).format("DD");
             console.log(endcolumnIndex);
             if (endcolumnIndex !== _columnIndex) {
@@ -288,7 +308,7 @@ const Week = () => {
                                         format="yyyy-MM-dd"
                                         id="date-picker-inline"
                                         label="Date"
-                                        value={moment(new Date).add(_columnIndex, 'days')}
+                                        value={dateChange ? choosedate : moment(new Date).add(_columnIndex, 'days')}
                                         onChange={(date) => {
                                             setChoosedate(date);
                                             setDateChange(true);
@@ -341,8 +361,8 @@ const Week = () => {
                             <Form.Field>
                                 <label> Color </label>
                                 <CirclePicker
-                                    onChangeComplete={(_color, event) => {
-                                        setColor(_color.hex);
+                                    onChangeComplete={(__color, event) => {
+                                        setColor(__color.hex);
                                         setColorChange(true);
                                     }}
                                 />
