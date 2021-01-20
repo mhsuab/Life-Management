@@ -3,7 +3,9 @@ export {
     GET_CALENDAR,
     GET_ONE_DAY,
     GET_TODOS,
-    GET_EMPTY_BLOCKS
+    GET_EMPTY_BLOCKS,
+    GET_WEEK_BLOCKS,
+    GET_MONTH_CALENDAR
 } from './queries';
 export {
     LOGIN,

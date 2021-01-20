@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
@@ -17,18 +17,12 @@ import { TwitterPicker, CirclePicker } from 'react-color';
 import './Todo.scss';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { GET_ONE_DAY, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graphql'
+import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
 import { testTodos } from './../config';
 
 const Week = () => {
-    const data = { 'getTodo': testTodos }
-    // const { user } = useContext(AuthContext)
-    // const {  refetch } = useQuery(GET_ONE_DAY)
-    // const [ updateBlock ] = useMutation(UPDATE_BLOCK)
-    // const [ deleteBlock ] = useMutation(DELETE_BLOCK)
-    // const [ addBlock ] = useMutation(ADD_BLOCK)
-
+    // const data = { 'getTodo': testTodos }
     const [_columnIndex, setColumnIndex] = useState(0)
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
@@ -64,65 +58,32 @@ const Week = () => {
 
     const [fromSide, setFromSide] = useState(false)
 
-    const Today = moment(new Date).format("MM/DD");
+    const [myTasks, moveMyTask] = useState([]);
+    const Today = moment(new Date).format("YYYY/MM/DD");
+    const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
+    const { user } = useContext(AuthContext)
+    const [ updateBlock ] = useMutation(UPDATE_BLOCK)
+    const [ deleteBlock ] = useMutation(DELETE_BLOCK)
+    const [ addBlock ] = useMutation(ADD_BLOCK)
+    
+    useEffect(async () => {
+        const newTasks = await refetch()
+        console.log(newTasks)
+        parseQueryData(newTasks.data.getWeek)
+    }, [user])
 
-    const parseQueryData = (todos) => {
-        console.log(Today)
-        return [
-            {
-                title: Today,
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Todo') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(1, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Doing') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(2, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Completed') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(3, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Todo') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(4, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Doing') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(5, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Completed') return true;
-                    else return false;
-                })
-            },
-            {
-                title: moment(new Date).add(6, 'days').format("MM/DD"),
-                tasks: todos.filter(todo => {
-                    if (todo.category === 'Completed') return true;
-                    else return false;
+    const parseQueryData = (tasks) => {
+        const newTasks = []
+        for(let i = 0; i < 7; ++i) {
+            newTasks[i] = {
+                title: moment(new Date).add(i, 'days').format("MM/DD"),
+                tasks: tasks.filter(task => {
+                    return task.day === moment(new Date).add(i, 'days').format("YYYY/MM/DD")
                 })
             }
-        ];
+        }
+        moveMyTask(newTasks)
     }
-    const t = parseQueryData(data.getTodo);
-
-    const [myTasks, moveMyTask] = useState(t);
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run

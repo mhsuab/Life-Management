@@ -59,3 +59,29 @@ export const GET_EMPTY_BLOCKS = gql`
         }
     }
 `;
+
+export const GET_WEEK_BLOCKS = gql`
+    query getWeek($date: String!) {
+        getWeek(date: $date) {
+            id
+            userID
+            name
+            subject
+            color
+            onCalendar
+            startTime
+            endTime
+            Day
+            isReview
+            repeated
+            expiredAfter
+            blockExpiresDay
+        }
+    }
+`;
+
+export const GET_MONTH_CALENDAR = gql`
+    query getMonth($month: String!) {
+        getMonth(date: $date)
+    }
+`;
