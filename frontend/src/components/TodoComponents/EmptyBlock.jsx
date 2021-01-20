@@ -3,10 +3,8 @@ import { Icon, Button, Label } from 'semantic-ui-react';
 
 const Card = ({ task: {
     id,
-    name,
     subject,
-    color,
-    deadLine
+    color
 }, columnIndex, index, delIconClick, editTodo }) => {
     const [isOver, setIsOver] = useState(false);
 
@@ -32,10 +30,12 @@ const Card = ({ task: {
             <Icon.Group>
                 <div
                     className={`card`}
-                    onClick={() => editTodo({ columnIndex, index, id, name })}
+                    onClick={() => editTodo({ columnIndex, index, id, subject })}
                     style={cardStyle}
                 >
-                    {name}
+                    <Label tag size='mini'>
+                        {subject}
+                    </Label>
                 </div>
                 {isOver ? (
                     <Icon
@@ -46,9 +46,6 @@ const Card = ({ task: {
                         onClick={(event) => delIconClick(event, { columnIndex, index, id })}
                     />
                 ) : (<></>)}
-                {/* <Label as='a' basic pointing>
-                    Pointing
-                </Label> */}
             </Icon.Group>
         </div>
     );

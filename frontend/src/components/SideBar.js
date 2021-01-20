@@ -8,7 +8,7 @@ import './Todo.scss';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_EMPTY_BLOCKS, ADD_EMPTY_BLOCK, DELETE_EMPTY_BLOCK, UPDATE_EMPTY_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
-import { testTodos } from './../config';
+import { testTodos, testEmptyBlock } from './../config';
 
 
 const Todo = () => {
@@ -18,7 +18,7 @@ const Todo = () => {
     // const [ deleteEmpty ] = useMutation(DELETE_EMPTY_BLOCK)
     // const [ addEmpty ] = useMutation(ADD_EMPTY_BLOCK)
     const loading = true;
-    const data = { 'getTodo': testTodos }
+    const data = testEmptyBlock
 
     const parseQueryData = (todos) => {
         return [
@@ -28,15 +28,12 @@ const Todo = () => {
             }
         ];
     }
-    const t = parseQueryData(data.getTodo);
-
-    const [myTasks, moveMyTask] = useState(t);
+    const [myTasks, moveMyTask] = useState(parseQueryData(data.getEmptyBlock));
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
         const { task, columnIndex: fromColumnIndex, index } = from;
-        console.log({ 'columnidx': fromColumnIndex })
         const { columnIndex: toColumnIndex } = to;
 
         const newMyTasks = [...myTasks];
@@ -75,8 +72,8 @@ const Todo = () => {
             }}>
                 <Column
                     key={`column-week -1`}
-                    {...{ tasks: myTasks[0], columnIndex: -1, handleMoveMyTask, delIconClick, addTodo, editTodo }}
-                    WEEK
+                    {...{ tasks: myTasks, columnIndex: -1, handleMoveMyTask, delIconClick, addTodo, editTodo }}
+                    SIDEBAR
                 />
             </div>
         </DndProvider>

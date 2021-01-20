@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { Icon, Button, Label } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 
 const Card = ({ task: {
     id,
     name,
     subject,
     color,
-    deadLine
+    onCalendar,
+    startTime,
+    endTime,
+    Day,
+    isReview,
+    repeated,
+    expiredAfter,
+    blockExpiresDay
 }, columnIndex, index, delIconClick, editTodo }) => {
     const [isOver, setIsOver] = useState(false);
 
@@ -36,6 +43,9 @@ const Card = ({ task: {
                     style={cardStyle}
                 >
                     {name}
+                    <Label tag>
+                        {subject}
+                    </Label>
                 </div>
                 {isOver ? (
                     <Icon
@@ -46,9 +56,6 @@ const Card = ({ task: {
                         onClick={(event) => delIconClick(event, { columnIndex, index, id })}
                     />
                 ) : (<></>)}
-                {/* <Label as='a' basic pointing>
-                    Pointing
-                </Label> */}
             </Icon.Group>
         </div>
     );

@@ -6,9 +6,9 @@ import { ItemTypes } from "./../../config";
 import { Icon } from "semantic-ui-react";
 import EmptyCard from "./EmptyCard";
 
-const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIconClick, addTodo, editTodo, WEEK }) => {
+const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIconClick, addTodo, editTodo, WEEK, SIDEBAR }) => {
   const cards = tasks.map((task, index) => {
-    const propsToDraggbleCard = { task, columnIndex, index, delIconClick, editTodo, WEEK };
+    const propsToDraggbleCard = { task, columnIndex, index, delIconClick, editTodo, WEEK, SIDEBAR };
     return (
       <DraggableCard
         key={`${columnIndex} ${index} ${task.id}`}
@@ -18,7 +18,7 @@ const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIco
   });
 
   const [{ isOver, canDrop }, dropRef] = useDrop({
-    accept: WEEK? ItemTypes.WEEK : ItemTypes.CARD,
+    accept: (WEEK || SIDEBAR)? ItemTypes.WEEK : ItemTypes.CARD,
     drop: item => {
       const from = item;
       const to = { columnIndex };
@@ -32,10 +32,10 @@ const Column = ({ tasks: { title, tasks }, columnIndex, handleMoveMyTask, delIco
   });
 
   return (
-    <div ref={dropRef} className={(WEEK ? "column-week" : "column")} >
+    <div ref={dropRef} className={(WEEK ? "column-week" : (SIDEBAR ? "column-sidebar": "column"))} >
       <div className="column__title">
         {title}
-        {WEEK ? (<></>) : (
+        {(WEEK || SIDEBAR) ? (<></>) : (
           <Icon
             link
             name='edit'
