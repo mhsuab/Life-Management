@@ -10,6 +10,7 @@ $rounded: 3px;
     margin-bottom: 10px;
     padding: 10px 20px;
     border-radius: $rounded;
+    overflow: auto;
     cursor: pointer;
 
     &--empty {

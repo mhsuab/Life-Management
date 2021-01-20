@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Message, Icon, Grid, Input, Button } from 'semantic-ui-react'
-import './styles.css'
 import 'semantic-ui-css/semantic.min.css'
 
 

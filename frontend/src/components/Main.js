@@ -4,7 +4,6 @@ import Calendar from './Calendar';
 import Note from './Note';
 import Todo from './Todo';
 import SideBar from './SideBar';
-import './styles.css'
 import '../css/Calendar.css'
 import { mainBackground } from './../config';
 

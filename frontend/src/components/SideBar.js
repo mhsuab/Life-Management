@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
-import { useQuery, useMutation } from '@apollo/react-hooks';
 import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
 import './Todo.scss';
 
-import { GET_TODOS } from './../graphql/index';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { GET_EMPTY_BLOCKS, ADD_EMPTY_BLOCK, DELETE_EMPTY_BLOCK, UPDATE_EMPTY_BLOCK } from '../graphql'
+import { AuthContext } from '../context/auth';
 import { testTodos } from './../config';
 
-const Todo = () => {
-    // const [myTasks, moveMyTask] = useState(tasks);
 
-    // const {loading, error, data} = useQuery(GET_TODOS);
+const Todo = () => {
+    // const { user } = useContext(AuthContext)
+    // const {  refetch } = useQuery(GET_TODOS)
+    // const [ updateEmpty ] = useMutation(UPDATE_EMPTY_BLOCK)
+    // const [ deleteEmpty ] = useMutation(DELETE_EMPTY_BLOCK)
+    // const [ addEmpty ] = useMutation(ADD_EMPTY_BLOCK)
     const loading = true;
     const data = { 'getTodo': testTodos }
 

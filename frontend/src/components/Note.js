@@ -9,13 +9,11 @@ function Note() {
   const [ msg, setMsg ] = useState('')
   const { user } = useContext(AuthContext);
 
-  // const [ updateNote ] = useMutation(UPDATE_NOTE, { variables: { msg: msg } })
   const [ updateNote ] = useMutation(UPDATE_NOTE)
   const { refetch } = useQuery(GET_NOTE)
 
   useEffect(async () => {
     const d = await refetch()
-    console.log(d)
     setMsg(d.data.getNote)
   }, [user])
 

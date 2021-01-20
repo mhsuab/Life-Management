@@ -22,6 +22,7 @@ const Card = ({ task: {
         padding: '10px 10px',
         borderRadius: '3px',
         cursor: 'pointer',
+        overflow: 'auto'
     };
 
     return (

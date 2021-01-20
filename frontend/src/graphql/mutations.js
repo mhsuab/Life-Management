@@ -66,7 +66,7 @@ export const ADD_BLOCK = gql`
         $name: String!,
         $subject: String!,
         $color: String!,
-        $onCalendar: String!,
+        $onCalendar: Boolean!,
         $startTime: Int!,
         $endTime: Int!,
         $Day: String!,
@@ -74,7 +74,7 @@ export const ADD_BLOCK = gql`
         $repeated: Int!
     ) {
         addBlock(
-            blockInput: {
+            block: {
                 name: $name,
                 subject: $subject,
                 color: $color,
@@ -126,20 +126,20 @@ export const DELETE_BLOCK = gql`
 `;
 
 export const UPDATE_BLOCK = gql`
-    mutation addBlock(
+    mutation updateBlock(
         $blockID: ID!,
         $name: String!,
         $subject: String!,
         $color: String!,
-        $onCalendar: String!,
+        $onCalendar: Boolean!,
         $startTime: Int!,
         $endTime: Int!,
         $Day: String!,
         $isReview: Boolean!,
         $repeated: Int!
     ) {
-        addBlock(
-            blockInput: {
+        updateBlock(
+            block: {
                 name: $name,
                 subject: $subject,
                 color: $color,
@@ -178,7 +178,7 @@ export const ADD_TODO = gql`
         $deadLine: String!
     ) {
         addTodo(
-            todoInput: {
+            todo: {
                 name: $name,
                 category: $category,
                 subject: $subject,
@@ -229,7 +229,7 @@ export const UPDATE_TODO = gql`
         $deadLine: String!
     ) {
         updateTodo(
-            todoInput: {
+            todo: {
                 name: $name,
                 category: $category,
                 subject: $subject,
@@ -274,7 +274,7 @@ export const DELETE_EMPTY_BLOCK = gql`
     mutation deleteEmptyBlock(
         $emptyBlockID: ID!
     ) {
-        addEmptyBlock(
+        deleteEmptyBlock(
             emptyBlockID: $emptyBlockID
         ) {
             id
@@ -291,7 +291,7 @@ export const UPDATE_EMPTY_BLOCK = gql`
         $subject: String!,
         $color: String!
     ) {
-        addEmptyBlock(
+        updateEmptyBlock(
             emptyBlockInput: {
                 subject: $subject,
                 color: $color
