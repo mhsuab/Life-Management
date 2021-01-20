@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   frontend:
-    container_name: frontend-final-project
+    container_name: frontend
     build: frontend
     stdin_open: true
     restart: always
@@ -13,7 +13,7 @@ services:
     networks:
       - react-graphql
   backend:
-    container_name: backend-final-project
+    container_name: backend
     restart: always
     build: backend
     ports:

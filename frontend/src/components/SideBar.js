@@ -21,12 +21,10 @@ const Todo = () => {
     const data = testEmptyBlock
 
     const parseQueryData = (todos) => {
-        return [
-            {
-                title: 'Todo',
-                tasks: todos
-            }
-        ];
+        return {
+            title: 'Todo',
+            tasks: todos
+        };
     }
     const [myTasks, moveMyTask] = useState(parseQueryData(data.getEmptyBlock));
 

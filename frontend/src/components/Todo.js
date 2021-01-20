@@ -44,12 +44,6 @@ const Todo = () => {
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
-    const [input, setInput] = useState()
-    const options = [
-        { key: 'm', text: 'Male', value: 'male' },
-        { key: 'f', text: 'Female', value: 'female' },
-        { key: 'o', text: 'Other', value: 'other' },
-    ]
 
     const [dateChange, setDateChange] = useState(false)
     const [startChange, setStartChange] = useState(false)
@@ -97,7 +91,7 @@ const Todo = () => {
         newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
         const temptask = {
-            category: toColumnIndex == 0 ? 'Todo' : (task.category == 1 ? 'Doing' :'Completed'),
+            category: toColumnIndex === 0 ? 'Todo' : (task.category === 1 ? 'Doing' :'Completed'),
             color: task.color,
             completedDay: task.completedDay,
             deadLine: task.deadLine,
