@@ -99,14 +99,15 @@ const Todo = () => {
         })
     }
 
-    const addTodo = ({ columnIndex, index, id, name }) => {
+    const addTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
         // alert('add ' + title);
+      
         editTodo({ columnIndex, index, id, name });
     }
 
-    const editTodo = ({ columnIndex, index, id, name }) => {
+    const editTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: trigger input form
         //alert('edit ' + name);
@@ -115,7 +116,6 @@ const Todo = () => {
         setId(id);
         setName(name);
         setModalOpen(true);
-
     }
 
     const _addEmpty = async (newEmpty) => {

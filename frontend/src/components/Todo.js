@@ -3,7 +3,7 @@ import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
-import { Modal, Header, Form, Input, TextArea, Button, Select, Icon } from 'semantic-ui-react'
+import { Modal, Header, Form, Input, TextArea, Button, Select, Icon, Message } from 'semantic-ui-react'
 import { TwitterPicker, CirclePicker } from 'react-color';
 import {
     MuiPickersUtilsProvider,
@@ -95,7 +95,7 @@ const Todo = () => {
         newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
         const temptask = {
-            category: toColumnIndex === 0 ? 'Todo' : (toColumnIndex === 1 ? 'Doing' :'Completed'),
+            category: toColumnIndex === 0 ? 'Todo' : (toColumnIndex === 1 ? 'Doing' : 'Completed'),
             color: task.color,
             completedDay: task.completedDay,
             deadLine: task.deadLine,
@@ -171,7 +171,7 @@ const Todo = () => {
             console.log(_columnIndex)
             const newMyTasks = [...myTasks];
             const editedEvent = {
-                category: newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' :'Completed')) : newMyTasks[_columnIndex].tasks[_index].category,
+                category: newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) : newMyTasks[_columnIndex].tasks[_index].category,
                 color: colorChange ? color : (newEvent ? '#555555' : newMyTasks[_columnIndex].tasks[_index].color),
                 completedDay: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
@@ -181,7 +181,7 @@ const Todo = () => {
                 userID: newEvent ? _userid : newMyTasks[_columnIndex].tasks[_index].userID
             };
             if (newEvent) {
-                _addTodo(editedEvent).then ( success => {
+                _addTodo(editedEvent).then(success => {
                     editedEvent.id = success
                 })
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
@@ -189,7 +189,7 @@ const Todo = () => {
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
-                updateTodo({ 
+                updateTodo({
                     variables: {
                         todoID: editedEvent.id,
                         name: editedEvent.name,
@@ -227,7 +227,7 @@ const Todo = () => {
                 closeOnEscape={true}
                 closeOnRootNodeClick={true}
             >
-                <Header icon='browser' content='Todo' />
+                <Header icon='browser' content={(_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed'))} />
                 <Modal.Content>
                     <Form>
                         <Form.Field>
@@ -261,20 +261,13 @@ const Todo = () => {
                                 </MuiPickersUtilsProvider>
                             </Form.Field>
                             <Form.Field>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        id="time-picker"
-                                        label="Deadline (Time)"
-                                        value={startDate}
-                                        onChange={(date) => {
-                                            setStartDate(date);
-                                            setStartChange(true);
-                                        }}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change time',
-                                        }}
-                                    />
-                                </MuiPickersUtilsProvider>
+                                <label> Tag </label>
+                                <input
+                                    placeholder={_subject}
+                                    onChange={event => {
+                                        setSubject(event.target.value);
+                                    }}
+                                />
                             </Form.Field>
                         </Form.Group>
                         <Form.Field>

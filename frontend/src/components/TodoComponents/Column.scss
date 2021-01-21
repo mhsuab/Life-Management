@@ -48,7 +48,7 @@ $rounded: 3px;
 }
 
 .column-sidebar {
-  height: auto;
+  height: inherit;
   display: flex;
   flex-direction: column;
   margin-right: 2px;
@@ -67,7 +67,5 @@ $rounded: 3px;
 }
 
 .column__cards {
-    overflow-x: hidden;
-    overflow-y: auto;
     height: 35vh;
 }
