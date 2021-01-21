@@ -25,7 +25,7 @@ type Mutation {
 }
 
 type Subscription {
-    updateCalendar: SubscriptionPayload
+    updateCalendar: SubscriptionPayload!
 }
 
 type User {
