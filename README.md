@@ -63,14 +63,11 @@
 - 徐敏倩
     - Backend
     - Frontend
-    - Debug
     - Deploy
     - UI Design
 - 毛慕庭
     - Frontend
     - UI Design
-    - Debug
 - 黃珮欣
-    - Authorization
-    - Access DB
-    - Debug
+    - middleware/Authorization
+    - Frontend
