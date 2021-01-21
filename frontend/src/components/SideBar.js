@@ -24,7 +24,7 @@ const Todo = () => {
 
     const parseQueryData = (todos) => {
         return {
-            title: 'EVENT TEMPLATE',
+            title: 'TEMPLATE',
             tasks: todos
         };
     }
@@ -137,10 +137,11 @@ const Todo = () => {
 
     return (
         <div style={{ display: 'grid', gridTemplateRows: '2% 98%' }}>
-            <b>
+            <b style={{background: '#434c5e', color: '#fff', width: '8vw', height: '2vh', borderRadius: '3px'}}>
                 {myTasks.title}
                 <Icon
                     link
+                    inverted
                     name='edit'
                     size='small'
                     color='grey'
