@@ -30,7 +30,7 @@ const Todo = () => {
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
     const [_name, setName] = useState()
-    const [_subject, setSubject] = useState()
+    const [_subject, setSubject] = useState('none')
     const [_userid, setUserId] = useState()
 
     const firstUpdate = useRef(true);
@@ -148,7 +148,7 @@ const Todo = () => {
                 deadLine: editedEvent.deadLine
             }
         })
-        console.log(newTodo)
+        console.log("addTodo function")
         return newTodo.data.addTodo.id
     }
 
@@ -167,10 +167,11 @@ const Todo = () => {
                 deadLine: choosedate,
                 id: newEvent ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 name: titleChange ? title : (newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) : newMyTasks[_columnIndex].tasks[_index].name),
-                subject: newEvent ? 'new' : newMyTasks[_columnIndex].tasks[_index].subject,
+                subject: newEvent ? _subject : newMyTasks[_columnIndex].tasks[_index].subject,
                 userID: newEvent ? _userid : newMyTasks[_columnIndex].tasks[_index].userID
             };
             if (newEvent) {
+                console.log("addTodo174")
                 _addTodo(editedEvent).then(success => {
                     editedEvent.id = success
                 })
