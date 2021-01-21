@@ -9,9 +9,20 @@ import moment from "moment"
 
 
 const Calendar = () => {
-    const { user } = useContext(AuthContext);
-    const [calendarData, setCalendarData] = useState([]);
-    // const [activeDates, setActiveDates] = useState([]);
+    const { user } = useContext(AuthContext)
+    const [ events, setEvents ] = useState([])
+    const thisMonth = moment(new Date).format("YYYY/MM")
+    console.log(thisMonth) 
+
+    const { loading, data, subscribeToMore, refetch } = useQuery(GET_MONTH_CALENDAR, {
+        variables: { month: thisMonth }
+    })
+
+    useEffect(async () => {
+        const act = await refetch()
+        console.log(act.data.getMonth)
+        seetEvents(parseMonthData(act.data.getMonth))
+    }, [user])
     const parseMonthData = (calendar_data) => {
         const target = moment(new Date(thisMonth)).format("YYYY/MM/DD");
         return [...Array(new Date(thisMonth.slice(0, 4), thisMonth.slice(-2), 0).getDate()).keys()].reduce((accumulator, day) => {
@@ -19,43 +30,6 @@ const Calendar = () => {
             else return accumulator
         }, [])
     }
-
-    const thisMonth = moment(new Date).format("YYYY/MM");
-    const { loading, data, refetch, subscribeToMore, error } = useQuery(GET_MONTH_CALENDAR, { variables: { month: thisMonth }, onCompleted: (data) => setCalendarData(data.getMonth) });
-    if (error) console.log({ 'err': error })
-    console.log(subscribeToMore)
-
-    // useEffect(() => {
-    //     console.log(subscribeToMore)
-    //     console.log('qwertyuio')
-    //     if (error) console.log({ 'err': error })
-    //     subscribeToMore({
-    //         document: UPDATE_CALENDAR,
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             console.log({ 'subscribe': subscriptionData, 'prev': prev, subscribeToMore, user })
-    //             // const subscriptionData = l.subscriptionData;
-    //             switch (subscriptionData.data.updateCalendar.type) {
-    //                 case 'ADDED':
-    //                 case 'DELETED':
-    //                 case 'UPDATED':
-    //                     const idx = new Date(subscriptionData.data.updateCalendar.info.Day).getDate() - 1;
-    //                     console.log({'subsciption': idx});
-    //                     setCalendarData([
-    //                         ...calendarData.slice(0, idx - 1),
-    //                         subscriptionData.data.updateCalendar.info.ifExist,
-    //                         ...calendarData.slice(idx)
-    //                     ])
-    //                     return [
-    //                         ...prev.slice(0, idx - 1),
-    //                         subscriptionData.data.updateCalendar.info.ifExist,
-    //                         ...prev.slice(idx)
-    //                     ];
-    //                 default:
-    //                     return prev;
-    //             }
-    //         }
-    //     })
-    // })
 
     const CalendarStyle = {
         margin: "0vw",
@@ -79,7 +53,7 @@ const Calendar = () => {
                     center: "title",
                     right: ""
                 }}
-                // events={(!loading) ? parseMonthData(data.getMonth) : []}
+                events={events}
             />
             { !loading ? parseMonthData(data.getMonth): []}
         </div>
