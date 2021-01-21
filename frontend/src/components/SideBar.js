@@ -22,7 +22,7 @@ const Todo = () => {
 
     const parseQueryData = (todos) => {
         return {
-            title: 'EVENT TEMPLATE',
+            title: 'event template',
             tasks: todos
         };
     }
@@ -45,7 +45,6 @@ const Todo = () => {
     const delIconClick = (event, { index, id }) => {
         event.stopPropagation();
         // TODO: comunicate with backend `deleteTodo`, if delete successfully then run the following
-        console.log('sidebar')
         const newMyTasks = [...myTasks];
         newMyTasks[0].tasks.splice(index, 1);
         moveMyTask(newMyTasks);

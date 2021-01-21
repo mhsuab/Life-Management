@@ -82,22 +82,17 @@ const Todo = () => {
     }
     const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
     // const [myTasks, moveMyTask] = useState(parseQueryData(data.getTodo));
-    console.log(myTasks)
 
     useEffect(async () => {
-        console.log('useEffect: user')
         const t = await refetch()
         moveMyTask(parseQueryData(t.data.getTodo))
         // setCount(t.data.getTodo.length)
-        console.log(myTasks)
-        console.log(parseQueryData(t.data.getTodo))
     }, [user])
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
         const { task, columnIndex: fromColumnIndex, index } = from;
-        console.log({ 'columnidx': fromColumnIndex })
         const { columnIndex: toColumnIndex } = to;
 
         const newMyTasks = [...myTasks];
@@ -125,7 +120,6 @@ const Todo = () => {
                 deadLine: temptask.deadLine
             }
         })
-        console.log(newMyTasks);
         moveMyTask(newMyTasks);
     };
 
@@ -159,8 +153,6 @@ const Todo = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect: count')
-        console.log(Count);
         if (firstUpdate.current) {
             firstUpdate.current = false;
             return;
@@ -185,7 +177,6 @@ const Todo = () => {
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
             }
 
-            console.log(editedEvent);
 
             moveMyTask(newMyTasks);
         }
@@ -222,7 +213,6 @@ const Todo = () => {
                                 onChange={event => {
                                     setTitle(event.target.value);
                                     setTitleChange(true);
-                                    console.log("changed");
                                 }}
                             />
                         </Form.Field>
