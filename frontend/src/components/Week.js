@@ -110,6 +110,7 @@ const Week = ({ handleBlockChange }) => {
 
     useEffect(async () => {
         const newTasks = await refetch()
+        console.log(newTasks)
         moveMyTask(parseQueryData(newTasks.data.getWeek))
     }, [user])
 
@@ -146,6 +147,7 @@ const Week = ({ handleBlockChange }) => {
             }
         })
         handleBlockChange();
+        console.log('addBlock')
         return b.data.addBlock.id
     }
 
@@ -197,6 +199,7 @@ const Week = ({ handleBlockChange }) => {
                 id: tempid,
                 name: tempname
             });
+            console.log('index = -1')
         }
     };
 
@@ -234,7 +237,7 @@ const Week = ({ handleBlockChange }) => {
         }
         else {
             const newMyTasks = [...myTasks];
-            const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY-MM-DD");
+            const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY/MM/DD");
             const editedEvent = {
                 id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
@@ -252,10 +255,13 @@ const Week = ({ handleBlockChange }) => {
             };
             // I'm Here
             if (!fromSide) {
+                console.log('update')
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 _updateBlock(editedEvent)
             }
             else {
+                console.log(dateChange)
+                console.log('add')
                 _addBlock(editedEvent).then(success => {
                     console.log(success)
                     editedEvent.id = success
@@ -470,6 +476,7 @@ const Week = ({ handleBlockChange }) => {
                                 if (!GoodTitle) {
                                     Message = Message + "Title can't be empty! \n";
                                 }
+
                                 if (!startTime) {
                                     Message = Message + "Please choose startTime. \n";
                                 }
@@ -477,6 +484,7 @@ const Week = ({ handleBlockChange }) => {
                                 if (!endTime) {
                                     Message = Message + "Please choose endTime. \n";
                                 }
+                                
 
                                 if (startTime > endTime) {
                                     Message = Message + "EndTime must >= StartTime";
