@@ -160,9 +160,10 @@ const Todo = () => {
                 subject: editedEvent.subject,
                 color: editedEvent.color,
                 deadLine: editedEvent.deadLine
-        }})
+            }
+        })
         console.log(newTodo)
-        return newTodo.data.todo.todoID
+        return newTodo.data.addTodo.id
     }
 
     useEffect(() => {
@@ -191,14 +192,16 @@ const Todo = () => {
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
-                updateTodo({ variables: {
-                    todoID: editedEvent.id,
-                    name: editedEvent.name,
-                    category: editedEvent.category,
-                    subject: editedEvent.subject,
-                    color: editedEvent.color,
-                    deadLine: editedEvent.deadLine
-                }})
+                updateTodo({ 
+                    variables: {
+                        todoID: editedEvent.id,
+                        name: editedEvent.name,
+                        category: editedEvent.category,
+                        subject: editedEvent.subject,
+                        color: editedEvent.color,
+                        deadLine: editedEvent.deadLine
+                    }
+                })
             }
 
             console.log(editedEvent);
