@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Button, Header, Icon, Segment, Modal, Image } from "semantic-ui-react";
+import { Button, Header, Icon } from "semantic-ui-react";
 import { serviceTitle, mainBackground } from "./../config";
 
 const divStyle = {

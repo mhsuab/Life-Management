@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Grid, Form, Button, Icon, Header, Label, Divider } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
 import { AuthContext } from '../context/auth';

@@ -12,7 +12,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import DateFnsUtils from '@date-io/date-fns';
 import moment from "moment"
-import { TwitterPicker, CirclePicker } from 'react-color';
+import { CirclePicker } from 'react-color';
 
 import './Todo.scss';
 
@@ -20,7 +20,6 @@ import './Todo.scss';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
-import { testTodos } from './../config';
 
 const Week = ({ handleBlockChange }) => {
     // const data = { 'getTodo': testTodos }

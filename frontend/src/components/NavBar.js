@@ -15,7 +15,6 @@ const divStyle = {
 
 const NavBar = () => {
     const { user, logout } = useContext(AuthContext);
-    const pathname = window.location.pathname;
 
     const NavBar = user ? (
         <Menu pointing secondary style={divStyle} inverted fluid >

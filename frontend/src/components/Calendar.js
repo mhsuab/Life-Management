@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed
 import { useQuery } from '@apollo/react-hooks';
-import { GET_MONTH_CALENDAR, UPDATE_CALENDAR } from '../graphql'
+import { GET_MONTH_CALENDAR } from '../graphql'
 import { AuthContext } from '../context/auth';
 import moment from "moment"
 
@@ -14,7 +14,7 @@ const Calendar = ({modified}) => {
     const thisMonth = moment(new Date).format("YYYY/MM")
     console.log({modified}) 
 
-    const { loading, data, subscribeToMore, refetch } = useQuery(GET_MONTH_CALENDAR, {
+    const { refetch } = useQuery(GET_MONTH_CALENDAR, {
         variables: { month: thisMonth }
     })
 
