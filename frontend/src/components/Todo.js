@@ -177,6 +177,7 @@ const Todo = () => {
                     editedEvent.id = success
                 })
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
+                setNewEvent(false);
             }
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
