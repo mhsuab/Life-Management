@@ -12,7 +12,8 @@ const generateToken = ({
     todoExpiresDay,
     calendarExpiresDay,
     notificationTime,
-    blockExpiresDay
+    blockExpiresDay,
+    username
 }) => {
     return jwt.sign(
         {
@@ -20,7 +21,8 @@ const generateToken = ({
             todoExpiresDay,
             calendarExpiresDay,
             notificationTime,
-            blockExpiresDay
+            blockExpiresDay,
+            username
         },
         Buffer.from(process.env.JWT_SECRET, 'base64').toString(),
         {
