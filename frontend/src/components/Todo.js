@@ -79,11 +79,8 @@ const Todo = () => {
     const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
 
     useEffect(async () => {
-        console.log('useEffect: user')
         const t = await refetch()
         moveMyTask(parseQueryData(t.data.getTodo))
-        console.log(t)
-        console.log(parseQueryData(t.data.getTodo))
     }, [user])
 
     const handleMoveMyTask = (from, to) => {
@@ -92,7 +89,6 @@ const Todo = () => {
         console.log(from)
         console.log(to)
         const { task, columnIndex: fromColumnIndex, index } = from;
-        console.log({ 'columnidx': fromColumnIndex })
         const { columnIndex: toColumnIndex } = to;
         const newMyTasks = [...myTasks];
         // remove task
@@ -119,7 +115,6 @@ const Todo = () => {
                 deadLine: temptask.deadLine
             }
         })
-        console.log(newMyTasks);
         moveMyTask(newMyTasks);
     };
 
@@ -168,8 +163,6 @@ const Todo = () => {
     }
 
     useEffect(() => {
-        console.log('useEffect: count')
-        console.log(Count);
         if (firstUpdate.current) {
             firstUpdate.current = false;
             return;
@@ -208,7 +201,6 @@ const Todo = () => {
                 })
             }
 
-            console.log(editedEvent);
 
             moveMyTask(newMyTasks);
         }
@@ -245,7 +237,6 @@ const Todo = () => {
                                 onChange={event => {
                                     setTitle(event.target.value);
                                     setTitleChange(true);
-                                    console.log("changed");
                                 }}
                             />
                         </Form.Field>

@@ -61,7 +61,6 @@ const Week = () => {
 
     const parseQueryData = (tasks) => {
         const newTasks = []
-        console.log(tasks)
         for (let i = 0; i < 7; ++i) {
             newTasks[i] = {
                 title: moment(new Date).add(i, 'days').format("MM/DD"),
@@ -70,7 +69,6 @@ const Week = () => {
                 })
             }
         }
-        console.log(newTasks)
         return newTasks
     }
 
@@ -112,9 +110,7 @@ const Week = () => {
 
     useEffect(async () => {
         const newTasks = await refetch()
-        console.log(newTasks)
         moveMyTask(parseQueryData(newTasks.data.getWeek))
-        console.log(myTasks)
     }, [user])
 
     const _updateBlock = (editedEvent) => {
@@ -155,11 +151,7 @@ const Week = () => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
         const { task, columnIndex: fromColumnIndex, index } = from;
-        console.log({ 'columnidx': fromColumnIndex })
         const { columnIndex: toColumnIndex } = to;
-        console.log({
-            from, to
-        })
 
         const newMyTasks = [...myTasks];
         // remove task
@@ -197,7 +189,6 @@ const Week = () => {
             setBlockExpiresDay(10);
             const tempname = task.name;
             const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
-            console.log({ toColumnIndex, tempindex, tempid, tempname });
             editTodo({
                 columnIndex: toColumnIndex,
                 index: tempindex,
@@ -208,7 +199,6 @@ const Week = () => {
     };
 
     const delIconClick = (event, { columnIndex, index, id }) => {
-        console.log('week')
         event.stopPropagation();
         // TODO: comunicate with backend `deleteTodo`, if delete successfully then run the following
         const newMyTasks = [...myTasks];
@@ -226,7 +216,6 @@ const Week = () => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: trigger input form
         // alert('edit ' + name);
-        console.log({ columnIndex, index, id, name });
         setColumnIndex(columnIndex);
         setIndex(index);
         setId(id);
@@ -236,18 +225,13 @@ const Week = () => {
     }
 
     useEffect(() => {
-        console.log("useEffect Changed");
-
         if (firstUpdate.current) {
             firstUpdate.current = false;
-            console.log(Count);
             return;
         }
         else {
             const newMyTasks = [...myTasks];
-            console.log(newMyTasks);
-            console.log(_columnIndex);
-            const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY/MM/DD");
+            const tempDay = moment(new Date).add(_columnIndex, 'days').format("YYYY-MM-DD");
             const editedEvent = {
                 id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
@@ -278,7 +262,6 @@ const Week = () => {
             const ComputedDay = dateChange ? choosedate : tempDay;
 
             const endcolumnIndex = moment(ComputedDay).format("DD") - moment(new Date).format("DD");
-            console.log(endcolumnIndex);
             if (endcolumnIndex !== _columnIndex) {
                 newMyTasks[endcolumnIndex].tasks.push(editedEvent);
             }
@@ -346,7 +329,6 @@ const Week = () => {
                                 onChange={event => {
                                     setTitle(event.target.value);
                                     setTitleChange(true);
-                                    console.log("changed");
                                 }}
                             />
                         </Form.Field>
@@ -416,7 +398,6 @@ const Week = () => {
                                 toggle
                                 onChange={() => {
                                     const temp = onCalendar ? false : true;
-                                    console.log("set onCalendar " + temp);
                                     setOnCalendar(temp);
                                 }}
                             />
@@ -427,7 +408,6 @@ const Week = () => {
                                 toggle
                                 onChange={() => {
                                     const temp = isReview ? false : true;
-                                    console.log("set isReview " + temp);
                                     setIsReview(temp);
                                 }}
                             />

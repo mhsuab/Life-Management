@@ -15,7 +15,7 @@ const mainStyle = {
 const leftStyle = {
     padding: '2vh',
     display: 'grid',
-    gridTemplateRows: '70% 30%',
+    gridTemplateRows: '40% 60%',
     gridGap: '1vh'
 }
 
