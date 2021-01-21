@@ -16,21 +16,17 @@ import moment from "moment"
 
 import './Todo.scss';
 
-import { GET_TODOS, ADD_TODO, DELETE_TODO, UPDATE_TODO,} from '../graphql';
+import { GET_TODOS, ADD_TODO, DELETE_TODO, UPDATE_TODO, } from '../graphql';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { AuthContext } from '../context/auth';
 import { testTodos } from './../config';
 
 const Todo = () => {
-    // const [myTasks, moveMyTask] = useState(tasks);
-    // const data = { 'getTodo': testTodos }
-    // const loading = true;
-
     const { user } = useContext(AuthContext)
-    const {  refetch } = useQuery(GET_TODOS)
-    const [ updateTodo ] = useMutation(UPDATE_TODO)
-    const [ deleteTodo ] = useMutation(DELETE_TODO)
-    const [ addTodoToDB ] = useMutation(ADD_TODO)
+    const { refetch } = useQuery(GET_TODOS)
+    const [updateTodo] = useMutation(UPDATE_TODO)
+    const [deleteTodo] = useMutation(DELETE_TODO)
+    const [addTodoToDB] = useMutation(ADD_TODO)
 
     const [newEvent, setNewEvent] = useState(false)
     const [_columnIndex, setColumnIndex] = useState()
@@ -47,8 +43,8 @@ const Todo = () => {
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [choosedate, setChoosedate] = useState((new Date()).toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
-    const [startDate, setStartDate] = useState((new Date()).toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
+    const [choosedate, setChoosedate] = useState((new Date()).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
+    const [startDate, setStartDate] = useState((new Date()).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
@@ -81,30 +77,29 @@ const Todo = () => {
         ];
     }
     const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
-    console.log(myTasks)
 
     useEffect(async () => {
         console.log('useEffect: user')
         const t = await refetch()
         moveMyTask(parseQueryData(t.data.getTodo))
-        // setCount(t.data.getTodo.length)
-        console.log(myTasks)
+        console.log(t)
         console.log(parseQueryData(t.data.getTodo))
     }, [user])
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
+        console.log(from)
+        console.log(to)
         const { task, columnIndex: fromColumnIndex, index } = from;
-        console.log({'columnidx': fromColumnIndex})
+        console.log({ 'columnidx': fromColumnIndex })
         const { columnIndex: toColumnIndex } = to;
-
         const newMyTasks = [...myTasks];
         // remove task
         newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
         const temptask = {
-            category: toColumnIndex === 0 ? 'Todo' : (task.category === 1 ? 'Doing' :'Completed'),
+            category: toColumnIndex === 0 ? 'Todo' : (toColumnIndex === 1 ? 'Doing' :'Completed'),
             color: task.color,
             completedDay: task.completedDay,
             deadLine: task.deadLine,
@@ -114,14 +109,16 @@ const Todo = () => {
             userID: task.userID
         }
         newMyTasks[toColumnIndex].tasks.push(temptask);
-        updateTodo({ variables: {
-            todoID: task.id,
-            name: temptask.name,
-            category: temptask.category,
-            subject: temptask.subject,
-            color: temptask.color,
-            deadLine: temptask.deadLine
-        }})
+        updateTodo({
+            variables: {
+                todoID: task.id,
+                name: temptask.name,
+                category: temptask.category,
+                subject: temptask.subject,
+                color: temptask.color,
+                deadLine: temptask.deadLine
+            }
+        })
         console.log(newMyTasks);
         moveMyTask(newMyTasks);
     };
@@ -155,6 +152,19 @@ const Todo = () => {
         setModalOpen(true);
     }
 
+    const _addTodo = async (editedEvent) => {
+        const newTodo = await addTodoToDB({
+            variables: {
+                name: editedEvent.name,
+                category: editedEvent.category,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                deadLine: editedEvent.deadLine
+        }})
+        console.log(newTodo)
+        return newTodo.data.todo.todoID
+    }
+
     useEffect(() => {
         console.log('useEffect: count')
         console.log(Count);
@@ -165,21 +175,30 @@ const Todo = () => {
         else {
             const newMyTasks = [...myTasks];
             const editedEvent = {
-                category: newEvent?'':newMyTasks[_columnIndex].tasks[_index].category,
-                color: colorChange ? color : (newEvent ? '':newMyTasks[_columnIndex].tasks[_index].color),
-                completedDay: newEvent ? '' :newMyTasks[_columnIndex].tasks[_index].completedDay,
+                category: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].category,
+                color: colorChange ? color : (newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].color),
+                completedDay: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
-                id: newEvent ? _id :newMyTasks[_columnIndex].tasks[_index].id,
-                name: titleChange ? title : (newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) :newMyTasks[_columnIndex].tasks[_index].name),
-                subject: newEvent ? '':newMyTasks[_columnIndex].tasks[_index].subject,
-                userID: newEvent ? _userid :newMyTasks[_columnIndex].tasks[_index].userID
+                id: newEvent ? _id : newMyTasks[_columnIndex].tasks[_index].id,
+                name: titleChange ? title : (newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) : newMyTasks[_columnIndex].tasks[_index].name),
+                subject: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].subject,
+                userID: newEvent ? _userid : newMyTasks[_columnIndex].tasks[_index].userID
             };
             if (newEvent) {
+                editedEvent.id = _addTodo(editedEvent)
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
             }
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
+                updateTodo({ variables: {
+                    todoID: editedEvent.id,
+                    name: editedEvent.name,
+                    category: editedEvent.category,
+                    subject: editedEvent.subject,
+                    color: editedEvent.color,
+                    deadLine: editedEvent.deadLine
+                }})
             }
 
             console.log(editedEvent);
@@ -209,11 +228,11 @@ const Todo = () => {
                 closeOnEscape={true}
                 closeOnRootNodeClick={true}
             >
-                <Header icon='browser' content='Event' />
+                <Header icon='browser' content='Todo' />
                 <Modal.Content>
                     <Form>
                         <Form.Field>
-                            <label> Event Title</label>
+                            <label> Todo </label>
                             <input
                                 placeholder={_name}
                                 onChange={event => {
@@ -267,6 +286,7 @@ const Todo = () => {
                                     setColor(_color.hex);
                                     setColorChange(true);
                                 }}
+                                color={['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff']}
                             />
                         </Form.Field>
                     </Form>
@@ -292,7 +312,7 @@ const Todo = () => {
                         onClick={
                             (e) => {
                                 setModalOpen(false);
-                                setCount(Count+1);
+                                setCount(Count + 1);
                             }
                         }
                         content='Confirm'

@@ -1,6 +1,24 @@
 import React, { useState } from "react";
 import { Icon, Button, Label } from 'semantic-ui-react';
 
+const cardStyle = (color) => {
+    return {
+        width: '8vw',
+        wordBreak: 'break-all',
+        height: 'auto',
+        background: `${color}`,
+        wordBreak: 'break-all',
+        marginBottom: '10px',
+        padding: '10px 10px',
+        borderRadius: '3px',
+        cursor: 'pointer',
+    }
+};
+
+const tagStyle = {
+    fontSize: '0.1em'
+}
+
 const Card = ({ task: {
     id,
     subject,
@@ -11,17 +29,6 @@ const Card = ({ task: {
     const handleOnOver = () => setIsOver(true);
     const handleOnLeave = () => setIsOver(false);
 
-    const cardStyle = {
-        width: '100%',
-        // display: 'inline-block',
-        height: 'auto',
-        background: color,
-        marginBottom: '10px',
-        padding: '10px 10px',
-        borderRadius: '3px',
-        cursor: 'pointer',
-    };
-
     return (
         <div
             onMouseEnter={handleOnOver}
@@ -31,9 +38,9 @@ const Card = ({ task: {
                 <div
                     className={`card`}
                     onClick={() => editTodo({ columnIndex, index, id, subject })}
-                    style={cardStyle}
+                    style={cardStyle(color)}
                 >
-                    <Label tag size='mini'>
+                    <Label style={ tagStyle }>
                         {subject}
                     </Label>
                 </div>

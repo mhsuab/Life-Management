@@ -3,17 +3,45 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction" // needed
 import { useQuery } from '@apollo/react-hooks';
-import { GET_MONTH_CALENDAR } from '../graphql'
+import { GET_MONTH_CALENDAR, UPDATE_CALENDAR } from '../graphql'
 import { AuthContext } from '../context/auth';
 import moment from "moment"
 
 
 const Calendar = () => {
-    const { user } = useContext(AuthContext)
+    // const { user } = useContext(AuthContext)
     // const [ activeDates, setActiveDates ] = useState([false])
     // const thisMonth = moment(new Date).format("YYYY/MM");
-    // const { refetch } = useQuery(GET_MONTH_CALENDAR, { variables: { month: thisMonth } })
     // console.log(thisMonth) 
+
+    // const { loading, data, subscribeToMore, refetch } = useQuery(GET_MONTH_CALENDAR, {
+    //     variables: { month: thisMonth }
+    // })
+
+    // useEffect(() => {
+    //     subscribeToMore({
+    //         document: UPDATE_CALENDAR,
+    //         updateQuery: (prev, { subscriptionData }) => {
+    //             console.log(subscriptionData)
+    //             if(!subscriptionData.data || !user) return prev
+    //             const newMsg = subscriptionData.data.updateCalendar
+    //             console.log(newMsg)
+    //             // if(subscriptionData.data.message.mutation === "CREATED"){
+    //             //     if((newMsg.sender === sender && newMsg.receiver === receiver) || (newMsg.receiver === sender && newMsg.sender === receiver)) {
+    //             //         setStatus({ type: 'success', msg: 'Message Sent'})
+    //             //         return { ...prev, messages: [...prev.messages, ...subscriptionData.data.message.messages] }
+    //             //     }
+    //             // }
+    //             // else if(subscriptionData.data.message.mutation === "DELETED") {
+    //             //     if((newMsg.sender === sender) || (newMsg.sender === receiver)) {
+    //             //         setStatus({ type: 'info', msg: 'Message cache cleared'})
+    //             //         return { ...prev, messages:[] }
+    //             //     }
+    //             // }
+    //             return prev
+    //         }
+    //     })
+    // }, [subscribeToMore, user])
 
     // useEffect(async () => {
     //     const act = await refetch()
