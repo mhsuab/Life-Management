@@ -59,25 +59,10 @@ const Week = () => {
 
     const [fromSide, setFromSide] = useState(false)
 
-    const [myTasks, moveMyTask] = useState([]);
-    const { user } = useContext(AuthContext)
-    const [ updateBlock ] = useMutation(UPDATE_BLOCK)
-    const [ deleteBlock ] = useMutation(DELETE_BLOCK)
-    const [ addBlock ] = useMutation(ADD_BLOCK)
-    const Today = moment(new Date).format("YYYY/MM/DD");
-    const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
-    
-    useEffect(async () => {
-        const newTasks = await refetch()
-        console.log(newTasks)
-        moveMyTask(parseQueryData(newTasks.data.getWeek))
-        console.log(myTasks)
-    }, [user])
-
     const parseQueryData = (tasks) => {
         const newTasks = []
         console.log(tasks)
-        for(let i = 0; i < 7; ++i) {
+        for (let i = 0; i < 7; ++i) {
             newTasks[i] = {
                 title: moment(new Date).add(i, 'days').format("MM/DD"),
                 tasks: tasks.filter(task => {
@@ -88,6 +73,21 @@ const Week = () => {
         console.log(newTasks)
         return newTasks
     }
+
+    const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
+    const { user } = useContext(AuthContext)
+    const [updateBlock] = useMutation(UPDATE_BLOCK)
+    const [deleteBlock] = useMutation(DELETE_BLOCK)
+    const [addBlock] = useMutation(ADD_BLOCK)
+    const Today = moment(new Date).format("YYYY/MM/DD");
+    const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
+
+    useEffect(async () => {
+        const newTasks = await refetch()
+        console.log(newTasks)
+        moveMyTask(parseQueryData(newTasks.data.getWeek))
+        console.log(myTasks)
+    }, [user])
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
@@ -187,17 +187,17 @@ const Week = () => {
             const editedEvent = {
                 id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
-                name: fromSide ? (titleChange ? title : _name) : (titleChange ? title:newMyTasks[_columnIndex].tasks[_index].name),
+                name: fromSide ? (titleChange ? title : _name) : (titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name),
                 subject: fromSide ? _subject : newMyTasks[_columnIndex].tasks[_index].subject,
-                color: fromSide ? (colorChange ? color : _color) : (colorChange ? color :newMyTasks[_columnIndex].tasks[_index].color),
+                color: fromSide ? (colorChange ? color : _color) : (colorChange ? color : newMyTasks[_columnIndex].tasks[_index].color),
                 onCalendar: onCalendar,
                 startTime: startTime,
                 endTime: endTime,
                 Day: dateChange ? choosedate : tempDay,
                 isReview: isReview,
                 repeated: repeated,
-                expiredAfter: fromSide ?_expiredAfter:newMyTasks[_columnIndex].tasks[_index].expiredAfter,
-                blockExpiresDay: fromSide ?_blockExpiresDay:newMyTasks[_columnIndex].tasks[_index].blockExpiresDay
+                expiredAfter: fromSide ? _expiredAfter : newMyTasks[_columnIndex].tasks[_index].expiredAfter,
+                blockExpiresDay: fromSide ? _blockExpiresDay : newMyTasks[_columnIndex].tasks[_index].blockExpiresDay
             };
             // I'm Here
             if (!fromSide) {

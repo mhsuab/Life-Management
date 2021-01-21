@@ -39,7 +39,7 @@ module.exports = {
         },
         getMonth: async (_, { month }, { request }) => {
             const { userID } = checkAuth(request);
-            console.log('asdf')
+            //console.log('asdf')
             const blocks = await Block.find({
                 $and: [{ userID }, {
                     "Day": { '$regex': month, '$options': 'i'}
@@ -48,7 +48,8 @@ module.exports = {
                 .catch(err => {
                     throw new Error(err);
                 })
-            console.log([...Array(new Date(month.slice(0, 4), month.slice(-2), 0).getDate()).keys()])
+            //console.log('getMonth')
+            //console.log([...Array(new Date(month.slice(0, 4), month.slice(-2), 0).getDate()).keys()])
             const target = moment(new Date(month)).format("YYYY/MM/DD");
             return [...Array(new Date(month.slice(0, 4), month.slice(-2), 0).getDate()).keys()].map(day => {
                 return blocks.some(block => block.Day === moment(target).add(day, 'days').format("YYYY/MM/DD"));

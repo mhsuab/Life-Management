@@ -23,8 +23,8 @@ import { testTodos } from './../config';
 
 const Todo = () => {
     // const [myTasks, moveMyTask] = useState(tasks);
-    const data = { 'getTodo': testTodos }
-    const loading = true;
+    // const data = { 'getTodo': testTodos }
+    // const loading = true;
 
     const { user } = useContext(AuthContext)
     const {  refetch } = useQuery(GET_TODOS)
@@ -43,6 +43,7 @@ const Todo = () => {
     const [_name, setName] = useState()
     const [_subject, setSubject] = useState()
     const [_userid, setUserId] = useState()
+
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -79,15 +80,14 @@ const Todo = () => {
             }
         ];
     }
-    const [myTasks, moveMyTask] = useState(parseQueryData(data.getTodo));
+    const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
     console.log(myTasks)
 
     useEffect(async () => {
         console.log('useEffect: user')
         const t = await refetch()
         moveMyTask(parseQueryData(t.data.getTodo))
-        // setCount(t.data.getTodo.length)
-        console.log(myTasks)
+        console.log(t)
         console.log(parseQueryData(t.data.getTodo))
     }, [user])
 
@@ -175,12 +175,10 @@ const Todo = () => {
             };
             if (newEvent) {
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
-                // addTodo(editedEvent)
             }
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
-                // editTodo(editedEvent)
             }
 
             console.log(editedEvent);
