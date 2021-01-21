@@ -4,6 +4,8 @@ type Query {
     getOneDay(date: String!): [Block!]!,
     getTodo: [Todo]!,
     getEmptyBlock: [EmptyBlock!]!
+    getWeek(date: String!): [Block!]!
+    getMonth(month: String!): [Boolean!]!
 }
 
 type Mutation {

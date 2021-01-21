@@ -1,6 +1,7 @@
 const EmptyBlock = require('../../model/EmptyBlock');
 const Block = require('./../../model/Block');
 const checkAuth = require('./../../utils/check_auth');
+import moment from "moment";
 
 //NOTE: only finish putting function that is needed
 module.exports = {
@@ -20,6 +21,38 @@ module.exports = {
                 throw new Error(err);
             })
             return ifExist;
+        },
+        getWeek: async (_, { date }, { request }) => {
+            const { userID } = checkAuth(request);
+            const week = [0, 1, 2, 3, 4, 5, 6].map(day => {
+                return moment(new Date(date)).add(day, 'days').format("YYYY/MM/DD");
+            })
+            const blocks = await Block.find({
+                $and: [{ userID }, { onCalendar: true }, {
+                    "Day": { $in: week }
+                }]
+            }).sort({ 'Day': 1 })
+                .catch(err => {
+                    throw new Error(err);
+                })
+            return blocks;
+        },
+        getMonth: async (_, { month }, { request }) => {
+            const { userID } = checkAuth(request);
+            console.log('asdf')
+            const blocks = await Block.find({
+                $and: [{ userID }, {
+                    "Day": { '$regex': month, '$options': 'i'}
+                }, { "onCalendar": true }]
+            }).sort({ 'Day': 1 })
+                .catch(err => {
+                    throw new Error(err);
+                })
+            console.log([...Array(new Date(month.slice(0, 4), month.slice(-2), 0).getDate()).keys()])
+            const target = moment(new Date(month)).format("YYYY/MM/DD");
+            return [...Array(new Date(month.slice(0, 4), month.slice(-2), 0).getDate()).keys()].map(day => {
+                return blocks.some(block => block.Day === moment(target).add(day, 'days').format("YYYY/MM/DD"));
+            })
         }
     },
     Mutation: {

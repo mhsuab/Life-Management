@@ -40,6 +40,7 @@ module.exports = {
         },
         updateTodo: async (_, { todoID, todo }, { request }) => {
             // NOTE: return the updated Todo
+            console.log(todo)
             const { userID } = checkAuth(request);
             if ( todo.category === 'Completed' ) {
                 const date = new Date();

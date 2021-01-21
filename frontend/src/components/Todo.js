@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
@@ -26,13 +26,13 @@ const Todo = () => {
     const data = { 'getTodo': testTodos }
     const loading = true;
 
-    // const { user } = useContext(AuthContext)
-    // const {  refetch } = useQuery(GET_TODOS)
-    // const [ updateTodo ] = useMutation(UPDATE_TODO)
-    // const [ deleteTodo ] = useMutation(DELETE_TODO)
-    // const [ addTodo ] = useMutation(ADD_TODO)
-    const [newEvent, setNewEvent] = useState(false)
+    const { user } = useContext(AuthContext)
+    const {  refetch } = useQuery(GET_TODOS)
+    const [ updateTodo ] = useMutation(UPDATE_TODO)
+    const [ deleteTodo ] = useMutation(DELETE_TODO)
+    const [ addTodoToDB ] = useMutation(ADD_TODO)
 
+    const [newEvent, setNewEvent] = useState(false)
     const [_columnIndex, setColumnIndex] = useState()
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
@@ -47,8 +47,8 @@ const Todo = () => {
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [choosedate, setChoosedate] = useState(new Date())
-    const [startDate, setStartDate] = useState(new Date())
+    const [choosedate, setChoosedate] = useState((new Date()).toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
+    const [startDate, setStartDate] = useState((new Date()).toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
@@ -63,29 +63,34 @@ const Todo = () => {
             {
                 title: 'Todo',
                 tasks: todos.filter(todo => {
-                    if (todo.category === 'Todo') return true;
-                    else return false;
+                    return todo.category === 'Todo'
                 })
             },
             {
                 title: 'Doing',
                 tasks: todos.filter(todo => {
-                    if (todo.category === 'Doing') return true;
-                    else return false;
+                    return todo.category === 'Doing'
                 })
             },
             {
                 title: 'Completed',
                 tasks: todos.filter(todo => {
-                    if (todo.category === 'Completed') return true;
-                    else return false;
+                    return todo.category === 'Completed'
                 })
             }
         ];
     }
-    const t = parseQueryData(data.getTodo);
+    const [myTasks, moveMyTask] = useState(parseQueryData(data.getTodo));
+    console.log(myTasks)
 
-    const [myTasks, moveMyTask] = useState(t);
+    useEffect(async () => {
+        console.log('useEffect: user')
+        const t = await refetch()
+        moveMyTask(parseQueryData(t.data.getTodo))
+        // setCount(t.data.getTodo.length)
+        console.log(myTasks)
+        console.log(parseQueryData(t.data.getTodo))
+    }, [user])
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
@@ -109,6 +114,14 @@ const Todo = () => {
             userID: task.userID
         }
         newMyTasks[toColumnIndex].tasks.push(temptask);
+        updateTodo({ variables: {
+            todoID: task.id,
+            name: temptask.name,
+            category: temptask.category,
+            subject: temptask.subject,
+            color: temptask.color,
+            deadLine: temptask.deadLine
+        }})
         console.log(newMyTasks);
         moveMyTask(newMyTasks);
     };
@@ -119,7 +132,9 @@ const Todo = () => {
         const newMyTasks = [...myTasks];
         newMyTasks[columnIndex].tasks.splice(index, 1);
         moveMyTask(newMyTasks);
+        deleteTodo({ variables: { todoID: id } })
     }
+
     const addTodo = ({ columnIndex, index, id, name }) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
@@ -141,17 +156,17 @@ const Todo = () => {
     }
 
     useEffect(() => {
+        console.log('useEffect: count')
+        console.log(Count);
         if (firstUpdate.current) {
             firstUpdate.current = false;
-            console.log(Count);
             return;
         }
         else {
             const newMyTasks = [...myTasks];
-
             const editedEvent = {
                 category: newEvent?'':newMyTasks[_columnIndex].tasks[_index].category,
-                color: colorChange ? color : (newEvent ? '':newMyTasks[_columnIndex].tasks[_index].category),
+                color: colorChange ? color : (newEvent ? '':newMyTasks[_columnIndex].tasks[_index].color),
                 completedDay: newEvent ? '' :newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
                 id: newEvent ? _id :newMyTasks[_columnIndex].tasks[_index].id,
@@ -277,7 +292,7 @@ const Todo = () => {
                         onClick={
                             (e) => {
                                 setModalOpen(false);
-                                setCount(Count + 1);
+                                setCount(Count+1);
                             }
                         }
                         content='Confirm'

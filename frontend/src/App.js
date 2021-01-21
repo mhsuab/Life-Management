@@ -23,7 +23,6 @@ const mainStyle = {
 }
 
 const App = () => {
-    console.log({ 'uri': window.location.hostname})
     return (
         <AuthProvider>
             <div style={mainStyle}>
