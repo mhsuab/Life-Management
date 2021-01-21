@@ -8,11 +8,11 @@ import { AuthContext } from '../context/auth';
 import moment from "moment"
 
 
-const Calendar = () => {
+const Calendar = ({modified}) => {
     const { user } = useContext(AuthContext)
     const [ events, setEvents ] = useState([])
     const thisMonth = moment(new Date).format("YYYY/MM")
-    console.log(thisMonth) 
+    console.log({modified}) 
 
     const { loading, data, subscribeToMore, refetch } = useQuery(GET_MONTH_CALENDAR, {
         variables: { month: thisMonth }
@@ -21,8 +21,10 @@ const Calendar = () => {
     useEffect(async () => {
         const act = await refetch()
         console.log(act.data.getMonth)
-        seetEvents(parseMonthData(act.data.getMonth))
-    }, [user])
+        setEvents(parseMonthData(act.data.getMonth))
+        console.log({'event': events})
+    }, [user, modified])
+
     const parseMonthData = (calendar_data) => {
         const target = moment(new Date(thisMonth)).format("YYYY/MM/DD");
         return [...Array(new Date(thisMonth.slice(0, 4), thisMonth.slice(-2), 0).getDate()).keys()].reduce((accumulator, day) => {

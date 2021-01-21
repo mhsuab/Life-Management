@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Week from './Week';
 import Calendar from './Calendar';
 import Note from './Note';
@@ -37,15 +37,21 @@ const sideBarStyle = {
 }
 
 const MainPage = () => {
+    const [modified, setModified] = useState(0);
+    const handleBlockChange = () => {
+        console.log({'handle-modified': modified})
+        setModified((modified > 100)? 0: modified + 1);
+    };
+
     return (
         <div style={sideBarStyle}>
             <div style={mainStyle}>
                 <div style={leftStyle}>
-                    <Calendar />
+                    <Calendar modified={modified}/>
                     <Note />
                 </div>
                 <div style={rightStyle}>
-                    <Week />
+                    <Week handleBlockChange={() => handleBlockChange()}/>
                     <Todo />
                 </div>
             </div>

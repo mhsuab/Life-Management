@@ -22,7 +22,7 @@ import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graph
 import { AuthContext } from '../context/auth';
 import { testTodos } from './../config';
 
-const Week = () => {
+const Week = ({handleBlockChange}) => {
     // const data = { 'getTodo': testTodos }
     const [_columnIndex, setColumnIndex] = useState(0)
     const [_index, setIndex] = useState()
@@ -128,6 +128,7 @@ const Week = () => {
                 repeated: editedEvent.repeated
             }
         })
+        handleBlockChange();
     }
 
     const _addBlock = async (editedEvent) => {
@@ -144,6 +145,7 @@ const Week = () => {
                 repeated: editedEvent.repeated
             }
         })
+        handleBlockChange();
         return b.data.addBlock.id
     }
 
@@ -205,6 +207,7 @@ const Week = () => {
         newMyTasks[columnIndex].tasks.splice(index, 1);
         moveMyTask(newMyTasks);
         deleteBlock({ variables: { blockID: id } })
+        handleBlockChange();
     }
     const addTodo = (title) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
