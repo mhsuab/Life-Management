@@ -23,7 +23,7 @@ const textStyle = {
 }
 
 const tagStyle = {
-    fontSize: '0.1em',
+    fontSize: '1px',
     wordBreak: 'break-all',
 }
 
@@ -62,7 +62,7 @@ const Card = ({ task: {
                         {subject}
                     </Label>
                     <Label color='orange' style={tagStyle}>
-                        DURATION : {startTime.toString().padStart(2, '0')}~{endTime.toString().padStart(2, '0')}
+                        duration: {startTime.toString().padStart(2, '0')}~{endTime.toString().padStart(2, '0')}
                     </Label>
                 </div>
                 {isOver ? (

@@ -79,9 +79,9 @@ const Calendar = () => {
                     center: "title",
                     right: ""
                 }}
-                // events={(!loading) ? parseMonthData(data.getMonth) : []}
+                events={(!loading) ? parseMonthData(data.getMonth) : []}
             />
-            { !loading ? parseMonthData(data.getMonth): []}
+            {/* { !loading ? parseMonthData(data.getMonth): []} */}
         </div>
     )
 }
