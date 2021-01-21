@@ -178,7 +178,6 @@ const Week = ({ handleBlockChange }) => {
             }
             newMyTasks[toColumnIndex].tasks.push(temptask);
             moveMyTask(newMyTasks);
-            alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
             _updateBlock(temptask)
         }
         else if (fromColumnIndex === -1) {
@@ -214,7 +213,6 @@ const Week = ({ handleBlockChange }) => {
     const addTodo = (title) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
-        alert('add ' + title);
     }
 
     const editTodo = ({ columnIndex, index, id, name }) => {
