@@ -3,7 +3,7 @@ import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
-import { Modal, Header, Form, Button, Checkbox } from 'semantic-ui-react'
+import { Modal, Header, Form, Button, Checkbox, Input, Dropdown } from 'semantic-ui-react'
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -37,11 +37,11 @@ const Week = () => {
 
     const [modalOpen, setModalOpen] = useState(false)
     const [choosedate, setChoosedate] = useState(moment(new Date).add(_columnIndex, 'days'))
-    const [startTime, setStartTime] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date())
+    const [startTime, setStartTime] = useState(false)
+    const [endTime, setEndTime] = useState(false)
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
-    const [title, setTitle] = useState('Event Title')
+    const [title, setTitle] = useState()
     const [onCalendar, setOnCalendar] = useState(false)
     const [isReview, setIsReview] = useState(false)
     const [repeated, setRepeated] = useState(0)
@@ -80,10 +80,72 @@ const Week = () => {
     const Today = moment(new Date).format("YYYY/MM/DD");
     const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
 
+    const Clock = [
+        { key: 0, value: 0, text: 0 },
+        { key: 1, value: 1, text: 1 },
+        { key: 2, value: 2, text: 2 },
+        { key: 3, value: 3, text: 3 },
+        { key: 4, value: 4, text: 4 },
+        { key: 5, value: 5, text: 5 },
+        { key: 6, value: 6, text: 6 },
+        { key: 7, value: 7, text: 7 },
+        { key: 8, value: 8, text: 8 },
+        { key: 9, value: 9, text: 9 },
+        { key: 10, value: 10, text: 10 },
+        { key: 11, value: 11, text: 11 },
+        { key: 12, value: 12, text: 12 },
+        { key: 13, value: 13, text: 13 },
+        { key: 14, value: 14, text: 14 },
+        { key: 15, value: 15, text: 15 },
+        { key: 16, value: 16, text: 16 },
+        { key: 17, value: 17, text: 17 },
+        { key: 18, value: 18, text: 18 },
+        { key: 19, value: 19, text: 19 },
+        { key: 20, value: 20, text: 20 },
+        { key: 21, value: 21, text: 21 },
+        { key: 22, value: 22, text: 22 },
+        { key: 23, value: 23, text: 23 },
+
+    ]
+
     useEffect(async () => {
         const newTasks = await refetch()
         moveMyTask(parseQueryData(newTasks.data.getWeek))
     }, [user])
+
+    const _updateBlock = (editedEvent) => {
+        updateBlock({
+            variables: {
+                blockID: editedEvent.id,
+                name: editedEvent.name,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                onCalendar: editedEvent.onCalendar,
+                startTime: editedEvent.startTime,
+                endTime: editedEvent.endTime,
+                Day: editedEvent.Day,
+                isReview: editedEvent.isReview,
+                repeated: editedEvent.repeated
+            }
+        })
+    }
+
+    const _addBlock = async (editedEvent) => {
+        const b = await addBlock({
+            variables: {
+                name: editedEvent.name,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                onCalendar: editedEvent.onCalendar,
+                startTime: editedEvent.startTime,
+                endTime: editedEvent.endTime,
+                Day: editedEvent.Day,
+                isReview: editedEvent.isReview,
+                repeated: editedEvent.repeated
+            }
+        })
+        return b.data.addBlock.id
+    }
 
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
@@ -114,6 +176,7 @@ const Week = () => {
             newMyTasks[toColumnIndex].tasks.push(temptask);
             moveMyTask(newMyTasks);
             alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
+            _updateBlock(temptask)
         }
         else if (fromColumnIndex === -1) {
             setFromSide(true);
@@ -124,7 +187,7 @@ const Week = () => {
             setOnCalendar(task.onCalendar);
             setExpiredAfter(task.expiredAfter);
             setBlockExpiresDay(task.blockExpiresDay);
-            const tempname = task.subject;
+            const tempname = task.name;
             const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
             editTodo({
                 columnIndex: toColumnIndex,
@@ -141,6 +204,7 @@ const Week = () => {
         const newMyTasks = [...myTasks];
         newMyTasks[columnIndex].tasks.splice(index, 1);
         moveMyTask(newMyTasks);
+        deleteBlock({ variables: { blockID: id } })
     }
     const addTodo = (title) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
@@ -186,6 +250,10 @@ const Week = () => {
             // I'm Here
             if (!fromSide) {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
+                _updateBlock(editedEvent)
+            }
+            else {
+                editedEvent.id = _addBlock(editedEvent)
             }
 
             const ComputedDay = dateChange ? choosedate : tempDay;
@@ -194,7 +262,9 @@ const Week = () => {
             if (endcolumnIndex !== _columnIndex) {
                 newMyTasks[endcolumnIndex].tasks.push(editedEvent);
             }
-            else newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent);
+            else {
+                newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent);
+            }
 
             moveMyTask(newMyTasks);
 
@@ -207,6 +277,17 @@ const Week = () => {
             setFromSide(false);
         }
     }, [Count])
+
+    const handleOnChangeStart = (e, { value }) => {
+        setStartTime(value);
+        setStartTimeChange(true);
+        console.log(value);
+    }
+    const handleOnChangeEnd = (e, { value }) => {
+        setEndTime(value);
+        setEndTimeChange(true);
+        console.log(value);
+    }
 
 
     return (
@@ -238,8 +319,9 @@ const Week = () => {
                 <Modal.Content>
                     <Form>
                         <Form.Field>
-                            <label> Event Title </label>
-                            <input
+                            <label> Event Title</label>
+                            <Input
+                                error
                                 placeholder={_name}
                                 onChange={event => {
                                     setTitle(event.target.value);
@@ -250,12 +332,12 @@ const Week = () => {
                         <Form.Group widths='equal'>
                             <Form.Field>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <label> Date</label>
                                     <KeyboardDatePicker
                                         disableToolbar
                                         variant="inline"
                                         format="yyyy-MM-dd"
                                         id="date-picker-inline"
-                                        label="Date"
                                         value={dateChange ? choosedate : moment(new Date).add(_columnIndex, 'days')}
                                         onChange={(date) => {
                                             setChoosedate(date);
@@ -268,36 +350,26 @@ const Week = () => {
                                 </MuiPickersUtilsProvider>
                             </Form.Field>
                             <Form.Field>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        id="time-picker"
-                                        label="Start Time"
-                                        value={startTime}
-                                        onChange={(date) => {
-                                            setStartTime(date);
-                                            setStartTimeChange(true);
-                                        }}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change time',
-                                        }}
-                                    />
-                                </MuiPickersUtilsProvider>
+                                <label> Start Time</label>
+                                <Dropdown
+                                    placeholder="Start Time"
+                                    fluid
+                                    search
+                                    selection
+                                    options={Clock}
+                                    onChange={handleOnChangeStart}
+                                />
                             </Form.Field>
                             <Form.Field>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardTimePicker
-                                        id="time-picker"
-                                        label="End Time"
-                                        value={endTime}
-                                        onChange={(date) => {
-                                            setEndTime(date);
-                                            setEndTimeChange(true);
-                                        }}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change time',
-                                        }}
-                                    />
-                                </MuiPickersUtilsProvider>
+                                <label> End Time</label>
+                                <Dropdown
+                                    placeholder="End Time"
+                                    fluid
+                                    search
+                                    selection
+                                    options={Clock}
+                                    onChange={handleOnChangeEnd}
+                                />
                             </Form.Field>
                         </Form.Group>
                         <Form.Group widths='equal'>
@@ -374,8 +446,33 @@ const Week = () => {
                         labelPosition='right'
                         onClick={
                             (e) => {
-                                setModalOpen(false);
-                                setCount(Count + 1);
+                                console.log("startTime " + startTime);
+                                console.log("endTime " + endTime);
+                                const GoodTitle = (!title) ? false : ((title.replace(/\s/g, "").length !== 0) ? true : false)
+                                var Message = "";
+
+                                if (!GoodTitle) {
+                                    Message = Message + "Title can't be empty! \n";
+                                }
+                                if (!startTime) {
+                                    Message = Message + "Please choose startTime. \n";
+                                }
+
+                                if (!endTime) {
+                                    Message = Message + "Please choose endTime. \n";
+                                }
+
+                                if (startTime > endTime) {
+                                    Message = Message + "EndTime must >= StartTime";
+                                }
+
+                                if (Message === "") {
+                                    setModalOpen(false);
+                                    setCount(Count + 1);
+                                }
+                                else {
+                                    alert(Message);
+                                }
                             }
                         }
                         content='Confirm'
