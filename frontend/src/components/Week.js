@@ -85,7 +85,7 @@ const Week = ({ handleBlockChange }) => {
     const [desiredStartTime, setDesiredStartTime] = useState();
     const [desiredEndTime, setDesiredEndTime] = useState();
 
-    const eventData = ({ columnIndex, index}) => {
+    const eventData = ({ columnIndex, index }) => {
         const newMyTasks = [...myTasks];
         console.log("Here " + newMyTasks[columnIndex].tasks[index].name);
         console.log("Here " + newMyTasks[columnIndex].tasks[index].Day);
@@ -345,17 +345,29 @@ const Week = ({ handleBlockChange }) => {
                 <Header icon='browser' content='Event' />
                 <Modal.Content>
                     <Form>
-                        <Form.Field>
-                            <label> Event Title</label>
-                            <Input
-                                error
-                                placeholder={desireName}
-                                onChange={event => {
-                                    setTitle(event.target.value);
-                                    setTitleChange(true);
-                                }}
-                            />
-                        </Form.Field>
+                        <Form.Group widths='equal'>
+                            <Form.Field>
+                                <label> Event Title</label>
+                                <Input
+                                    error
+                                    placeholder={desireName}
+                                    onChange={event => {
+                                        setTitle(event.target.value);
+                                        setTitleChange(true);
+                                    }}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label> Tag </label>
+                                <Input
+                                    error
+                                    placeholder={_subject}
+                                    onChange={event => {
+                                        setSubject(event.target.value);
+                                    }}
+                                />
+                            </Form.Field>
+                        </Form.Group>
                         <Form.Group widths='equal'>
                             <Form.Field>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
