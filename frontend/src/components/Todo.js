@@ -23,8 +23,8 @@ import { testTodos } from './../config';
 
 const Todo = () => {
     // const [myTasks, moveMyTask] = useState(tasks);
-    const data = { 'getTodo': testTodos }
-    const loading = true;
+    // const data = { 'getTodo': testTodos }
+    // const loading = true;
 
     const { user } = useContext(AuthContext)
     const {  refetch } = useQuery(GET_TODOS)
@@ -80,7 +80,7 @@ const Todo = () => {
             }
         ];
     }
-    const [myTasks, moveMyTask] = useState(parseQueryData(data.getTodo));
+    const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
     console.log(myTasks)
 
     useEffect(async () => {
