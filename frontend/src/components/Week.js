@@ -255,7 +255,7 @@ const Week = () => {
                 <Modal.Content>
                     <Form>
                         <Form.Field>
-                            <label> Event Title</label>
+                            <label> Event Title </label>
                             <input
                                 placeholder={_name}
                                 onChange={event => {

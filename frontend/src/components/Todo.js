@@ -23,7 +23,7 @@ import { testTodos } from './../config';
 
 const Todo = () => {
     // const [myTasks, moveMyTask] = useState(tasks);
-    // const data = { 'getTodo': testTodos }
+    const data = { 'getTodo': testTodos }
     // const loading = true;
 
     const { user } = useContext(AuthContext)
@@ -81,6 +81,7 @@ const Todo = () => {
         ];
     }
     const [myTasks, moveMyTask] = useState(parseQueryData([{}]));
+    // const [myTasks, moveMyTask] = useState(parseQueryData(data.getTodo));
     console.log(myTasks)
 
     useEffect(async () => {
@@ -209,11 +210,11 @@ const Todo = () => {
                 closeOnEscape={true}
                 closeOnRootNodeClick={true}
             >
-                <Header icon='browser' content='Event' />
+                <Header icon='browser' content='Todo' />
                 <Modal.Content>
                     <Form>
                         <Form.Field>
-                            <label> Event Title</label>
+                            <label> Todo </label>
                             <input
                                 placeholder={_name}
                                 onChange={event => {

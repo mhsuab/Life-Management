@@ -1,5 +1,26 @@
 import React, { useState } from "react";
-import { Icon, Button } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
+
+const cardStyle = (color) => {
+    return {
+        width: '100%',
+        // display: 'inline-block',
+        height: 'auto',
+        background: `${color}`,
+        wordBreak: 'break-all',
+        marginBottom: '10px',
+        padding: '10px 10px',
+        borderRadius: '3px',
+        cursor: 'pointer',
+        display: 'grid',
+        gridTemplateRows: 'auto auto auto',
+        gridGap: '3px'
+    }
+};
+
+const tagStyle = {
+    fontSize: '0.1em'
+}
 
 const Card = ({ task: {
     id,
@@ -20,17 +41,6 @@ const Card = ({ task: {
     const handleOnOver = () => setIsOver(true);
     const handleOnLeave = () => setIsOver(false);
 
-    const cardStyle = {
-        width: '100%',
-        // display: 'inline-block',
-        height: 'auto',
-        background: color,
-        marginBottom: '10px',
-        padding: '10px 10px',
-        borderRadius: '3px',
-        cursor: 'pointer',
-    };
-
     return (
         <div
             onMouseEnter={handleOnOver}
@@ -40,11 +50,14 @@ const Card = ({ task: {
                 <div
                     className={`card`}
                     onClick={() => editTodo({ columnIndex, index, id, name })}
-                    style={cardStyle}
+                    style={cardStyle(color)}
                 >
                     {name}
-                    <Label tag>
+                    <Label style={tagStyle}>
                         {subject}
+                    </Label>
+                    <Label color='orange' style={tagStyle}>
+                        DURATION : {startTime.toString().padStart(2, '0')}~{endTime.toString().padStart(2, '0')}
                     </Label>
                 </div>
                 {isOver ? (

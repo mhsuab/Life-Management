@@ -93,7 +93,7 @@ export const testEmptyBlock = {
         {
             "id": "6026bfe90dade41284ef6fea",
             "userID": "6006bfe90dade41284ef6fe8",
-            "subject": "ttt",
+            "subject": "ttsdfghjkjhgfdfghjklhgfghjkhghjkt",
             "color": "#ef582f"
         }
     ]

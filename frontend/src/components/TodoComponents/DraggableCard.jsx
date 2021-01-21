@@ -4,6 +4,7 @@ import { getEmptyImage } from "react-dnd-html5-backend";
 import { ItemTypes } from "./../../config";
 import Card from "./Card";
 import EmptyBlock from './EmptyBlock';
+import Block from './Block';
 
 const DraggableCard = (props) => {
     const [, dragRef, preview] = useDrag({
@@ -19,11 +20,15 @@ const DraggableCard = (props) => {
                 <div ref={dragRef}>
                     <EmptyBlock {...props} />
                 </div>
+            ) : (props.WEEK ? (
+                <div ref={dragRef}>
+                    <Block {...props} />
+                </div>
             ) : (
                     <div ref={dragRef}>
                         <Card {...props} />
                     </div>
-                )}
+                ))}
         </>
     )
 };
