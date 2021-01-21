@@ -80,6 +80,23 @@ const Week = ({handleBlockChange}) => {
     const Today = moment(new Date).format("YYYY/MM/DD");
     const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
 
+    const [desireName, setDesiredName] = useState();
+    const [desiredDate, setDesiredDate] = useState();
+    const [desiredStartTime, setDesiredStartTime] = useState();
+    const [desiredEndTime, setDesiredEndTime] = useState();
+
+    const eventData = ({ columnIndex, index}) => {
+        const newMyTasks = [...myTasks];
+        console.log("Here " + newMyTasks[columnIndex].tasks[index].name);
+        console.log("Here " + newMyTasks[columnIndex].tasks[index].Day);
+        console.log("Here " + newMyTasks[columnIndex].tasks[index].startTime);
+        console.log("Here " + newMyTasks[columnIndex].tasks[index].endTime);
+        setDesiredName(newMyTasks[columnIndex].tasks[index].name);
+        setDesiredDate(newMyTasks[columnIndex].tasks[index].Day);
+        setDesiredStartTime(newMyTasks[columnIndex].tasks[index].startTime);
+        setDesiredEndTime(newMyTasks[columnIndex].tasks[index].endTime);
+    }
+
     const Clock = [
         { key: 0, value: 0, text: 0 },
         { key: 1, value: 1, text: 1 },
@@ -224,6 +241,10 @@ const Week = ({handleBlockChange}) => {
         setId(id);
         setName(name);
 
+        if (index != -1) {
+            eventData({ columnIndex, index });
+        }
+
         setModalOpen(true);
     }
 
@@ -328,7 +349,7 @@ const Week = ({handleBlockChange}) => {
                             <label> Event Title</label>
                             <Input
                                 error
-                                placeholder={_name}
+                                placeholder={desireName}
                                 onChange={event => {
                                     setTitle(event.target.value);
                                     setTitleChange(true);
@@ -359,7 +380,7 @@ const Week = ({handleBlockChange}) => {
                             <Form.Field>
                                 <label> Start Time</label>
                                 <Dropdown
-                                    placeholder="Start Time"
+                                    placeholder={desiredStartTime}
                                     fluid
                                     search
                                     selection
@@ -370,7 +391,7 @@ const Week = ({handleBlockChange}) => {
                             <Form.Field>
                                 <label> End Time</label>
                                 <Dropdown
-                                    placeholder="End Time"
+                                    placeholder={desiredEndTime}
                                     fluid
                                     search
                                     selection
@@ -461,13 +482,7 @@ const Week = ({handleBlockChange}) => {
                                 if (!GoodTitle) {
                                     Message = Message + "Title can't be empty! \n";
                                 }
-                                if (!startTime) {
-                                    Message = Message + "Please choose startTime. \n";
-                                }
 
-                                if (!endTime) {
-                                    Message = Message + "Please choose endTime. \n";
-                                }
 
                                 if (startTime > endTime) {
                                     Message = Message + "EndTime must >= StartTime";
