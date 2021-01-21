@@ -4,10 +4,8 @@ import { Icon, Label } from 'semantic-ui-react';
 const cardStyle = (color) => {
     return {
         width: '100%',
-        // display: 'inline-block',
         height: 'auto',
         background: `${color}`,
-        wordBreak: 'break-all',
         marginBottom: '10px',
         padding: '10px 10px',
         borderRadius: '3px',
@@ -17,6 +15,12 @@ const cardStyle = (color) => {
         gridGap: '3px'
     }
 };
+
+const textStyle = {
+    wordBreak: 'break-all',
+    mixBlendMode: 'difference',
+    color: '#fff'
+}
 
 const tagStyle = {
     fontSize: '0.1em'
@@ -52,7 +56,7 @@ const Card = ({ task: {
                     onClick={() => editTodo({ columnIndex, index, id, name })}
                     style={cardStyle(color)}
                 >
-                    {name}
+                    <div style={ textStyle }> {name} </div>
                     <Label style={tagStyle}>
                         {subject}
                     </Label>
