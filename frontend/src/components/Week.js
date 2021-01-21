@@ -89,6 +89,40 @@ const Week = () => {
         console.log(myTasks)
     }, [user])
 
+    const _updateBlock = (editedEvent) => {
+        updateBlock({
+            variables: {
+                blockID: editedEvent.id,
+                name: editedEvent.name,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                onCalendar: editedEvent.onCalendar,
+                startTime: editedEvent.startTime,
+                endTime: editedEvent.endTime,
+                Day: editedEvent.Day,
+                isReview: editedEvent.isReview,
+                repeated: editedEvent.repeated
+            }
+        })
+    }
+
+    const _addBlock = async (editedEvent) => {
+        const b = await addBlock({
+            variables: {
+                name: editedEvent.name,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                onCalendar: editedEvent.onCalendar,
+                startTime: editedEvent.startTime,
+                endTime: editedEvent.endTime,
+                Day: editedEvent.Day,
+                isReview: editedEvent.isReview,
+                repeated: editedEvent.repeated
+            }
+        })
+        return b.data.addBlock.id
+    }
+
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
@@ -122,6 +156,7 @@ const Week = () => {
             newMyTasks[toColumnIndex].tasks.push(temptask);
             moveMyTask(newMyTasks);
             alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
+            _updateBlock(temptask)
         }
         else if (fromColumnIndex === -1) {
             setFromSide(true);
@@ -151,6 +186,7 @@ const Week = () => {
         const newMyTasks = [...myTasks];
         newMyTasks[columnIndex].tasks.splice(index, 1);
         moveMyTask(newMyTasks);
+        deleteBlock({ variables: { blockID: id } })
     }
     const addTodo = (title) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
@@ -202,6 +238,10 @@ const Week = () => {
             // I'm Here
             if (!fromSide) {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
+                _updateBlock(editedEvent)
+            }
+            else {
+                editedEvent.id = _addBlock(editedEvent)
             }
 
             const ComputedDay = dateChange ? choosedate : tempDay;
@@ -211,7 +251,9 @@ const Week = () => {
             if (endcolumnIndex !== _columnIndex) {
                 newMyTasks[endcolumnIndex].tasks.push(editedEvent);
             }
-            else newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent);
+            else {
+                newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent);
+            }
 
             moveMyTask(newMyTasks);
 

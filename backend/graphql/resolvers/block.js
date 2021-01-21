@@ -58,6 +58,7 @@ module.exports = {
     },
     Mutation: {
         addBlock: async (_, { block }, { request, pubsub }) => {
+            console.log(block)
             const { userID, calendarExpiresDay, blockExpiresDay } = checkAuth(request);
             const addBlock = await Block.create({
                 userID,
@@ -109,6 +110,7 @@ module.exports = {
             return delBlock;
         },
         updateBlock: async (_, { blockID, block }, { request, pubsub }) => {
+            console.log(block)
             const { userID } = checkAuth(request);
             const upBlock = await Block.findOneAndUpdate(
                 {
