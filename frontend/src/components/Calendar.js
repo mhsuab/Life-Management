@@ -23,7 +23,6 @@ const Calendar = () => {
         console.log(act.data.getMonth)
         seetEvents(parseMonthData(act.data.getMonth))
     }, [user])
-
     const parseMonthData = (calendar_data) => {
         const target = moment(new Date(thisMonth)).format("YYYY/MM/DD");
         return [...Array(new Date(thisMonth.slice(0, 4), thisMonth.slice(-2), 0).getDate()).keys()].reduce((accumulator, day) => {
@@ -48,7 +47,6 @@ const Calendar = () => {
                 aspectRatio="1"
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
-                // dateClick={handleDateClick}
                 editable={true}
                 headerToolbar={{
                     left: "",
@@ -57,8 +55,9 @@ const Calendar = () => {
                 }}
                 events={events}
             />
+            { !loading ? parseMonthData(data.getMonth): []}
         </div>
     )
 }
 
-export default Calendar
+export default Calendar;

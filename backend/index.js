@@ -44,8 +44,8 @@ const startServer = async () => {
 
     db.once('open', () => {
         console.log('MongoDB connected!')
-        // server.start({ port: process.env.PORT | 4000 }, () => {
-        server.start({ port: process.env.PORT | 4000, playground: (process.env.NODE_ENV !== 'production') }, () => {
+        server.start({ port: process.env.PORT | 4000 }, () => {
+        // server.start({ port: process.env.PORT | 4000, playground: (process.env.NODE_ENV !== 'production') }, () => {
             console.log(`🚀 Server ready at http://localhost:${process.env.PORT | 4000}; MODE: ${process.env.NODE_ENV}`)
         })
     });

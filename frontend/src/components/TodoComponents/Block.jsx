@@ -23,7 +23,8 @@ const textStyle = {
 }
 
 const tagStyle = {
-    fontSize: '0.1em'
+    fontSize: '0.1em',
+    wordBreak: 'break-all',
 }
 
 const Card = ({ task: {
@@ -39,7 +40,7 @@ const Card = ({ task: {
     repeated,
     expiredAfter,
     blockExpiresDay
-}, columnIndex, index, delIconClick, editTodo }) => {
+}, columnIndex, index, delIconClick, editTodo, DRAG }) => {
     const [isOver, setIsOver] = useState(false);
 
     const handleOnOver = () => setIsOver(true);
