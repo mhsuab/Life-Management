@@ -82,6 +82,6 @@ export const GET_WEEK_BLOCKS = gql`
 
 export const GET_MONTH_CALENDAR = gql`
     query getMonth($month: String!) {
-        getMonth(date: $date)
+        getMonth(month: $month)
     }
 `;

@@ -16,6 +16,7 @@ import { TwitterPicker, CirclePicker } from 'react-color';
 
 import './Todo.scss';
 
+
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
@@ -59,30 +60,33 @@ const Week = () => {
     const [fromSide, setFromSide] = useState(false)
 
     const [myTasks, moveMyTask] = useState([]);
-    const Today = moment(new Date).format("YYYY/MM/DD");
-    const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
     const { user } = useContext(AuthContext)
     const [ updateBlock ] = useMutation(UPDATE_BLOCK)
     const [ deleteBlock ] = useMutation(DELETE_BLOCK)
     const [ addBlock ] = useMutation(ADD_BLOCK)
+    const Today = moment(new Date).format("YYYY/MM/DD");
+    const { refetch } = useQuery(GET_WEEK_BLOCKS, { variables: { date: Today } })
     
     useEffect(async () => {
         const newTasks = await refetch()
         console.log(newTasks)
-        parseQueryData(newTasks.data.getWeek)
+        moveMyTask(parseQueryData(newTasks.data.getWeek))
+        console.log(myTasks)
     }, [user])
 
     const parseQueryData = (tasks) => {
         const newTasks = []
+        console.log(tasks)
         for(let i = 0; i < 7; ++i) {
             newTasks[i] = {
                 title: moment(new Date).add(i, 'days').format("MM/DD"),
                 tasks: tasks.filter(task => {
-                    return task.day === moment(new Date).add(i, 'days').format("YYYY/MM/DD")
+                    return task.Day === moment(new Date).add(i, 'days').format("YYYY/MM/DD")
                 })
             }
         }
-        moveMyTask(newTasks)
+        console.log(newTasks)
+        return newTasks
     }
 
     const handleMoveMyTask = (from, to) => {
