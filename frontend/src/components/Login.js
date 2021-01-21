@@ -36,7 +36,7 @@ const LoginForm = (props) => {
         password: ''
     });
 
-    const [loginUser, { loading }] = useMutation(LOGIN, {
+    const [loginUser] = useMutation(LOGIN, {
         update(
             _,
             {

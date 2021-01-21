@@ -12,7 +12,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import DateFnsUtils from '@date-io/date-fns';
 import moment from "moment"
-import { TwitterPicker, CirclePicker } from 'react-color';
+import { CirclePicker } from 'react-color';
 
 import './Todo.scss';
 
@@ -20,7 +20,6 @@ import './Todo.scss';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
-import { testTodos } from './../config';
 
 const Week = ({ handleBlockChange }) => {
     // const data = { 'getTodo': testTodos }
@@ -196,7 +195,6 @@ const Week = ({ handleBlockChange }) => {
             }
             newMyTasks[toColumnIndex].tasks.push(temptask);
             moveMyTask(newMyTasks);
-            alert('Task Deadline is changed to ' + moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"));
             _updateBlock(temptask)
         }
         else if (fromColumnIndex === -1) {
@@ -232,7 +230,6 @@ const Week = ({ handleBlockChange }) => {
     const addTodo = (title) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
-        alert('add ' + title);
     }
 
     const editTodo = ({ columnIndex, index, id, name }) => {

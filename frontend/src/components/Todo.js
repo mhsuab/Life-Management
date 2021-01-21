@@ -3,23 +3,20 @@ import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
 import CustomDragLayer from "./TodoComponents/CustomDragLayer";
-import { Modal, Header, Form, Input, TextArea, Button, Select, Icon, Message } from 'semantic-ui-react'
-import { TwitterPicker, CirclePicker } from 'react-color';
+import { Modal, Header, Form, Button } from 'semantic-ui-react'
+import { CirclePicker } from 'react-color';
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import "react-datepicker/dist/react-datepicker.css";
 import DateFnsUtils from '@date-io/date-fns';
-import moment from "moment"
 
 import './Todo.scss';
 
 import { GET_TODOS, ADD_TODO, DELETE_TODO, UPDATE_TODO, } from '../graphql';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { AuthContext } from '../context/auth';
-import { testTodos } from './../config';
 
 const Todo = () => {
     const { user } = useContext(AuthContext)
@@ -32,10 +29,6 @@ const Todo = () => {
     const [_columnIndex, setColumnIndex] = useState()
     const [_index, setIndex] = useState()
     const [_id, setId] = useState()
-    const [_category, setCategory] = useState()
-    const [_color, setcolor] = useState()
-    const [_completedDay, setCompletedDay] = useState()
-    const [_deadLine, setDeadLine] = useState()
     const [_name, setName] = useState()
     const [_subject, setSubject] = useState()
     const [_userid, setUserId] = useState()
@@ -44,13 +37,10 @@ const Todo = () => {
 
     const [modalOpen, setModalOpen] = useState(false)
     const [choosedate, setChoosedate] = useState((new Date()).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
-    const [startDate, setStartDate] = useState((new Date()).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
 
-    const [dateChange, setDateChange] = useState(false)
-    const [startChange, setStartChange] = useState(false)
     const [colorChange, setColorChange] = useState(false)
     const [titleChange, setTitleChange] = useState(false)
 
@@ -252,7 +242,6 @@ const Todo = () => {
                                         value={choosedate}
                                         onChange={(date) => {
                                             setChoosedate(date);
-                                            setDateChange(true);
                                         }}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',

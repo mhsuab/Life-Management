@@ -39,7 +39,6 @@ const sideBarStyle = {
 const MainPage = () => {
     const [modified, setModified] = useState(0);
     const handleBlockChange = () => {
-        console.log({'handle-modified': modified})
         setModified((modified > 100)? 0: modified + 1);
     };
 
