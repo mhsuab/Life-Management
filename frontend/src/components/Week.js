@@ -29,10 +29,10 @@ const Week = ({ handleBlockChange }) => {
     const [_id, setId] = useState()
     const [_userid, setUserid] = useState()
     const [_name, setName] = useState()
-    const [_subject, setSubject] = useState()
     const [_color, setcolor] = useState()
     const [_expiredAfter, setExpiredAfter] = useState()
     const [_blockExpiresDay, setBlockExpiresDay] = useState()
+    const [_subject, setsubject] = useState()
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -42,6 +42,7 @@ const Week = ({ handleBlockChange }) => {
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState()
+    const [subject, setSubject] = useState()
     const [onCalendar, setOnCalendar] = useState(false)
     const [isReview, setIsReview] = useState(false)
     const [repeated, setRepeated] = useState(0)
@@ -56,6 +57,7 @@ const Week = ({ handleBlockChange }) => {
     const [colorChange, setColorChange] = useState(false)
     const [titleChange, setTitleChange] = useState(false)
     const [RepeatedChange, setRepeatedChange] = useState(false)
+    const [SubjectChange, setSubjectChange] = useState(false)
 
     const [fromSide, setFromSide] = useState(false)
 
@@ -84,6 +86,7 @@ const Week = ({ handleBlockChange }) => {
     const [desiredDate, setDesiredDate] = useState();
     const [desiredStartTime, setDesiredStartTime] = useState();
     const [desiredEndTime, setDesiredEndTime] = useState();
+    const [desiredSubject, setDesiredSubject] = useState(false);
 
     const eventData = ({ columnIndex, index }) => {
         const newMyTasks = [...myTasks];
@@ -91,10 +94,12 @@ const Week = ({ handleBlockChange }) => {
         console.log("Here " + newMyTasks[columnIndex].tasks[index].Day);
         console.log("Here " + newMyTasks[columnIndex].tasks[index].startTime);
         console.log("Here " + newMyTasks[columnIndex].tasks[index].endTime);
+        console.log("Here " + newMyTasks[columnIndex].tasks[index].subject);
         setDesiredName(newMyTasks[columnIndex].tasks[index].name);
         setDesiredDate(newMyTasks[columnIndex].tasks[index].Day);
         setDesiredStartTime(newMyTasks[columnIndex].tasks[index].startTime);
         setDesiredEndTime(newMyTasks[columnIndex].tasks[index].endTime);
+        setDesiredSubject(newMyTasks[columnIndex].tasks[index].subject);
     }
 
     const Clock = [
@@ -201,6 +206,7 @@ const Week = ({ handleBlockChange }) => {
             setFromSide(true);
             const tempid = task.id;
             setUserid(task.userID);
+            setsubject(task.subject);
             setSubject(task.subject);
             setcolor('#fff');
             setOnCalendar(false);
@@ -260,7 +266,7 @@ const Week = ({ handleBlockChange }) => {
                 id: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 userID: fromSide ? _id : newMyTasks[_columnIndex].tasks[_index].userID,
                 name: fromSide ? (titleChange ? title : _name) : (titleChange ? title : newMyTasks[_columnIndex].tasks[_index].name),
-                subject: fromSide ? _subject : newMyTasks[_columnIndex].tasks[_index].subject,
+                subject: fromSide ? (SubjectChange ? subject : _subject) : (SubjectChange ? subject : newMyTasks[_columnIndex].tasks[_index].subject),
                 color: fromSide ? (colorChange ? color : _color) : (colorChange ? color : newMyTasks[_columnIndex].tasks[_index].color),
                 onCalendar: onCalendar,
                 startTime: startTime,
@@ -300,6 +306,7 @@ const Week = ({ handleBlockChange }) => {
             setEndTimeChange(false);
             setColorChange(false);
             setTitleChange(false);
+            setSubjectChange(false);
             setRepeatedChange(false);
             setFromSide(false);
         }
@@ -361,9 +368,10 @@ const Week = ({ handleBlockChange }) => {
                                 <label> Tag </label>
                                 <Input
                                     error
-                                    placeholder={_subject}
+                                    placeholder={(!desiredSubject) ? _subject : desiredSubject}
                                     onChange={event => {
                                         setSubject(event.target.value);
+                                        setSubjectChange(true);
                                     }}
                                 />
                             </Form.Field>
