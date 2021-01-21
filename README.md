@@ -6,7 +6,7 @@
     - 電機四 B06901006 毛慕庭
     - 電機四 B06901013 黃珮欣
 ## Deployed link: [http://www.mhsuab.tw/](http://www.mhsuab.tw/)
-## Demo 影片連結：
+## Demo 影片連結： [影片](https://youtu.be/t-fYYjHhSO0)
 ## 服務內容
 提供使用者私人之整合月曆、週曆、筆記欄以及代辦事項之多功能行事曆，讓使用者可依需求迅速取得所需資訊，並協助隨時掌握其排程。
 ## 使用/操作方式：
@@ -31,7 +31,8 @@
 - 瀏覽器支援:Google Chrome, Microsoft Edge, Safari
 - 裝置建議:桌上型電腦、筆記型電腦(若使用手機請以橫向觀看)
 
-## 專題製作心得:身在幾乎從小就能接觸網路的時代，使用的網頁順暢精美根本就是default。雖然在修課之前就很常聽到有關於網頁工程師的笑話，然而直到與網頁撰寫的相處漸深，才真能體會其中的荒謬、無奈、複雜與成就感。在專題製作的過程中，真的能感受到網頁撰寫的「大勢」與現代資訊之繁雜。當網路上充滿了yarn一下就能取得的精美package，Error一搜就有撲天蓋地的零碎「解答」，每天滑過的每個網頁都精美而成熟，要怎麼在完成專案的同時「覺得自由」就是件十分值得思考的事情。
+## 專題製作心得
+身在幾乎從小就能接觸網路的時代，使用的網頁順暢精美根本就是default。雖然在修課之前就很常聽到有關於網頁工程師的笑話，然而直到與網頁撰寫的相處漸深，才真能體會其中的荒謬、無奈、複雜與成就感。在專題製作的過程中，真的能感受到網頁撰寫的「大勢」與現代資訊之繁雜。當網路上充滿了yarn一下就能取得的精美package，Error一搜就有撲天蓋地的零碎「解答」，每天滑過的每個網頁都精美而成熟，要怎麼在完成專案的同時「覺得自由」就是件十分值得思考的事情。
 ### 使用之第三方套件、框架、程式碼
 #### 第三方套件、框架
 - Front end
@@ -57,6 +58,19 @@
     - 參考 `react-express-mongodb` 中 Dockerfile, docker-compose.yml 的寫法
 - [classsed-graphql-mern-apollo](https://github.com/hidjou/classsed-graphql-mern-apollo)
     - 參考 jwt authentication 的部分
-
+    
 ### 分工
-- 
+- 徐敏倩
+    - Backend
+    - Frontend
+    - Debug
+    - Deploy
+    - UI Design
+- 毛慕庭
+    - Frontend
+    - UI Design
+    - Debug
+- 黃珮欣
+    - Authorization
+    - Access DB
+    - Debug
