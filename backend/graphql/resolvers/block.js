@@ -58,7 +58,6 @@ module.exports = {
     },
     Mutation: {
         addBlock: async (_, { block }, { request, pubsub }) => {
-            console.log(block)
             const { userID, calendarExpiresDay, blockExpiresDay } = checkAuth(request);
             const addBlock = await Block.create({
                 userID,
@@ -69,6 +68,7 @@ module.exports = {
                 throw new Error(err);
             })
             if (addBlock.onCalendar) {
+                console.log('addblock');
                 await (pubsub.publish('calendar', {
                     updateCalendar: {
                         type: 'ADDED',

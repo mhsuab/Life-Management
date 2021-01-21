@@ -2,6 +2,7 @@ import React from "react";
 import { useDragLayer } from "react-dnd";
 import { ItemTypes } from "./../../config";
 import Card from "./Card";
+import Block from './Block';
 
 const layerStyles = {
     position: "fixed",
