@@ -55,7 +55,7 @@ const Calendar = () => {
                 }}
                 events={events}
             />
-            { !loading ? parseMonthData(data.getMonth): []}
+            {/* { !loading ? parseMonthData(data.getMonth): []} */}
         </div>
     )
 }

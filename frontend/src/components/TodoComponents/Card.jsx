@@ -38,7 +38,7 @@ const Card = ({ task: {
     subject,
     color,
     deadLine
-}, columnIndex, index, delIconClick, editTodo }) => {
+}, columnIndex, index, delIconClick, editTodo }, WEEK) => {
     if (color === '#607d8b') color = '#90afff';
     const [isOver, setIsOver] = useState(false);
 
@@ -56,14 +56,16 @@ const Card = ({ task: {
                     onClick={() => editTodo({ columnIndex, index, id, name })}
                     style={cardStyle(color)}
                 >
-                    <div style={ textStyle }> {name} </div>
+                    <div style={textStyle}> {name} </div>
                     <Label.Group>
                         <Label style={tagStyle}>
                             {subject}
                         </Label>
-                        <Label color='red' style={deadLineStyle}>
-                            DEADLINE : {deadLine}
-                        </Label>
+                        {WEEK ? (<></>) : (
+                            <Label color='red' style={deadLineStyle}>
+                                DEADLINE : {deadLine}
+                            </Label>
+                        )}
                     </Label.Group>
                 </div>
                 {isOver ? (

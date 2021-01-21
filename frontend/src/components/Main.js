@@ -15,7 +15,7 @@ const mainStyle = {
 const leftStyle = {
     padding: '2vh',
     display: 'grid',
-    gridTemplateRows: '40% 60%',
+    gridTemplateRows: '50% 50%',
     gridGap: '1vh'
 }
 
@@ -28,7 +28,7 @@ const rightStyle = {
     gridGap: '1vh',
 }
 
-const tmpStyle = {
+const sideBarStyle = {
     display: 'grid',
     background: mainBackground,
     width: '100vw',
@@ -38,7 +38,7 @@ const tmpStyle = {
 
 const MainPage = () => {
     return (
-        <div style={tmpStyle}>
+        <div style={sideBarStyle}>
             <div style={mainStyle}>
                 <div style={leftStyle}>
                     <Calendar />
