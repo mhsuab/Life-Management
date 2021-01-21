@@ -21,7 +21,7 @@ const titleStyle = {
 
 const columnStyle = {
     width: 350,
-    height: 500,
+    height: 550,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -35,9 +35,9 @@ const RegisterForm = (props) => {
         username: '',
         password: '',
         confirmPassword: '',
-        todoExpiresDay: 10,
-        calendarExpiresDay: 10,
-        blockExpiresDay: 10,
+        todoExpiresDay: '',
+        calendarExpiresDay: '',
+        blockExpiresDay: '',
         notificationTime: 23
     });
 
@@ -54,7 +54,12 @@ const RegisterForm = (props) => {
         onError(err) {
             alert(err)
         },
-        variables: values
+        variables: {
+            ...values,
+            todoExpiresDay: parseInt(values.todoExpiresDay),
+            calendarExpiresDay: parseInt(values.calendarExpiresDay),
+            blockExpiresDay: parseInt(values.blockExpiresDay)
+        }
     });
 
     function registerUser() {
@@ -101,6 +106,37 @@ const RegisterForm = (props) => {
                             value={values.confirmPassword}
                             onChange={onChange}
                         />
+                        <Label.Group width='equal'>
+                            <Label width={2}> todo expire </Label>
+                            <Label width={2}> calendar expire </Label>
+                            <Label width={2}> event expire </Label>
+                        </Label.Group>
+                        <Form.Group widths='equal'>
+                            <Form.Input
+                                placeholder='days'
+                                name='todoExpiresDay'
+                                type='text'
+                                value={values.todoExpiresDay}
+                                onChange={onChange}
+                                width={2}
+                            />
+                            <Form.Input
+                                placeholder='days'
+                                name='calendarExpiresDay'
+                                type='text'
+                                value={values.calendarExpiresDay}
+                                onChange={onChange}
+                                width={2}
+                            />
+                            <Form.Input
+                                placeholder='days'
+                                name='blockExpiresDay'
+                                type='text'
+                                value={values.blockExpiresDay}
+                                onChange={onChange}
+                                width={2}
+                            />
+                        </Form.Group>
                         <Button color='teal' type='submit' fluid>
                             Register
                     </Button>
