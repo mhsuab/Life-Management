@@ -47,6 +47,25 @@ $rounded: 3px;
   }
 }
 
+.column-sidebar {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-right: 2px;
+  padding: 12px;
+  border-radius: $rounded;
+  overflow: auto;
+
+  &:last-of-type {
+    margin-right: 0
+  }
+  
+  &__title {
+    font-weight: bold;
+    margin: 5px 0 20px;
+  }
+}
+
 .column__cards {
     overflow-x: hidden;
     overflow-y: auto;
