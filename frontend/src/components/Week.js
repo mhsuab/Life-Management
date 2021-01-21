@@ -36,7 +36,7 @@ const Week = () => {
     const firstUpdate = useRef(true);
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [choosedate, setChoosedate] = useState(moment(new Date).add(_columnIndex, 'days'))
+    const [choosedate, setChoosedate] = useState(moment(new Date).add(_columnIndex, 'days').format("YYYY/MM/DD"))
     const [startTime, setStartTime] = useState(false)
     const [endTime, setEndTime] = useState(false)
     const [Count, setCount] = useState(0)
@@ -167,7 +167,7 @@ const Week = () => {
                 onCalendar: task.onCalendar,
                 startTime: task.startTime,
                 endTime: task.endTime,
-                Day: moment(new Date).add(toColumnIndex, 'days').format("YYYY-MM-DD"),
+                Day: moment(new Date).add(toColumnIndex, 'days').format("YYYY/MM/DD"),
                 isReview: task.isReview,
                 repeated: task.repeated,
                 expiredAfter: task.expiredAfter,
@@ -183,10 +183,10 @@ const Week = () => {
             const tempid = task.id;
             setUserid(task.userID);
             setSubject(task.subject);
-            setcolor(task.color);
-            setOnCalendar(task.onCalendar);
-            setExpiredAfter(task.expiredAfter);
-            setBlockExpiresDay(task.blockExpiresDay);
+            setcolor('#fff');
+            setOnCalendar(false);
+            setExpiredAfter(10);
+            setBlockExpiresDay(10);
             const tempname = task.name;
             const tempindex = newMyTasks[toColumnIndex].tasks.length - 1;
             editTodo({
@@ -253,7 +253,10 @@ const Week = () => {
                 _updateBlock(editedEvent)
             }
             else {
-                editedEvent.id = _addBlock(editedEvent)
+                _addBlock(editedEvent).then ( success => {
+                    console.log(success)
+                    editedEvent.id = success
+                })
             }
 
             const ComputedDay = dateChange ? choosedate : tempDay;
@@ -338,9 +341,10 @@ const Week = () => {
                                         variant="inline"
                                         format="yyyy-MM-dd"
                                         id="date-picker-inline"
-                                        value={dateChange ? choosedate : moment(new Date).add(_columnIndex, 'days')}
+                                        value={dateChange ? choosedate : moment(new Date).add(_columnIndex, 'days').format("YYYY/MM/DD")}
                                         onChange={(date) => {
-                                            setChoosedate(date);
+                                            console.log(date.toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
+                                            setChoosedate(date.toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}));
                                             setDateChange(true);
                                         }}
                                         KeyboardButtonProps={{

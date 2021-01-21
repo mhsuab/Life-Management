@@ -131,6 +131,7 @@ const Todo = () => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
         //alert('add ' + title);
+        console.log("columnIndex " + columnIndex);
         setNewEvent(true);
         editTodo({ columnIndex, index, id, name });
     }
@@ -167,19 +168,22 @@ const Todo = () => {
             return;
         }
         else {
+            console.log(_columnIndex)
             const newMyTasks = [...myTasks];
             const editedEvent = {
-                category: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].category,
-                color: colorChange ? color : (newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].color),
+                category: newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' :'Completed')) : newMyTasks[_columnIndex].tasks[_index].category,
+                color: colorChange ? color : (newEvent ? '#555555' : newMyTasks[_columnIndex].tasks[_index].color),
                 completedDay: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].completedDay,
                 deadLine: choosedate,
                 id: newEvent ? _id : newMyTasks[_columnIndex].tasks[_index].id,
                 name: titleChange ? title : (newEvent ? (_columnIndex === 0 ? 'Todo' : (_columnIndex === 1 ? 'Doing' : 'Completed')) : newMyTasks[_columnIndex].tasks[_index].name),
-                subject: newEvent ? '' : newMyTasks[_columnIndex].tasks[_index].subject,
+                subject: newEvent ? 'new' : newMyTasks[_columnIndex].tasks[_index].subject,
                 userID: newEvent ? _userid : newMyTasks[_columnIndex].tasks[_index].userID
             };
             if (newEvent) {
-                editedEvent.id = _addTodo(editedEvent)
+                _addTodo(editedEvent).then ( success => {
+                    editedEvent.id = success
+                })
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
             }
             else {
