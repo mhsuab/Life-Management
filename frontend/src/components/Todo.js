@@ -261,7 +261,7 @@ const Todo = () => {
                                 </MuiPickersUtilsProvider>
                             </Form.Field>
                             <Form.Field>
-                                <label> subject </label>
+                                <label> Tag </label>
                                 <input
                                     placeholder={_subject}
                                     onChange={event => {
