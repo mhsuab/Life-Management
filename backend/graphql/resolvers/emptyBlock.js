@@ -17,6 +17,7 @@ module.exports = {
     },
     Mutation: {
         addEmptyBlock: async (_, { emptyBlockInput }, { request }) => {
+            console.log(emptyBlockInput)
             // NOTE: return the added empty block
             const { userID } = checkAuth(request);
             const newEmptyBlock = await EmptyBlock.create({
@@ -39,6 +40,7 @@ module.exports = {
             return delEmptyBlock;
         },
         updateEmptyBlock: async (_, { emptyBlockID, emptyBlockInput }, { request }) => {
+            console.log(emptyBlockInput)
             // NOTE: return the updated Empty Block
             const { userID } = checkAuth(request);
             const upEmptyBlock = await EmptyBlock.findOneAndUpdate(

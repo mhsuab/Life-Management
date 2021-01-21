@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import HTML5backend from "react-dnd-html5-backend";
 import Column from "./TodoComponents/Column";
@@ -10,13 +10,17 @@ import './Todo.scss';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { GET_EMPTY_BLOCKS, ADD_EMPTY_BLOCK, DELETE_EMPTY_BLOCK, UPDATE_EMPTY_BLOCK } from '../graphql'
 import { AuthContext } from '../context/auth';
+import { testTodos, testEmptyBlock } from './../config';
+
 
 const Todo = () => {
-    const { user } = useContext(AuthContext)
-    const {  refetch } = useQuery(GET_EMPTY_BLOCKS)
-    const [ updateEmpty ] = useMutation(UPDATE_EMPTY_BLOCK)
-    const [ deleteEmpty ] = useMutation(DELETE_EMPTY_BLOCK)
-    const [ addEmpty ] = useMutation(ADD_EMPTY_BLOCK)
+    // const { user } = useContext(AuthContext)
+    // const {  refetch } = useQuery(GET_TODOS)
+    // const [ updateEmpty ] = useMutation(UPDATE_EMPTY_BLOCK)
+    // const [ deleteEmpty ] = useMutation(DELETE_EMPTY_BLOCK)
+    // const [ addEmpty ] = useMutation(ADD_EMPTY_BLOCK)
+    const loading = true;
+    const data = testEmptyBlock
 
     const parseQueryData = (todos) => {
         return {
@@ -24,12 +28,7 @@ const Todo = () => {
             tasks: todos
         };
     }
-    const [myTasks, moveMyTask] = useState(parseQueryData([]));
-
-    useEffect(async () => {
-        const e = await refetch()
-        moveMyTask(parseQueryData(e.data.getEmptyBlock))
-    }, [user])
+    const [myTasks, moveMyTask] = useState(parseQueryData(data.getEmptyBlock));
 
     const [modalOpen, setModalOpen] = useState(false)
     const firstUpdate = useRef(true);
@@ -49,6 +48,7 @@ const Todo = () => {
     const [subjectChange, setSubjectChange] = useState(false)
     const [colorChange, setColorChange] = useState(false)
 
+    const [newEvent, setNewEvent] = useState(false)
     const [del, setDel] = useState(false)
 
     const handleMoveMyTask = (from, to) => {
@@ -73,14 +73,6 @@ const Todo = () => {
         // newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // // move task
         // newMyTasks[toColumnIndex].tasks.push(task);
-        console.log("Handle move empty block")
-        updateEmpty({
-            variables: {
-                emptyBlockID: temptask.id,
-                subject: temptask.subject,
-                color: temptask.color
-            }
-        })
         moveMyTask(newMyTasks);
     };
 
@@ -92,21 +84,17 @@ const Todo = () => {
         setCount(Count + 1);
         newMyTasks.tasks.splice(index, 1);
         moveMyTask(newMyTasks);
-        deleteEmpty({
-            variables: {
-                emptyBlockID: id
-            }
-        })
     }
 
-    const addTodo = ({ columnIndex, index, id, name }) => {
+    const addTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
         // alert('add ' + title);
-        editTodo({ columnIndex, index, id, name });
+        setNewEvent(true);
+        editTodo({ index, id, name });
     }
 
-    const editTodo = ({ columnIndex, index, id, name }) => {
+    const editTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: trigger input form
         //alert('edit ' + name);
@@ -114,18 +102,9 @@ const Todo = () => {
         setIndex(index);
         setId(id);
         setName(name);
+        setNewEvent(false);
         setModalOpen(true);
 
-    }
-
-    const _addEmpty = async (newEmpty) => {
-        const e = await addEmpty({
-            variables: {
-                subject: newEmpty.subject,
-                color: newEmpty.color
-            }
-        })
-        return e.data.addEmptyBlock.id
     }
 
     useEffect(() => {
@@ -144,14 +123,13 @@ const Todo = () => {
                     color: colorChange ? color : _color,
                 };
                 // I'm Here
+
                 newMyTasks.tasks.push(editedEvent);
+
                 moveMyTask(newMyTasks);
 
                 setSubjectChange(false);
                 setColorChange(false);
-                _addEmpty(editedEvent).then ( success => {
-                    editedEvent.id = success
-                })
             }
             setDel(false);
         }
