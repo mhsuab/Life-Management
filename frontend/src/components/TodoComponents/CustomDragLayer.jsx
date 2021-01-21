@@ -45,7 +45,7 @@ const CustomDragLayer = () => {
             case ItemTypes.CARD:
                 return <Card task={item.task} />;
             case ItemTypes.WEEK:
-                return <Card task={item.task} WEEK/>;
+                return <Block task={item.task} DRAG />;
             default:
                 return null;
         }

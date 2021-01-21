@@ -46,6 +46,36 @@ const Card = ({ task: {
     const handleOnOver = () => setIsOver(true);
     const handleOnLeave = () => setIsOver(false);
 
+    if (!startTime) {
+        return (
+            <div
+                onMouseEnter={handleOnOver}
+                onMouseLeave={handleOnLeave}
+            >
+                <Icon.Group>
+                    <div
+                        className={`card`}
+                        onClick={() => editTodo({ columnIndex, index, id, subject })}
+                        style={cardStyle(color)}
+                    >
+                        <Label style={tagStyle}>
+                            {subject}
+                        </Label>
+                    </div>
+                    {isOver ? (
+                        <Icon
+                            corner='top right'
+                            name='delete'
+                            size='massive'
+                            color='red'
+                            onClick={(event) => delIconClick(event, { columnIndex, index, id })}
+                        />
+                    ) : (<></>)}
+                </Icon.Group>
+            </div>
+        )
+    }
+
     return (
         <div
             onMouseEnter={handleOnOver}
@@ -57,7 +87,7 @@ const Card = ({ task: {
                     onClick={() => editTodo({ columnIndex, index, id, name })}
                     style={cardStyle(color)}
                 >
-                    <div style={ textStyle }> {name} </div>
+                    <div style={textStyle}> {name} </div>
                     <Label style={tagStyle}>
                         {subject}
                     </Label>

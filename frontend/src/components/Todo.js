@@ -34,9 +34,10 @@ const Todo = () => {
     const [_userid, setUserId] = useState()
 
     const firstUpdate = useRef(true);
+    const today = new Date();
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [choosedate, setChoosedate] = useState((new Date()).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
+    const [choosedate, setChoosedate] = useState(today.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
     const [Count, setCount] = useState(0)
     const [color, setColor] = useState()
     const [title, setTitle] = useState('Event Title')
@@ -242,7 +243,7 @@ const Todo = () => {
                                         label="Deadline (Date)"
                                         value={choosedate}
                                         onChange={(date) => {
-                                            setChoosedate(date);
+                                            setChoosedate(date.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }));
                                         }}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',

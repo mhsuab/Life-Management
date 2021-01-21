@@ -61,11 +61,11 @@ const Card = ({ task: {
                         <Label style={tagStyle}>
                             {subject}
                         </Label>
-                        {WEEK ? (<></>) : (
+                        {WEEK ? (
                             <Label color='red' style={deadLineStyle}>
                                 DEADLINE : {deadLine}
                             </Label>
-                        )}
+                        ): (<></>)}
                     </Label.Group>
                 </div>
                 {isOver ? (
