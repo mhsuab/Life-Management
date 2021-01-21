@@ -28,7 +28,7 @@ module.exports = {
                 return moment(new Date(date)).add(day, 'days').format("YYYY/MM/DD");
             })
             const blocks = await Block.find({
-                $and: [{ userID }, { onCalendar: true }, {
+                $and: [{ userID }, {
                     "Day": { $in: week }
                 }]
             }).sort({ 'Day': 1 })
