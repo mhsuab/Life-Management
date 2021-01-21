@@ -40,7 +40,7 @@ const Column = ({ tasks: {
         <div ref={dropRef} className={(WEEK ? "column-week" : (SIDEBAR ? "column-sidebar" : "column"))} >
             <div className="column__title">
                 {title}
-                {(WEEK || SIDEBAR) ? (<></>) : (
+                {(WEEK) ? (<></>) : (
                     <Icon
                         link
                         name='edit'
