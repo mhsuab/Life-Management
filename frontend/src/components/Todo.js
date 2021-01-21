@@ -94,16 +94,17 @@ const Todo = () => {
     const handleMoveMyTask = (from, to) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: else CRASH(server error?)
+        console.log(from)
+        console.log(to)
         const { task, columnIndex: fromColumnIndex, index } = from;
         console.log({'columnidx': fromColumnIndex})
         const { columnIndex: toColumnIndex } = to;
-
         const newMyTasks = [...myTasks];
         // remove task
         newMyTasks[fromColumnIndex].tasks.splice(index, 1);
         // move task
         const temptask = {
-            category: toColumnIndex === 0 ? 'Todo' : (task.category === 1 ? 'Doing' :'Completed'),
+            category: toColumnIndex === 0 ? 'Todo' : (toColumnIndex === 1 ? 'Doing' :'Completed'),
             color: task.color,
             completedDay: task.completedDay,
             deadLine: task.deadLine,
@@ -154,6 +155,19 @@ const Todo = () => {
         setModalOpen(true);
     }
 
+    const _addTodo = async (editedEvent) => {
+        const newTodo = await addTodoToDB({
+            variables: {
+                name: editedEvent.name,
+                category: editedEvent.category,
+                subject: editedEvent.subject,
+                color: editedEvent.color,
+                deadLine: editedEvent.deadLine
+        }})
+        console.log(newTodo)
+        return newTodo.data.todo.todoID
+    }
+
     useEffect(() => {
         console.log('useEffect: count')
         console.log(Count);
@@ -174,11 +188,20 @@ const Todo = () => {
                 userID: newEvent ? _userid :newMyTasks[_columnIndex].tasks[_index].userID
             };
             if (newEvent) {
+                editedEvent.id = _addTodo(editedEvent)
                 newMyTasks[_columnIndex].tasks.push(editedEvent);
             }
             else {
                 newMyTasks[_columnIndex].tasks.splice(_index, 1);
                 newMyTasks[_columnIndex].tasks.splice(_index, 0, editedEvent)
+                updateTodo({ variables: {
+                    todoID: editedEvent.id,
+                    name: editedEvent.name,
+                    category: editedEvent.category,
+                    subject: editedEvent.subject,
+                    color: editedEvent.color,
+                    deadLine: editedEvent.deadLine
+                }})
             }
 
             console.log(editedEvent);
