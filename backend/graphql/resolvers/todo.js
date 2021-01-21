@@ -17,6 +17,7 @@ module.exports = {
     Mutation: {
         addTodo: async (_, { todo }, { request }) => {
             // NOTE: return the added Todo
+            console.log(todo)
             const { userID, todoExpiresDay } = checkAuth(request);
             const newTodo = await Todo.create({
                 ...todo,
