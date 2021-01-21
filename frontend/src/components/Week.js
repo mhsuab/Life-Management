@@ -422,7 +422,7 @@ const Week = ({handleBlockChange}) => {
                                     style={{ width: "5vw" }}
                                     placeholder="None"
                                     onChange={event => {
-                                        setRepeated(event.target.value);
+                                        setRepeated(parseInt(event.target.value));
                                         setRepeatedChange(true);
                                     }}
                                 />

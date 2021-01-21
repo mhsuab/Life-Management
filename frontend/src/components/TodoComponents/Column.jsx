@@ -38,24 +38,29 @@ const Column = ({ tasks: {
 
     return (
         <div ref={dropRef} className={(WEEK ? "column-week" : (SIDEBAR ? "column-sidebar" : "column"))} >
-            <div className="column__title">
-                {title}
-                {(WEEK) ? (<></>) : (
-                    <Icon
-                        link
-                        name='edit'
-                        size='small'
-                        color='grey'
-                        style={{ float: 'right' }}
-                        onClick={() => addTodo({ columnIndex, index, id, name })}
-                    />
-                )}
-            </div>
+            {SIDEBAR ? (<></>) : (
+                <div className="column__title">
+                    { title}
+                    {
+                        (WEEK) ? (<></>) : (
+                            <Icon
+                                link
+                                name='edit'
+                                size='small'
+                                color='grey'
+                                style={{ float: 'right' }}
+                                onClick={() => addTodo({ columnIndex, index, id, name })}
+                            />
+                        )
+                    }
+                </div>
+            )
+            }
             <div className="column__cards">
                 {cards}
                 {isOver && canDrop ? <EmptyCard /> : ""}
             </div>
-        </div>
+        </div >
     );
 };
 export default Column;

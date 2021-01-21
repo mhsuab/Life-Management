@@ -24,7 +24,7 @@ const Todo = () => {
 
     const parseQueryData = (todos) => {
         return {
-            title: 'event template',
+            title: 'EVENT TEMPLATE',
             tasks: todos
         };
     }
@@ -86,15 +86,15 @@ const Todo = () => {
         moveMyTask(newMyTasks);
     }
 
-    const addTodo = ({ columnIndex, index, id, name }) => {
+    const addTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `addTodo`, if add successfully then run
         // TODO: trigger input form
         // alert('add ' + title);
         setNewEvent(true);
-        editTodo({ columnIndex, index, id, name });
+        editTodo({ index, id, name });
     }
 
-    const editTodo = ({ columnIndex, index, id, name }) => {
+    const editTodo = ({ index, id, name }) => {
         // TODO: comunicate with backend `updateTodo`, if update successfully then run
         // TODO: trigger input form
         //alert('edit ' + name);
@@ -136,90 +136,107 @@ const Todo = () => {
     }, [Count])
 
     return (
-        <DndProvider backend={HTML5backend}>
-            <CustomDragLayer />
-            <div className="task-board" style={{
-                width: '100%'
-            }}>
-                <Column
-                    key={`column-week -1`}
-                    {...{ tasks: myTasks, columnIndex: -1, handleMoveMyTask, delIconClick, addTodo, editTodo }}
-                    SIDEBAR
+        <div style={{ display: 'grid', gridTemplateRows: '2% 98%' }}>
+            <b>
+                {myTasks.title}
+                <Icon
+                    link
+                    name='edit'
+                    size='small'
+                    color='grey'
+                    style={{ float: 'right' }}
+                    onClick={() => addTodo({ _index, _id, _name })}
                 />
-            </div>
-            <Modal
-                key='modal1'
-                open={modalOpen}
-                size='small'
-                closeOnEscape={true}
-                closeOnRootNodeClick={true}
-            >
-                <Header icon='browser' content='Todo' />
-                <Modal.Content>
-                    <Form>
-                        <Form.Field>
-                            <label> Subject </label>
-                            <input
-                                placeholder={_subject}
-                                onChange={event => {
-                                    setsubject(event.target.value);
-                                    setSubjectChange(true);
-                                    console.log("changed");
-                                }}
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label> Color </label>
-                            <CirclePicker
-                                onChangeComplete={(_color, event) => {
-                                    setcolor(_color.hex);
-                                    setColorChange(true);
-                                }}
-                                color={['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff']}
-                            />
-                        </Form.Field>
-                    </Form>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button
-                        negative
-                        type='button'
-                        icon='remove'
-                        labelPosition='right'
-                        onClick={
-                            (e) => {
-                                setModalOpen(false)
-                            }
-                        }
-                        content='Cancel'
+            </b>
+            <DndProvider backend={HTML5backend}>
+                <CustomDragLayer />
+                <div style={{
+                    width: '100%',
+                    height: '90vh',
+                    display: 'inline-flex',
+                    alignItems: 'flex-start',
+                    padding: '1%',
+                }}>
+                    <Column
+                        key={`column-week -1`}
+                        {...{ tasks: myTasks, columnIndex: -1, handleMoveMyTask, delIconClick, addTodo, editTodo }}
+                        SIDEBAR
                     />
-                    <Button
-                        positive
-                        type='button'
-                        icon='checkmark'
-                        labelPosition='right'
-                        onClick={
-                            (e) => {
-                                const GoodTitle = (!subject) ? false : ((subject.replace(/\s/g, "").length !== 0) ? true : false)
-                                var Message = "";
+                </div>
+                <Modal
+                    key='modal1'
+                    open={modalOpen}
+                    size='small'
+                    closeOnEscape={true}
+                    closeOnRootNodeClick={true}
+                >
+                    <Header icon='browser' content='Todo' />
+                    <Modal.Content>
+                        <Form>
+                            <Form.Field>
+                                <label> Subject </label>
+                                <input
+                                    placeholder={_subject}
+                                    onChange={event => {
+                                        setsubject(event.target.value);
+                                        setSubjectChange(true);
+                                        console.log("changed");
+                                    }}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label> Color </label>
+                                <CirclePicker
+                                    onChangeComplete={(_color, event) => {
+                                        setcolor(_color.hex);
+                                        setColorChange(true);
+                                    }}
+                                    color={['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff']}
+                                />
+                            </Form.Field>
+                        </Form>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button
+                            negative
+                            type='button'
+                            icon='remove'
+                            labelPosition='right'
+                            onClick={
+                                (e) => {
+                                    setModalOpen(false)
+                                }
+                            }
+                            content='Cancel'
+                        />
+                        <Button
+                            positive
+                            type='button'
+                            icon='checkmark'
+                            labelPosition='right'
+                            onClick={
+                                (e) => {
+                                    const GoodTitle = (!subject) ? false : ((subject.replace(/\s/g, "").length !== 0) ? true : false)
+                                    var Message = "";
 
-                                if (!GoodTitle) {
-                                    Message = Message + "Please enter the subject! \n";
-                                }
-                                if (Message === "") {
-                                    setModalOpen(false);
-                                    setCount(Count + 1);
-                                }
-                                else {
-                                    alert(Message);
+                                    if (!GoodTitle) {
+                                        Message = Message + "Please enter the subject! \n";
+                                    }
+                                    if (Message === "") {
+                                        setModalOpen(false);
+                                        setCount(Count + 1);
+                                    }
+                                    else {
+                                        alert(Message);
+                                    }
                                 }
                             }
-                        }
-                        content='Confirm'
-                    />
-                </Modal.Actions>
-            </Modal>
-        </DndProvider>
+                            content='Confirm'
+                        />
+                    </Modal.Actions>
+                </Modal>
+            </DndProvider >
+        </div>
     );
 }
 
