@@ -22,7 +22,7 @@ const Todo = () => {
 
     const parseQueryData = (todos) => {
         return {
-            title: 'Todo',
+            title: 'EVENT TEMPLATE',
             tasks: todos
         };
     }
