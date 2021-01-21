@@ -22,7 +22,7 @@ import { GET_WEEK_BLOCKS, UPDATE_BLOCK, DELETE_BLOCK, ADD_BLOCK } from '../graph
 import { AuthContext } from '../context/auth';
 import { testTodos } from './../config';
 
-const Week = ({handleBlockChange}) => {
+const Week = ({ handleBlockChange }) => {
     // const data = { 'getTodo': testTodos }
     const [_columnIndex, setColumnIndex] = useState(0)
     const [_index, setIndex] = useState()
@@ -256,7 +256,7 @@ const Week = ({handleBlockChange}) => {
                 _updateBlock(editedEvent)
             }
             else {
-                _addBlock(editedEvent).then ( success => {
+                _addBlock(editedEvent).then(success => {
                     console.log(success)
                     editedEvent.id = success
                 })
@@ -324,17 +324,30 @@ const Week = ({handleBlockChange}) => {
                 <Header icon='browser' content='Event' />
                 <Modal.Content>
                     <Form>
-                        <Form.Field>
-                            <label> Event Title</label>
-                            <Input
-                                error
-                                placeholder={_name}
-                                onChange={event => {
-                                    setTitle(event.target.value);
-                                    setTitleChange(true);
-                                }}
-                            />
-                        </Form.Field>
+                        <Form.Group widths='equal'>
+                            <Form.Field>
+                                <label> Event Title</label>
+                                <Input
+                                    error
+                                    placeholder={_name}
+                                    onChange={event => {
+                                        setTitle(event.target.value);
+                                        setTitleChange(true);
+                                    }}
+                                />
+
+                            </Form.Field>
+                            <Form.Field>
+                                <label> Tag </label>
+                                <Input
+                                    error
+                                    placeholder={_subject}
+                                    onChange={event => {
+                                        setSubject(event.target.value);
+                                    }}
+                                />
+                            </Form.Field>
+                        </Form.Group>
                         <Form.Group widths='equal'>
                             <Form.Field>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -346,8 +359,8 @@ const Week = ({handleBlockChange}) => {
                                         id="date-picker-inline"
                                         value={dateChange ? choosedate : moment(new Date).add(_columnIndex, 'days').format("YYYY/MM/DD")}
                                         onChange={(date) => {
-                                            console.log(date.toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}))
-                                            setChoosedate(date.toLocaleDateString('zh-TW', {timeZone: 'Asia/Taipei'}));
+                                            console.log(date.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }))
+                                            setChoosedate(date.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' }));
                                             setDateChange(true);
                                         }}
                                         KeyboardButtonProps={{
@@ -380,11 +393,6 @@ const Week = ({handleBlockChange}) => {
                             </Form.Field>
                         </Form.Group>
                         <Form.Group widths='equal'>
-                            <Form.Select
-                                label='Tag'
-                                options={options}
-                                placeholder='Event Type'
-                            />
                             <Form.Field>
                                 <label> Color </label>
                                 <CirclePicker
@@ -399,6 +407,7 @@ const Week = ({handleBlockChange}) => {
                             <label> Show on Calendar </label>
                             <Checkbox
                                 toggle
+                                defaultChecked={onCalendar}
                                 onChange={() => {
                                     const temp = onCalendar ? false : true;
                                     setOnCalendar(temp);
