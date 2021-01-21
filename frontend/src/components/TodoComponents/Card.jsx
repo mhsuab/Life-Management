@@ -39,13 +39,7 @@ const Card = ({ task: {
     color,
     deadLine
 }, columnIndex, index, delIconClick, editTodo }) => {
-    console.log({
-        id,
-        name,
-        subject,
-        color,
-        deadLine
-    });
+    if (color === '#607d8b') color = '#90afff';
     const [isOver, setIsOver] = useState(false);
 
     const handleOnOver = () => setIsOver(true);
