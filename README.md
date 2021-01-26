@@ -28,7 +28,7 @@
 
 #### 執行服務的方法
 ##### docker-compose
-在有 `docker-compose.yml` 的檔案中，執行 `docker-compose up -d --build`。
+在有 `docker-compose.yml` 的檔案中，執行 `docker-compose up -d --build`（可能要跑的有點久）；要關閉此 service 時，在同樣的路徑下，執行 `docker-compose down`。
 > 此外，須確保 80, 4000 port 沒有在使用，若有，須到 `docker-compose.yml` 中，將 service bind 到其他的 port
 ##### 分別執行
 到 `frontend`, `backend` 兩個資料夾中分別執行 `yarn install --frozen-lockfile`，然後在兩個資料夾中分別用 `yarn start`，執行程式。
