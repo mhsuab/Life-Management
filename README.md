@@ -10,6 +10,28 @@
 ## 服務內容
 提供使用者私人之整合月曆、週曆、筆記欄以及代辦事項之多功能行事曆，讓使用者可依需求迅速取得所需資訊，並協助隨時掌握其排程。
 ## 使用/操作方式：
+### 執行
+將 `backend` 中的 `.env.defaults` 複製一份並取名為 `.env`  
+並完成填入以下的值：
+- IS_DEVELOP：`false`
+  - 主要影響到 `backend` 所使用到的 **mongo url**，當其值為 `true` 時會使用 `MONGO_URL_ALTAS`，其餘則使用 `MONGO_URL`
+- MONGO_URL：**mongodb 的 url**，若使用 `docker-compose` 以執行此服務，直接填為 `mongodb://mongo:27017/test`，否則可用其他已有的 mongodb url
+- MONGO_URL_atlas：同上，然只有在 `IS_DEVELOP=true` 時，才會使用此 url
+- JWT_SECRET：base64 編碼後的 **rsa** `private key`
+- JWT_CERT：base64 編碼後的 **rsa** `public key`
+#### 如何產生 `JWT_SECRET`、`JWT_CERT`
+1. 執行 `ssh-keygen -t rsa -b 4096 -m PEM -f [keyfile filename]`
+2. 在資料夾底下會產生 `[keyfile filename]` 和 `[keyfile filename].pub` 兩個檔案，前者為 **PEM format** 的 private key
+3. 執行 `base64 [keyfile filename]`，將 output 複製到 `JWT_SECRET`
+4. `openssl rsa -in [keyfile filename] -pubout -outform PEM -out [public key filename]`
+5. 執行 `base64 [public key filename]`，將 output 複製到 `JWT_CERT`
+
+#### 執行服務的方法
+##### docker-compose
+在有 `docker-compose.yml` 的檔案中，執行 `docker-compose up -d --build`。
+> 此外，須確保 80, 4000 port 沒有在使用，若有，須到 `docker-compose.yml` 中，將 service bind 到其他的 port
+##### 分別執行
+到 `frontend`, `backend` 兩個資料夾中分別執行 `yarn install --frozen-lockfile`，然後在兩個資料夾中分別用 `yarn start`，執行程式。
 ### 前端
 - 初次使用時，使用者需先註冊帳號，經登錄享受個人服務
 - 經註冊之帳號密碼登錄後，畫面分為月曆(左上)、週曆(中上)、活動類別欄(右側)、筆記(左下)及代辦事項(中下)
